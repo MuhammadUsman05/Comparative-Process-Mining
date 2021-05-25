@@ -1,0 +1,216 @@
+{% extends 'base.html' %}
+
+{% block content  %}
+
+      {% if message %}
+        <script>
+            alert({{message}})
+        </script>
+      {% endif %}
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.link {
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+.node {
+  cursor: move;
+  fill: #ccc;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+.node.fixed {
+  fill: #f00;
+}
+
+        #mynetwork {
+            width: 800px;
+            height: 800px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+
+.canvas {
+    width:800px;
+    height:800px;
+}
+table { border-collapse: collapse; }
+td, th { border: 1px solid black; }
+tr { background: #ccc; }
+tr:nth-child(odd) { background: #eee; }
+td > div { white-space: pre; }
+</style>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.css" type="text/css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.js"> </script>
+
+</head>
+<body>
+
+
+      <div class="container-fluid">
+        <h3 class="mt-4" style="color:#00529F;">Log Simplification</h3>
+
+        <form  name="filter" action="filter" method = "POST">
+
+            <div class="row">
+          <div class=" col-sm-6 col-md-7 col-lg-8">
+              {% if log_name != ':notset:' %}
+                <p style="color:green;"> {{log_name}} is used as input.</p>
+              {% else %}
+                <p style="color:red;"> You have not set any event log as input. Use "Event Data" tab to set an event log as input!</p>
+              {% endif %}
+
+            {% csrf_token %}
+
+        </div>
+        </div>
+        <br>
+
+
+
+        </form>
+
+        <form action="" method="get">
+            {% csrf_token %}
+            <div id="showData"></div>
+       </form>
+
+      </div>
+
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+var company_info = [{
+      "id": 1,
+      "company_name": "ACompany",
+      "established": 1999,
+      "industry": "Tech",
+      "contacts": [{
+        "first_name": "AAFirst",
+        "last_name": "AALast",
+        "position": "CEO"
+      }, {
+        "first_name": "ABFirst",
+        "last_name": "ABLast",
+        "position": "CTO"
+      }]
+    }, {
+      "id": 2,
+      "company_name": "BCompany",
+      "established": 1998,
+      "industry": "Med",
+      "contacts": [{
+        "first_name": "BAFirst",
+        "last_name": "BALast",
+        "position": "CEO"
+      }, {
+        "first_name": "BBFirst",
+        "last_name": "BBLast",
+        "position": "CTO"
+      }]
+    }, {
+      "id": 3,
+      "company_name": "CCompany",
+      "established": 1997,
+      "industry": "Ivest",
+      "contacts": [{
+        "first_name": "CAFirst",
+        "last_name": "CALast",
+        "position": "CEO"
+      }, {
+        "first_name": "CBFirst",
+        "last_name": "CBLast",
+        "position": "CTO"
+      }]
+    }, {
+      "id": 4,
+      "company_name": "DCompany",
+      "established": 1996,
+      "industry": "Tech",
+      "contacts": [{
+        "first_name": "DAFirst",
+        "last_name": "DALast",
+        "position": "CEO"
+      }, {
+        "first_name": "DBFirst",
+        "last_name": "DBLast",
+        "position": "CTO"
+      }]
+    }, {
+      "id": 5,
+      "company_name": "ECompany",
+      "established": 1995,
+      "industry": "Med",
+      "contacts": [{
+        "first_name": "EAFirst",
+        "last_name": "EALast",
+        "position": "CEO"
+      }, {
+        "first_name": "EBFirst",
+        "last_name": "EBLast",
+        "position": "CTO"
+      }]
+    }]
+    // EXTRACT VALUE FOR HTML HEADER.
+    // ('ID', 'Company Name', 'Established','Industry', 'Contacts')
+
+  var col = [];
+
+  for (var i = 0; i < company_info.length; i++) {
+    for (var key in company_info[i]) {
+      if (col.indexOf(key) === -1) {
+        col.push(key);
+      }
+    }
+  }
+  //Create a table
+  var table = document.createElement("table");
+  //Create  table rows
+  var tr = table.insertRow(-1);
+  //Create table headers
+  for (var i = 0; i < col.length; i++) {
+    var th = document.createElement("th"); // TABLE HEADER.
+    th.innerHTML = col[i];
+    tr.appendChild(th);
+  }
+
+  //Add JSON data to table as rows
+  for (var i = 0; i < company_info.length; i++) {
+
+    tr = table.insertRow(-1);
+
+    for (var j = 0; j < col.length; j++) {
+      var tabCell = tr.insertCell(-1);
+      if (j !== 4) {
+        tabCell.appendChild(document.createTextNode(company_info[i][col[j]]));
+      } else {
+        for (var x = 0; x < company_info[i].contacts.length; x++) {
+          var firstName = company_info[i].contacts[x].first_name,
+            lastName = company_info[i].contacts[x].last_name,
+            position = company_info[i].contacts[x].position;
+
+          tabCell.appendChild(document.createTextNode(" " + firstName + " " + lastName + ", " + position));
+        }
+      }
+    }
+
+  }
+
+
+  var divContainer = document.getElementById("showData");
+  divContainer.innerHTML = "";
+  divContainer.appendChild(table);
+
+</script>
+
+{% endblock %}

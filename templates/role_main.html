@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+
+{% block content  %}
+
+      {% if message %}
+        <script>
+            alert({{message}})
+        </script>
+      {% endif %}
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.link {
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+.node {
+  cursor: move;
+  fill: #ccc;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+.node.fixed {
+  fill: #f00;
+}
+
+        #mynetwork {
+            width: 800px;
+            height: 800px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+
+.canvas {
+    width:800px;
+    height:800px;
+}
+</style>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.css" type="text/css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.js"> </script>
+
+</head>
+<body>
+
+
+      <div class="container-fluid">
+        <h3 class="mt-4" style="color:#00529F;">Log Simplification</h3>
+
+        <form  name="apply_role_mining" action="role_main" method = "POST">
+
+            <div class="row">
+          <div class=" col-sm-6 col-md-7 col-lg-8">
+              {% if log_name != ':notset:' %}
+                <p style="color:green;"> {{log_name}} is used as input.</p>
+              {% else %}
+                <p style="color:red;"> You have not set any event log as input. Use "Event Data" tab to set an event log as input!</p>
+              {% endif %}
+
+            {% csrf_token %}
+
+        </div>
+        </div>
+        <br>
+
+        </form>
+
+
+
+      </div>
+<div id="mynetwork"></div>
+<pre id="eventSpan"></pre>
+
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+
+
+    // create a network
+    var container = document.getElementById('mynetwork');
+      var data = "{{data}}";
+
+    var options = {
+			interaction:{hover:true},
+			manipulation: {
+				enabled: true
+			}
+		};
+
+    var network = new vis.Network(container, data, options);
+
+    network.on("click", function (params) {
+        params.event = "[original event]";
+        document.getElementById('eventSpan').innerHTML = '<h2>Click event:</h2>' + JSON.stringify(params, null, 4);
+        console.log('click event, getNodeAt returns: ' + this.getNodeAt(params.pointer.DOM));
+    });
+    network.on("doubleClick", function (params) {
+        params.event = "[original event]";
+        document.getElementById('eventSpan').innerHTML = '<h2>doubleClick event:</h2>' + JSON.stringify(params, null, 4);
+    });
+    network.on("oncontext", function (params) {
+        params.event = "[original event]";
+        document.getElementById('eventSpan').innerHTML = '<h2>oncontext (right click) event:</h2>' + JSON.stringify(params, null, 4);
+    });
+    network.on("dragStart", function (params) {
+        // There's no point in displaying this event on screen, it gets immediately overwritten
+        params.event = "[original event]";
+        console.log('dragStart Event:', params);
+        console.log('dragStart event, getNodeAt returns: ' + this.getNodeAt(params.pointer.DOM));
+    });
+    network.on("dragging", function (params) {
+        params.event = "[original event]";
+        document.getElementById('eventSpan').innerHTML = '<h2>dragging event:</h2>' + JSON.stringify(params, null, 4);
+    });
+    network.on("dragEnd", function (params) {
+        params.event = "[original event]";
+        document.getElementById('eventSpan').innerHTML = '<h2>dragEnd event:</h2>' + JSON.stringify(params, null, 4);
+        console.log('dragEnd Event:', params);
+        console.log('dragEnd event, getNodeAt returns: ' + this.getNodeAt(params.pointer.DOM));
+    });
+    network.on("controlNodeDragging", function (params) {
+        params.event = "[original event]";
+        document.getElementById('eventSpan').innerHTML = '<h2>control node dragging event:</h2>' + JSON.stringify(params, null, 4);
+    });
+    network.on("controlNodeDragEnd", function (params) {
+        params.event = "[original event]";
+        document.getElementById('eventSpan').innerHTML = '<h2>control node drag end event:</h2>' + JSON.stringify(params, null, 4);
+        console.log('controlNodeDragEnd Event:', params);
+    });
+    network.on("zoom", function (params) {
+        document.getElementById('eventSpan').innerHTML = '<h2>zoom event:</h2>' + JSON.stringify(params, null, 4);
+    });
+    network.on("showPopup", function (params) {
+        document.getElementById('eventSpan').innerHTML = '<h2>showPopup event: </h2>' + JSON.stringify(params, null, 4);
+    });
+    network.on("hidePopup", function () {
+        console.log('hidePopup Event');
+    });
+    network.on("select", function (params) {
+        console.log('select Event:', params);
+    });
+    network.on("selectNode", function (params) {
+        console.log('selectNode Event:', params);
+    });
+    network.on("selectEdge", function (params) {
+        console.log('selectEdge Event:', params);
+    });
+    network.on("deselectNode", function (params) {
+        console.log('deselectNode Event:', params);
+    });
+    network.on("deselectEdge", function (params) {
+        console.log('deselectEdge Event:', params);
+    });
+    network.on("hoverNode", function (params) {
+        console.log('hoverNode Event:', params);
+    });
+    network.on("hoverEdge", function (params) {
+        console.log('hoverEdge Event:', params);
+    });
+    network.on("blurNode", function (params) {
+        console.log('blurNode Event:', params);
+    });
+    network.on("blurEdge", function (params) {
+        console.log('blurEdge Event:', params);
+    });
+
+
+</script>
+
+{% endblock %}

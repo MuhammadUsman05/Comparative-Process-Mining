@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+
+{% block content  %}
+
+      {% if message %}
+        <script>
+            alert({{message}})
+        </script>
+      {% endif %}
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.link {
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+.node {
+  cursor: move;
+  fill: #ccc;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+.node.fixed {
+  fill: #f00;
+}
+
+        #mynetwork {
+            width: 800px;
+            height: 800px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+
+.canvas {
+    width:800px;
+    height:800px;
+}
+</style>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.css" type="text/css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.js"> </script>
+
+</head>
+<body>
+
+
+      <div class="container-fluid">
+        <h3 class="mt-4" style="color:#00529F;">Log Simplification</h3>
+
+        <form  name="filter" action="filter" method = "POST">
+
+            <div class="row">
+          <div class=" col-sm-6 col-md-7 col-lg-8">
+              {% if log_name != ':notset:' %}
+                <p style="color:green;"> {{log_name}} is used as input.</p>
+              {% else %}
+                <p style="color:red;"> You have not set any event log as input. Use "Event Data" tab to set an event log as input!</p>
+              {% endif %}
+
+            {% csrf_token %}
+
+        </div>
+        </div>
+        <br>
+
+
+
+        </form>
+
+        <form action="" method="get">
+            {% csrf_token %}
+            <div id="mynetwork"></div>
+            <p>Use ctrl+click to select multiple nodes to group!</p>
+            <label for="new_name">Group name: </label>
+            <input id="new_name" type="text" name="new_name" value="{{ current_name }}">
+            <input type = "submit" class="btn btn-primary mb-2" name = "groupButton" id ='submitresEL' onclick="getSelectedNodes()"/>
+             <input id="values" type="hidden" name="values" value="{{ values }}">
+       </form>
+
+      </div>
+
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+
+  var data = "{{data | escapejs}}";
+  data = JSON.parse(data);
+
+
+const options = {
+    layout: { randomSeed: 2 },
+    interaction:{
+        hover: true,
+        dragNodes:false,
+        multiselect: true,
+        selectable: true,
+    },
+    edges: {
+         arrows: {
+          to:     {enabled: true, scaleFactor:1, type:'arrow'},
+          from:   {enabled: false, scaleFactor:1, type:'arrow'},
+          length: 1000
+          }
+      },
+    manipulation: {
+    enabled: true
+    }
+};
+
+// Everything is in there
+const makeMeMultiSelect = (container, network, nodes) => {
+		const NO_CLICK = 0;
+		const RIGHT_CLICK = 3;
+
+    // Disable default right-click dropdown menu
+    container[0].oncontextmenu = () => false;
+
+    // State
+
+    let drag = false, DOMRect = {};
+
+    // Selector
+
+    const canvasify = (DOMx, DOMy) => {
+    		const { x, y } = network.DOMtoCanvas({ x: DOMx, y: DOMy });
+      	return [x, y];
+    };
+
+    const correctRange = (start, end) =>
+        start < end ? [start, end] : [end, start];
+
+    const selectFromDOMRect = () => {
+        const [sX, sY] = canvasify(DOMRect.startX, DOMRect.startY);
+        const [eX, eY] = canvasify(DOMRect.endX, DOMRect.endY);
+        const [startX, endX] = correctRange(sX, eX);
+        const [startY, endY] = correctRange(sY, eY);
+
+        network.selectNodes(nodes.get().reduce(
+            (selected, { id }) => {
+                const { x, y } = network.getPositions(id)[id];
+                return (startX <= x && x <= endX && startY <= y && y <= endY) ?
+                    selected.concat(id) : selected;
+            }, []
+
+        ));
+    }
+    // Listeners
+
+    var mySelectionOrder = [];
+    var previouslySelected = {};
+network.on('click', function (properties) {
+
+  selection = properties.nodes
+  document.getElementById('values').value = selection;
+
+  drag = false;
+
+  if (selection > 0) {
+    var node_sel = nodes.get([selection])[0];
+    if(node_sel['selected']){
+      alert('add you buttons');
+    }
+    else{
+      alert('change the style here');
+      node_sel['selected'] = true;
+      node_sel['shape'] = 'box';
+      nodes.update(node_sel);
+      var msg = JSON.stringify(nodes.get([selection]))
+      alert(msg);
+    }
+  }
+});
+
+    network.on("deselectNode", function (params) {
+        console.log('deselectNode Event:', params.nodes[0]);
+    });
+
+
+
+    // Drawer
+
+    network.on('afterDrawing', ctx => {
+        if(drag) {
+            const [startX, startY] = canvasify(DOMRect.startX, DOMRect.startY);
+            const [endX, endY] = canvasify(DOMRect.endX, DOMRect.endY);
+
+            ctx.setLineDash([5]);
+            ctx.strokeStyle = 'rgba(78, 146, 237, 0.75)';
+            ctx.strokeRect(startX, startY, endX - startX, endY - startY);
+            ctx.setLineDash([]);
+            ctx.fillStyle = 'rgba(151, 194, 252, 0.45)';
+            ctx.fillRect(startX, startY, endX - startX, endY - startY);
+        }
+    });
+}; // end makeMeMultiSelect
+
+$(document).ready(() => {
+		const container = $("#mynetwork");
+    const network = new vis.Network(container[0],data, options);
+		makeMeMultiSelect(container, network, data.nodes);
+});
+
+
+function getSelectedNodes(){
+    alert(selection);
+    document.getElementById('values').value = selection;
+    return selection;
+
+}
+
+</script>
+
+{% endblock %}

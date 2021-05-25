@@ -1,0 +1,183 @@
+#wrapper {
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#microwrapper {
+
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+
+}
+
+#microwrapper.microtoggled {
+
+    margin-bottom: 1000px;
+}
+
+#wrapper.toggled {
+    padding-left: 200px;
+}
+
+#sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    left: 250px;
+    width: 250px;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+    background: #1d1d1f;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.items2 {
+
+
+    display: none;
+    text-decoration: none;
+    color: white;
+    font-family: Ubuntu;
+    letter-spacing: 1px;
+    font-size: 11px;
+    padding-left: 10px;
+    margin-top: 4px;
+    list-style: none;
+    text-decoration: none;
+    padding-bottom: 10px;
+    line-height: 100px;
+
+}
+
+
+
+
+.items2:hover {
+
+    text-decoration: none;
+    color: #f4f4f4;
+    border-bottom: 1px solid white;
+
+}
+
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 200px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: absolute;
+    margin-right: -200px;
+}
+
+
+/* Sidebar Styles */
+
+.sidebar-brand {
+
+    border-bottom: 1px solid white;
+    display: block;
+    text-decoration: none;
+    color: white;
+    padding-left: 20px;
+}
+
+.sidebar-brand2 {
+
+    font-family: Ubuntu;
+    letter-spacing: 6px;
+    font-size: 11px;
+}
+
+
+#menu-toggle {
+
+    font-size: 18px;
+
+}
+
+#caption {
+
+    text-align: right;
+    margin-top: -20px;
+    font-family: Ubuntu;
+}
+
+.sidebar-nav li a:hover {
+
+    text-decoration: none;
+}
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 200px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.sidebar-nav li {
+
+    margin-top: 40px;
+    text-indent: 20px;
+    line-height: 40px;
+}
+
+.items {
+
+    display: block;
+    text-decoration: none;
+    color: white;
+    font-family: Ubuntu;
+    letter-spacing: 6px;
+    font-size: 11px;
+    padding-left: 20px;
+
+}
+
+.items:hover {
+    text-decoration: none;
+    font-size: 12px;
+    color: #f4f4f4;
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus,
+.items2:focus,
+.items2:active
+ {
+    text-decoration: none;
+    color: #f4f4f4;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 65px;
+    font-size: 18px;
+    line-height: 60px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: white;
+
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+}

@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block content  %}
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="eventlogs-tab" data-toggle="tab" href="#eventlogs" role="tab" aria-controls="eventlogs" aria-selected="true">Event Logs</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="n_eventlogs-tab" data-toggle="tab" href="#n_eventlogs" role="tab" aria-controls="n_eventlogs" aria-selected="false">None Event Logs</a>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="eventlogs" role="tabpanel" aria-labelledby="eventlogs-tab">
+
+    <div class="container-fluid">
+        <h3 class="mt-4" style="color:#00529F;">Event Logs</h3>
+           <br>
+        <div class="row">
+          <div class=" col-sm-6 col-md-7 col-lg-8">
+                <form  name="load" action="" method = "POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <p>Event log: <input type = "file" value="fileupload" name = "event_log" /></p>
+                    <p><input type = "submit" class="btn btn-primary mb-2" value = "Upload EventLog" name = "uploadButton" id ='submitresEL' /></p>
+
+                </form>
+          </div>
+        </div>
+
+        <br>
+        <div class="row">
+          <div class=" col-sm-6 col-md-7 col-lg-8">
+                <form  name="choice" action="" method = "POST">
+                    {% csrf_token %}
+
+                    <select name="log_list" class="custom-select" size="10">
+                        {% for eventlog in eventlog_list %}
+                            <option value="{{eventlog}}">{{eventlog}}</option>
+                        {% endfor %}
+                    </select>
+
+                    <input style="margin-top: 10px;" data-toggle="tooltip" data-placement="top" title="Set as the input" type = "submit" class="btn btn-success" value = "Set" name= "setButton" id ='setButton' />
+                    <input style="margin-top: 10px;" type = "submit" class="btn btn-danger" value = "Delete" name= "deleteButton" id ='deleteButton'/>
+                    <input style="float: right; margin-top: 10px;" type = "submit" class="btn btn-info" value = "Download" name= "downloadButton" id ='downloadButton'/>
+
+
+                </form>
+          </div>
+        </div>
+          <br>
+
+         <div class="row">
+          <div class=" col-sm-6 col-md-7 col-lg-8">
+            {% if log_name %}
+              <p> {{log_name}} has been set as the input ... </p>
+            {% endif %}
+            {% for k,v in log_attributes.items %}
+              {% if k == 'no_traces' %}
+                <p id="no_trace"> No of traces: {{v}} </p>
+              {% elif k == 'no_events' %}
+                <p id="no_event"> No of events: {{v}} </p>
+              {% endif %}
+            {% endfor %}
+
+          </div>
+        </div>
+      </div>
+
+  </div>
+
+  <div class="tab-pane fade" id="n_eventlogs" role="tabpanel" aria-labelledby="n_eventlogs-tab">
+
+
+  <div class="container-fluid">
+        <h3 class="mt-4" style="color:#00529F;">None Event Logs</h3>
+        <br>
+        <div class="row">
+          <div class=" col-sm-6 col-md-7 col-lg-8">
+                <form  name="n_choice" action="upload_eventlog" method = "POST">
+                    {% csrf_token %}
+
+                    <select name="n_log_list" class="custom-select" size="10">
+                        {% for n_eventlog in n_eventlog_list %}
+                            <option value="{{n_eventlog}}">{{n_eventlog}}</option>
+                        {% endfor %}
+                    </select>
+
+                    <input style="margin-top: 10px;" type = "submit" class="btn btn-danger" value = "Delete" name= "n_deleteButton" id ='n_deleteButton'/>
+                    <input style="float: right; margin-top: 10px;" type = "submit" class="btn btn-info" value = "Download" name= "n_downloadButton" id ='n_downloadButton'/>
+
+                </form>
+
+          </div>
+        </div>
+
+      </div>
+
+
+  </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block script %}
+
+
+  <script>
+    <!--var token = '{{csrf_token}}';-->
+   <!--$(document).ready(function(){-->
+
+    <!--$("select.custom-select").change(function(){-->
+        <!--var selectedlog = $(this).children("option:selected").val();-->
+        <!--$.ajax({-->
+          <!--headers: { "X-CSRFToken": token },-->
+          <!--type: "POST",-->
+          <!--url: "upload_eventlog",-->
+          <!--data: { log_name: selectedlog},-->
+          <!--dataType:'json',-->
+        <!--}).done(function(result) {-->
+           <!--no_trace = result.log_attributes.no_traces-->
+           <!--$('#no_trace').text("No of traces: " + no_trace)-->
+
+           <!--no_event = result.log_attributes.no_events-->
+           <!--$('#no_event').text("No of events: " + no_event)-->
+        <!--});-->
+        <!--});-->
+    <!--});-->
+
+    $(document).ready(function(){
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+
+  </script>
+
+
+
+
+{% endblock %}

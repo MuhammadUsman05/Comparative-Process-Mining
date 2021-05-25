@@ -1,0 +1,199 @@
+{
+    "nodes": [
+        {
+            "id": "node_0",
+            "label": "Test Repair"
+        },
+        {
+            "id": "node_1",
+            "label": "Repair (Simple)"
+        },
+        {
+            "id": "node_2",
+            "label": "Archive Repair"
+        },
+        {
+            "id": "node_3",
+            "label": "Analyze Defect"
+        },
+        {
+            "id": "node_4",
+            "label": "Register"
+        },
+        {
+            "id": "node_5",
+            "label": "Restart Repair"
+        },
+        {
+            "id": "node_6",
+            "label": "Inform User"
+        },
+        {
+            "id": "node_7",
+            "label": "Repair (Complex)"
+        }
+    ],
+    "edges": [
+        {
+            "from": "node_4",
+            "to": "node_3",
+            "data": {
+                "freq": 1104
+            }
+        },
+        {
+            "from": "node_3",
+            "to": "node_3",
+            "data": {
+                "freq": 1104
+            }
+        },
+        {
+            "from": "node_3",
+            "to": "node_7",
+            "data": {
+                "freq": 528
+            }
+        },
+        {
+            "from": "node_7",
+            "to": "node_7",
+            "data": {
+                "freq": 414
+            }
+        },
+        {
+            "from": "node_7",
+            "to": "node_0",
+            "data": {
+                "freq": 720
+            }
+        },
+        {
+            "from": "node_0",
+            "to": "node_0",
+            "data": {
+                "freq": 1333
+            }
+        },
+        {
+            "from": "node_0",
+            "to": "node_6",
+            "data": {
+                "freq": 472
+            }
+        },
+        {
+            "from": "node_6",
+            "to": "node_2",
+            "data": {
+                "freq": 205
+            }
+        },
+        {
+            "from": "node_3",
+            "to": "node_1",
+            "data": {
+                "freq": 421
+            }
+        },
+        {
+            "from": "node_1",
+            "to": "node_1",
+            "data": {
+                "freq": 626
+            }
+        },
+        {
+            "from": "node_1",
+            "to": "node_0",
+            "data": {
+                "freq": 783
+            }
+        },
+        {
+            "from": "node_0",
+            "to": "node_5",
+            "data": {
+                "freq": 341
+            }
+        },
+        {
+            "from": "node_5",
+            "to": "node_1",
+            "data": {
+                "freq": 300
+            }
+        },
+        {
+            "from": "node_1",
+            "to": "node_6",
+            "data": {
+                "freq": 161
+            }
+        },
+        {
+            "from": "node_6",
+            "to": "node_1",
+            "data": {
+                "freq": 223
+            }
+        },
+        {
+            "from": "node_0",
+            "to": "node_2",
+            "data": {
+                "freq": 795
+            }
+        },
+        {
+            "from": "node_7",
+            "to": "node_6",
+            "data": {
+                "freq": 313
+            }
+        },
+        {
+            "from": "node_6",
+            "to": "node_7",
+            "data": {
+                "freq": 402
+            }
+        },
+        {
+            "from": "node_6",
+            "to": "node_0",
+            "data": {
+                "freq": 180
+            }
+        },
+        {
+            "from": "node_3",
+            "to": "node_6",
+            "data": {
+                "freq": 155
+            }
+        },
+        {
+            "from": "node_5",
+            "to": "node_7",
+            "data": {
+                "freq": 105
+            }
+        },
+        {
+            "from": "node_6",
+            "to": "node_5",
+            "data": {
+                "freq": 65
+            }
+        },
+        {
+            "from": "node_5",
+            "to": "node_6",
+            "data": {
+                "freq": 1
+            }
+        }
+    ]
+}
