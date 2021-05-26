@@ -1,0 +1,477 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<log>
+  <list key="privacy:anonymizations">
+    <values>
+      <list key="privacy:anonymizer1">
+        <values>
+          <string key="privacy:operation type" value="substitution"/>
+          <string key="privacy:level" value="event"/>
+          <string key="privacy:target" value="concept:name"/>
+          <list key="operation_parameters">
+            <values>
+              <string key="techniques" value="fixed_value"/>
+              <boolean key="resource_aware" value="True"/>
+            </values>
+          </list>
+        </values>
+      </list>
+      <list key="privacy:anonymizer2">
+        <values>
+          <string key="privacy:operation type" value="cryptography"/>
+          <string key="privacy:level" value="event"/>
+          <string key="privacy:target" value="concept:name"/>
+          <list key="operation_parameters">
+            <values>
+              <string key="method" value="hash"/>
+            </values>
+          </list>
+        </values>
+      </list>
+    </values>
+  </list>
+  <extension name="Privacy" prefix="privacy" uri="paper_version_uri/privacy.xesext"/>
+  <trace>
+    <string key="concept:name" value="1"/>
+    <string key="creator" value="Fluxicon Nitro"/>
+    <event>
+      <string key="concept:name" value="22348cbe02ce0b89aecf472dc048dc76bcd2025e22f6aa678a033d15807d2260"/>
+      <string key="org:resource" value="Pete"/>
+      <date key="time:timestamp" value="2010-12-30T11:02:00.000+01:00"/>
+      <string key="Activity" value="register request"/>
+      <string key="Resource" value="Pete"/>
+      <string key="Costs" value="50"/>
+      <int key="@@case_index" value="0"/>
+      <int key="@@event_index" value="0"/>
+    </event>
+    <event>
+      <string key="concept:name" value="42683e167c2bc774e5eeffceadf4a178ccda7286b656c6f3621d8d990afa34cf"/>
+      <string key="org:resource" value="Sue"/>
+      <date key="time:timestamp" value="2010-12-31T10:06:00.000+01:00"/>
+      <string key="Activity" value="examine thoroughly"/>
+      <string key="Resource" value="Sue"/>
+      <string key="Costs" value="400"/>
+      <int key="@@case_index" value="0"/>
+      <int key="@@event_index" value="1"/>
+    </event>
+    <event>
+      <string key="concept:name" value="a03797f4928531ba46467e5abf78371ee756653bb2c72cbe0a6663362d6bf7a5"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2011-01-05T15:12:00.000+01:00"/>
+      <string key="Activity" value="check ticket"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="100"/>
+      <int key="@@case_index" value="0"/>
+      <int key="@@event_index" value="2"/>
+    </event>
+    <event>
+      <string key="concept:name" value="d9317c82097fda1d379943363add001323fdde08f634f1b6fb2d9e7de5710c13"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-06T11:18:00.000+01:00"/>
+      <string key="Activity" value="decide"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+      <int key="@@case_index" value="0"/>
+      <int key="@@event_index" value="3"/>
+    </event>
+    <event>
+      <string key="concept:name" value="1d25dce14d7de991774caeb219323600e9e0cb44f44fcc0e7886a3d24f8a6dd8"/>
+      <string key="org:resource" value="Pete"/>
+      <date key="time:timestamp" value="2011-01-07T14:24:00.000+01:00"/>
+      <string key="Activity" value="reject request"/>
+      <string key="Resource" value="Pete"/>
+      <string key="Costs" value="200"/>
+      <int key="@@case_index" value="0"/>
+      <int key="@@event_index" value="4"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="2"/>
+    <string key="creator" value="Fluxicon Nitro"/>
+    <event>
+      <string key="concept:name" value="22348cbe02ce0b89aecf472dc048dc76bcd2025e22f6aa678a033d15807d2260"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2010-12-30T11:32:00.000+01:00"/>
+      <string key="Activity" value="register request"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="50"/>
+      <int key="@@case_index" value="1"/>
+      <int key="@@event_index" value="5"/>
+    </event>
+    <event>
+      <string key="concept:name" value="c2145ca99b24fad82f75965e6caf3c086dc887e19ae643a421ef583e87c49ba2"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2010-12-30T12:12:00.000+01:00"/>
+      <string key="Activity" value="check ticket"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="100"/>
+      <int key="@@case_index" value="1"/>
+      <int key="@@event_index" value="6"/>
+    </event>
+    <event>
+      <string key="concept:name" value="c8c335173c694ca9e3257ac7853cb4a78dd5a8605f865f93652426c429505394"/>
+      <string key="org:resource" value="Sean"/>
+      <date key="time:timestamp" value="2010-12-30T14:16:00.000+01:00"/>
+      <string key="Activity" value="examine casually"/>
+      <string key="Resource" value="Sean"/>
+      <string key="Costs" value="400"/>
+      <int key="@@case_index" value="1"/>
+      <int key="@@event_index" value="7"/>
+    </event>
+    <event>
+      <string key="concept:name" value="fe1b4f6872ef95d0e643d689f54d729304980b0e6da30ca39518804b5215bccf"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-05T11:22:00.000+01:00"/>
+      <string key="Activity" value="decide"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+      <int key="@@case_index" value="1"/>
+      <int key="@@event_index" value="8"/>
+    </event>
+    <event>
+      <string key="concept:name" value="9a120bc9c299d393dd9abc5e47bb460bb2ceae2bd0cbace057d409d7af8e8eff"/>
+      <string key="org:resource" value="Ellen"/>
+      <date key="time:timestamp" value="2011-01-08T12:05:00.000+01:00"/>
+      <string key="Activity" value="pay compensation"/>
+      <string key="Resource" value="Ellen"/>
+      <string key="Costs" value="200"/>
+      <int key="@@case_index" value="1"/>
+      <int key="@@event_index" value="9"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="3"/>
+    <string key="creator" value="Fluxicon Nitro"/>
+    <event>
+      <string key="concept:name" value="e463e6896970bced4f768b72d323ae9641219df46b63f32822af4c9918eeffe7"/>
+      <string key="org:resource" value="Pete"/>
+      <date key="time:timestamp" value="2010-12-30T14:32:00.000+01:00"/>
+      <string key="Activity" value="register request"/>
+      <string key="Resource" value="Pete"/>
+      <string key="Costs" value="50"/>
+      <int key="@@case_index" value="2"/>
+      <int key="@@event_index" value="10"/>
+    </event>
+    <event>
+      <string key="concept:name" value="c8c335173c694ca9e3257ac7853cb4a78dd5a8605f865f93652426c429505394"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2010-12-30T15:06:00.000+01:00"/>
+      <string key="Activity" value="examine casually"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="400"/>
+      <int key="@@case_index" value="2"/>
+      <int key="@@event_index" value="11"/>
+    </event>
+    <event>
+      <string key="concept:name" value="a03797f4928531ba46467e5abf78371ee756653bb2c72cbe0a6663362d6bf7a5"/>
+      <string key="org:resource" value="Ellen"/>
+      <date key="time:timestamp" value="2010-12-30T16:34:00.000+01:00"/>
+      <string key="Activity" value="check ticket"/>
+      <string key="Resource" value="Ellen"/>
+      <string key="Costs" value="100"/>
+      <int key="@@case_index" value="2"/>
+      <int key="@@event_index" value="12"/>
+    </event>
+    <event>
+      <string key="concept:name" value="d9317c82097fda1d379943363add001323fdde08f634f1b6fb2d9e7de5710c13"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-06T09:18:00.000+01:00"/>
+      <string key="Activity" value="decide"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+      <int key="@@case_index" value="2"/>
+      <int key="@@event_index" value="13"/>
+    </event>
+    <event>
+      <string key="concept:name" value="58abf77d9147e7673c94fc7116f98be795eb5c4ec676497d2e00ce3ceb8b8c49"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-06T12:18:00.000+01:00"/>
+      <string key="Activity" value="reinitiate request"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+      <int key="@@case_index" value="2"/>
+      <int key="@@event_index" value="14"/>
+    </event>
+    <event>
+      <string key="concept:name" value="42683e167c2bc774e5eeffceadf4a178ccda7286b656c6f3621d8d990afa34cf"/>
+      <string key="org:resource" value="Sean"/>
+      <date key="time:timestamp" value="2011-01-06T13:06:00.000+01:00"/>
+      <string key="Activity" value="examine thoroughly"/>
+      <string key="Resource" value="Sean"/>
+      <string key="Costs" value="400"/>
+      <int key="@@case_index" value="2"/>
+      <int key="@@event_index" value="15"/>
+    </event>
+    <event>
+      <string key="concept:name" value="a03797f4928531ba46467e5abf78371ee756653bb2c72cbe0a6663362d6bf7a5"/>
+      <string key="org:resource" value="Pete"/>
+      <date key="time:timestamp" value="2011-01-08T11:43:00.000+01:00"/>
+      <string key="Activity" value="check ticket"/>
+      <string key="Resource" value="Pete"/>
+      <string key="Costs" value="100"/>
+      <int key="@@case_index" value="2"/>
+      <int key="@@event_index" value="16"/>
+    </event>
+    <event>
+      <string key="concept:name" value="fe1b4f6872ef95d0e643d689f54d729304980b0e6da30ca39518804b5215bccf"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-09T09:55:00.000+01:00"/>
+      <string key="Activity" value="decide"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+      <int key="@@case_index" value="2"/>
+      <int key="@@event_index" value="17"/>
+    </event>
+    <event>
+      <string key="concept:name" value="b477840526df8c4bb9e170cc0eef984c72d39edbb5066982f23e4fd9aaa79937"/>
+      <string key="org:resource" value="Ellen"/>
+      <date key="time:timestamp" value="2011-01-15T10:45:00.000+01:00"/>
+      <string key="Activity" value="pay compensation"/>
+      <string key="Resource" value="Ellen"/>
+      <string key="Costs" value="200"/>
+      <int key="@@case_index" value="2"/>
+      <int key="@@event_index" value="18"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="5"/>
+    <string key="creator" value="Fluxicon Nitro"/>
+    <event>
+      <string key="concept:name" value="22348cbe02ce0b89aecf472dc048dc76bcd2025e22f6aa678a033d15807d2260"/>
+      <string key="org:resource" value="Ellen"/>
+      <date key="time:timestamp" value="2011-01-06T09:02:00.000+01:00"/>
+      <string key="Activity" value="register request"/>
+      <string key="Resource" value="Ellen"/>
+      <string key="Costs" value="50"/>
+      <int key="@@case_index" value="3"/>
+      <int key="@@event_index" value="19"/>
+    </event>
+    <event>
+      <string key="concept:name" value="f2a95918dddda6ad90fe0d1d749c602b5b7ab6a1acfeb3c24385133b354bb09b"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2011-01-07T10:16:00.000+01:00"/>
+      <string key="Activity" value="examine casually"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="400"/>
+      <int key="@@case_index" value="3"/>
+      <int key="@@event_index" value="20"/>
+    </event>
+    <event>
+      <string key="concept:name" value="c2145ca99b24fad82f75965e6caf3c086dc887e19ae643a421ef583e87c49ba2"/>
+      <string key="org:resource" value="Pete"/>
+      <date key="time:timestamp" value="2011-01-08T11:22:00.000+01:00"/>
+      <string key="Activity" value="check ticket"/>
+      <string key="Resource" value="Pete"/>
+      <string key="Costs" value="100"/>
+      <int key="@@case_index" value="3"/>
+      <int key="@@event_index" value="21"/>
+    </event>
+    <event>
+      <string key="concept:name" value="d9317c82097fda1d379943363add001323fdde08f634f1b6fb2d9e7de5710c13"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-10T13:28:00.000+01:00"/>
+      <string key="Activity" value="decide"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+      <int key="@@case_index" value="3"/>
+      <int key="@@event_index" value="22"/>
+    </event>
+    <event>
+      <string key="concept:name" value="fd5e471c9d2b2dd99b034a90206e4720d408a76709d5d4b83e10ca7468d70216"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-11T16:18:00.000+01:00"/>
+      <string key="Activity" value="reinitiate request"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+      <int key="@@case_index" value="3"/>
+      <int key="@@event_index" value="23"/>
+    </event>
+    <event>
+      <string key="concept:name" value="c2145ca99b24fad82f75965e6caf3c086dc887e19ae643a421ef583e87c49ba2"/>
+      <string key="org:resource" value="Ellen"/>
+      <date key="time:timestamp" value="2011-01-14T14:33:00.000+01:00"/>
+      <string key="Activity" value="check ticket"/>
+      <string key="Resource" value="Ellen"/>
+      <string key="Costs" value="100"/>
+      <int key="@@case_index" value="3"/>
+      <int key="@@event_index" value="24"/>
+    </event>
+    <event>
+      <string key="concept:name" value="c8c335173c694ca9e3257ac7853cb4a78dd5a8605f865f93652426c429505394"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2011-01-16T15:50:00.000+01:00"/>
+      <string key="Activity" value="examine casually"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="400"/>
+      <int key="@@case_index" value="3"/>
+      <int key="@@event_index" value="25"/>
+    </event>
+    <event>
+      <string key="concept:name" value="fe1b4f6872ef95d0e643d689f54d729304980b0e6da30ca39518804b5215bccf"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-19T11:18:00.000+01:00"/>
+      <string key="Activity" value="decide"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+      <int key="@@case_index" value="3"/>
+      <int key="@@event_index" value="26"/>
+    </event>
+    <event>
+      <string key="concept:name" value="58abf77d9147e7673c94fc7116f98be795eb5c4ec676497d2e00ce3ceb8b8c49"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-20T12:48:00.000+01:00"/>
+      <string key="Activity" value="reinitiate request"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+      <int key="@@case_index" value="3"/>
+      <int key="@@event_index" value="27"/>
+    </event>
+    <event>
+      <string key="concept:name" value="c8c335173c694ca9e3257ac7853cb4a78dd5a8605f865f93652426c429505394"/>
+      <string key="org:resource" value="Sue"/>
+      <date key="time:timestamp" value="2011-01-21T09:06:00.000+01:00"/>
+      <string key="Activity" value="examine casually"/>
+      <string key="Resource" value="Sue"/>
+      <string key="Costs" value="400"/>
+      <int key="@@case_index" value="3"/>
+      <int key="@@event_index" value="28"/>
+    </event>
+    <event>
+      <string key="concept:name" value="a03797f4928531ba46467e5abf78371ee756653bb2c72cbe0a6663362d6bf7a5"/>
+      <string key="org:resource" value="Pete"/>
+      <date key="time:timestamp" value="2011-01-21T11:34:00.000+01:00"/>
+      <string key="Activity" value="check ticket"/>
+      <string key="Resource" value="Pete"/>
+      <string key="Costs" value="100"/>
+      <int key="@@case_index" value="3"/>
+      <int key="@@event_index" value="29"/>
+    </event>
+    <event>
+      <string key="concept:name" value="d9317c82097fda1d379943363add001323fdde08f634f1b6fb2d9e7de5710c13"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-23T13:12:00.000+01:00"/>
+      <string key="Activity" value="decide"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+      <int key="@@case_index" value="3"/>
+      <int key="@@event_index" value="30"/>
+    </event>
+    <event>
+      <string key="concept:name" value="1d25dce14d7de991774caeb219323600e9e0cb44f44fcc0e7886a3d24f8a6dd8"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2011-01-24T14:56:00.000+01:00"/>
+      <string key="Activity" value="reject request"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="200"/>
+      <int key="@@case_index" value="3"/>
+      <int key="@@event_index" value="31"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="6"/>
+    <string key="creator" value="Fluxicon Nitro"/>
+    <event>
+      <string key="concept:name" value="e463e6896970bced4f768b72d323ae9641219df46b63f32822af4c9918eeffe7"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2011-01-06T15:02:00.000+01:00"/>
+      <string key="Activity" value="register request"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="50"/>
+      <int key="@@case_index" value="4"/>
+      <int key="@@event_index" value="32"/>
+    </event>
+    <event>
+      <string key="concept:name" value="c8c335173c694ca9e3257ac7853cb4a78dd5a8605f865f93652426c429505394"/>
+      <string key="org:resource" value="Ellen"/>
+      <date key="time:timestamp" value="2011-01-06T16:06:00.000+01:00"/>
+      <string key="Activity" value="examine casually"/>
+      <string key="Resource" value="Ellen"/>
+      <string key="Costs" value="400"/>
+      <int key="@@case_index" value="4"/>
+      <int key="@@event_index" value="33"/>
+    </event>
+    <event>
+      <string key="concept:name" value="a03797f4928531ba46467e5abf78371ee756653bb2c72cbe0a6663362d6bf7a5"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2011-01-07T16:22:00.000+01:00"/>
+      <string key="Activity" value="check ticket"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="100"/>
+      <int key="@@case_index" value="4"/>
+      <int key="@@event_index" value="34"/>
+    </event>
+    <event>
+      <string key="concept:name" value="fe1b4f6872ef95d0e643d689f54d729304980b0e6da30ca39518804b5215bccf"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-07T16:52:00.000+01:00"/>
+      <string key="Activity" value="decide"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+      <int key="@@case_index" value="4"/>
+      <int key="@@event_index" value="35"/>
+    </event>
+    <event>
+      <string key="concept:name" value="9a120bc9c299d393dd9abc5e47bb460bb2ceae2bd0cbace057d409d7af8e8eff"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2011-01-16T11:47:00.000+01:00"/>
+      <string key="Activity" value="pay compensation"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="200"/>
+      <int key="@@case_index" value="4"/>
+      <int key="@@event_index" value="36"/>
+    </event>
+  </trace>
+  <trace>
+    <string key="concept:name" value="4"/>
+    <string key="creator" value="Fluxicon Nitro"/>
+    <event>
+      <string key="concept:name" value="22348cbe02ce0b89aecf472dc048dc76bcd2025e22f6aa678a033d15807d2260"/>
+      <string key="org:resource" value="Pete"/>
+      <date key="time:timestamp" value="2011-01-06T15:02:00.000+01:00"/>
+      <string key="Activity" value="register request"/>
+      <string key="Resource" value="Pete"/>
+      <string key="Costs" value="50"/>
+      <int key="@@case_index" value="5"/>
+      <int key="@@event_index" value="37"/>
+    </event>
+    <event>
+      <string key="concept:name" value="c2145ca99b24fad82f75965e6caf3c086dc887e19ae643a421ef583e87c49ba2"/>
+      <string key="org:resource" value="Mike"/>
+      <date key="time:timestamp" value="2011-01-07T12:06:00.000+01:00"/>
+      <string key="Activity" value="check ticket"/>
+      <string key="Resource" value="Mike"/>
+      <string key="Costs" value="100"/>
+      <int key="@@case_index" value="5"/>
+      <int key="@@event_index" value="38"/>
+    </event>
+    <event>
+      <string key="concept:name" value="7378037419038e3e35556de1cdebbd826bfbe16436c48f9e402ec69c27c21616"/>
+      <string key="org:resource" value="Sean"/>
+      <date key="time:timestamp" value="2011-01-08T14:43:00.000+01:00"/>
+      <string key="Activity" value="examine thoroughly"/>
+      <string key="Resource" value="Sean"/>
+      <string key="Costs" value="400"/>
+      <int key="@@case_index" value="5"/>
+      <int key="@@event_index" value="39"/>
+    </event>
+    <event>
+      <string key="concept:name" value="d9317c82097fda1d379943363add001323fdde08f634f1b6fb2d9e7de5710c13"/>
+      <string key="org:resource" value="Sara"/>
+      <date key="time:timestamp" value="2011-01-09T12:02:00.000+01:00"/>
+      <string key="Activity" value="decide"/>
+      <string key="Resource" value="Sara"/>
+      <string key="Costs" value="200"/>
+      <int key="@@case_index" value="5"/>
+      <int key="@@event_index" value="40"/>
+    </event>
+    <event>
+      <string key="concept:name" value="1d25dce14d7de991774caeb219323600e9e0cb44f44fcc0e7886a3d24f8a6dd8"/>
+      <string key="org:resource" value="Ellen"/>
+      <date key="time:timestamp" value="2011-01-12T15:44:00.000+01:00"/>
+      <string key="Activity" value="reject request"/>
+      <string key="Resource" value="Ellen"/>
+      <string key="Costs" value="200"/>
+      <int key="@@case_index" value="5"/>
+      <int key="@@event_index" value="41"/>
+    </event>
+  </trace>
+</log>

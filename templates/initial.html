@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content  %}
+
+      <div class="container-fluid">
+        <h3 class="mt-4" style="color:#00529F;">Process Mining</h3>
+          <br>
+          <ul>
+          <li style="color:#00549f;font-size:20px;">Use the left menu to apply state-of-the-art privacy preservation techniques on your event data...</li>
+          <br>
+          </ul>
+      </div>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+</script>
+
+{% endblock %}

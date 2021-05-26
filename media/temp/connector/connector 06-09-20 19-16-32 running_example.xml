@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ELA>
+    <header>
+       <origin>No mame is given for the event log!</origin>
+       <method>Connector Method</method>
+        <desired_analyses>
+          <field name="1">directly follows graph</field>
+          <field name="2">process discovery</field>
+        </desired_analyses>
+    </header>
+    <data>
+        <item name="0">
+          <field name="activity">examine casually</field>
+          <field name="prev_activity">check ticket</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">3</field>
+          <field name="trace_length">13</field>
+          <field name="connector">4326d7e7ae0f7ca41069d8552d8df9cb</field>
+        </item>
+        <item name="1">
+          <field name="activity">reinitiate request</field>
+          <field name="prev_activity">decide</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">3</field>
+          <field name="trace_length">13</field>
+          <field name="connector">35861b3af84ec6d6f4c37e0118172bcf</field>
+        </item>
+        <item name="2">
+          <field name="activity">decide</field>
+          <field name="prev_activity">examine casually</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">1</field>
+          <field name="trace_length">5</field>
+          <field name="connector">c2d02d54789ddf95d0b82da67af348de</field>
+        </item>
+        <item name="3">
+          <field name="activity">decide</field>
+          <field name="prev_activity">check ticket</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">2</field>
+          <field name="trace_length">9</field>
+          <field name="connector">9c9f4b3b3162e512544072b91b483f1a</field>
+        </item>
+        <item name="4">
+          <field name="activity">check ticket</field>
+          <field name="prev_activity">examine casually</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">3</field>
+          <field name="trace_length">13</field>
+          <field name="connector">d77e56cfb85f044521ffbbfe9750ec70</field>
+        </item>
+        <item name="5">
+          <field name="activity">register request</field>
+          <field name="prev_activity">:Start:</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">0</field>
+          <field name="trace_length">5</field>
+          <field name="connector">c6a2698e8cb249c7cc613c6023a741aa</field>
+        </item>
+        <item name="6">
+          <field name="activity">decide</field>
+          <field name="prev_activity">check ticket</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">4</field>
+          <field name="trace_length">5</field>
+          <field name="connector">e7230de41fee04cd400924e34d6937b4</field>
+        </item>
+        <item name="7">
+          <field name="activity">register request</field>
+          <field name="prev_activity">:Start:</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">5</field>
+          <field name="trace_length">5</field>
+          <field name="connector">489486b36bf28f1fad386c4c16e2cb19</field>
+        </item>
+        <item name="8">
+          <field name="activity">decide</field>
+          <field name="prev_activity">examine thoroughly</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">5</field>
+          <field name="trace_length">5</field>
+          <field name="connector">9aee95685762c236dfddf15f64bc9b58</field>
+        </item>
+        <item name="9">
+          <field name="activity">examine thoroughly</field>
+          <field name="prev_activity">reinitiate request</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">2</field>
+          <field name="trace_length">9</field>
+          <field name="connector">f295b0bce12379d4abae39b4c26f6629</field>
+        </item>
+        <item name="10">
+          <field name="activity">check ticket</field>
+          <field name="prev_activity">examine casually</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">2</field>
+          <field name="trace_length">9</field>
+          <field name="connector">4da30ee75b12f0045a1d13ccd736a741</field>
+        </item>
+        <item name="11">
+          <field name="activity">reinitiate request</field>
+          <field name="prev_activity">decide</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">3</field>
+          <field name="trace_length">13</field>
+          <field name="connector">3a0f74ded55e3f0f946d0dc12936a209</field>
+        </item>
+        <item name="12">
+          <field name="activity">decide</field>
+          <field name="prev_activity">check ticket</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">2</field>
+          <field name="trace_length">9</field>
+          <field name="connector">9ca3b1de5859b7c329da8ae4f737cece</field>
+        </item>
+        <item name="13">
+          <field name="activity">examine casually</field>
+          <field name="prev_activity">check ticket</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">1</field>
+          <field name="trace_length">5</field>
+          <field name="connector">f88557409b616fcff9ae8cf9ba047b0a</field>
+        </item>
+        <item name="14">
+          <field name="activity">examine casually</field>
+          <field name="prev_activity">reinitiate request</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">3</field>
+          <field name="trace_length">13</field>
+          <field name="connector">5dd02ae00548b10b08637a975995ced3</field>
+        </item>
+        <item name="15">
+          <field name="activity">check ticket</field>
+          <field name="prev_activity">register request</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">1</field>
+          <field name="trace_length">5</field>
+          <field name="connector">37cfec5948201ba31c2ac46235f6e4e1</field>
+        </item>
+        <item name="16">
+          <field name="activity">check ticket</field>
+          <field name="prev_activity">examine casually</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">3</field>
+          <field name="trace_length">13</field>
+          <field name="connector">2b64c45142c55a83ce3fbc830225c933</field>
+        </item>
+        <item name="17">
+          <field name="activity">register request</field>
+          <field name="prev_activity">:Start:</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">4</field>
+          <field name="trace_length">5</field>
+          <field name="connector">26b49fb94648c9b06119328e43413af8</field>
+        </item>
+        <item name="18">
+          <field name="activity">check ticket</field>
+          <field name="prev_activity">reinitiate request</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">3</field>
+          <field name="trace_length">13</field>
+          <field name="connector">30b7b5c70b7926a0a19f6c5e16536f36</field>
+        </item>
+        <item name="19">
+          <field name="activity">reject request</field>
+          <field name="prev_activity">decide</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">0</field>
+          <field name="trace_length">5</field>
+          <field name="connector">348e4092540a6aed918454bbfb8be1a9</field>
+        </item>
+        <item name="20">
+          <field name="activity">reinitiate request</field>
+          <field name="prev_activity">decide</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">2</field>
+          <field name="trace_length">9</field>
+          <field name="connector">50985f9de2e5336b4700f449e7108b0f</field>
+        </item>
+        <item name="21">
+          <field name="activity">examine thoroughly</field>
+          <field name="prev_activity">check ticket</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">5</field>
+          <field name="trace_length">5</field>
+          <field name="connector">befeb1dcecd826373f9809fbcba119f9</field>
+        </item>
+        <item name="22">
+          <field name="activity">pay compensation</field>
+          <field name="prev_activity">decide</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">4</field>
+          <field name="trace_length">5</field>
+          <field name="connector">2421e4f0958153e9694341781dda4170</field>
+        </item>
+        <item name="23">
+          <field name="activity">reject request</field>
+          <field name="prev_activity">decide</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">5</field>
+          <field name="trace_length">5</field>
+          <field name="connector">61f5684c1c799fd09bb7d35325decb6d</field>
+        </item>
+        <item name="24">
+          <field name="activity">register request</field>
+          <field name="prev_activity">:Start:</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">2</field>
+          <field name="trace_length">9</field>
+          <field name="connector">07f454f904e07b67f13331e62607eba1</field>
+        </item>
+        <item name="25">
+          <field name="activity">decide</field>
+          <field name="prev_activity">check ticket</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">0</field>
+          <field name="trace_length">5</field>
+          <field name="connector">65309988c99c2c3318926420630ab8ec</field>
+        </item>
+        <item name="26">
+          <field name="activity">examine casually</field>
+          <field name="prev_activity">register request</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">2</field>
+          <field name="trace_length">9</field>
+          <field name="connector">1209eec998117d3bde4752a991fd25b9</field>
+        </item>
+        <item name="27">
+          <field name="activity">check ticket</field>
+          <field name="prev_activity">examine thoroughly</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">0</field>
+          <field name="trace_length">5</field>
+          <field name="connector">e5b012894db460ea353faa97aaf4776e</field>
+        </item>
+        <item name="28">
+          <field name="activity">pay compensation</field>
+          <field name="prev_activity">decide</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">2</field>
+          <field name="trace_length">9</field>
+          <field name="connector">fb8d702434a4de9a98a79ff379beb3e1</field>
+        </item>
+        <item name="29">
+          <field name="activity">reject request</field>
+          <field name="prev_activity">decide</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">3</field>
+          <field name="trace_length">13</field>
+          <field name="connector">f83065428c388d79c7fc7eb889156714</field>
+        </item>
+        <item name="30">
+          <field name="activity">decide</field>
+          <field name="prev_activity">check ticket</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">3</field>
+          <field name="trace_length">13</field>
+          <field name="connector">3683fe864b05f927e2a26c8a80a8b3ce</field>
+        </item>
+        <item name="31">
+          <field name="activity">register request</field>
+          <field name="prev_activity">:Start:</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">1</field>
+          <field name="trace_length">5</field>
+          <field name="connector">454e9c51aeb50f71dbdad647b4a91c8d</field>
+        </item>
+        <item name="32">
+          <field name="activity">check ticket</field>
+          <field name="prev_activity">register request</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">5</field>
+          <field name="trace_length">5</field>
+          <field name="connector">33079ff3105e1958e1b535cc14b181b6</field>
+        </item>
+        <item name="33">
+          <field name="activity">examine thoroughly</field>
+          <field name="prev_activity">register request</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">0</field>
+          <field name="trace_length">5</field>
+          <field name="connector">6bd6bd1271986a937240c94dcb365f36</field>
+        </item>
+        <item name="34">
+          <field name="activity">register request</field>
+          <field name="prev_activity">:Start:</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">3</field>
+          <field name="trace_length">13</field>
+          <field name="connector">933307e85d2468b33c41d89809078dfb</field>
+        </item>
+        <item name="35">
+          <field name="activity">decide</field>
+          <field name="prev_activity">examine casually</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">3</field>
+          <field name="trace_length">13</field>
+          <field name="connector">f813b2b8aa1fc03a56e3164f01771042</field>
+        </item>
+        <item name="36">
+          <field name="activity">check ticket</field>
+          <field name="prev_activity">examine casually</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">4</field>
+          <field name="trace_length">5</field>
+          <field name="connector">77fdcbd7d9f8978e57a218f55334fdaa</field>
+        </item>
+        <item name="37">
+          <field name="activity">pay compensation</field>
+          <field name="prev_activity">decide</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">1</field>
+          <field name="trace_length">5</field>
+          <field name="connector">c4237c6741c000e29b9d32dd0c2508aa</field>
+        </item>
+        <item name="38">
+          <field name="activity">examine casually</field>
+          <field name="prev_activity">register request</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">3</field>
+          <field name="trace_length">13</field>
+          <field name="connector">abb7a084c3baf8cb365b8e599cbfd2ad</field>
+        </item>
+        <item name="39">
+          <field name="activity">decide</field>
+          <field name="prev_activity">check ticket</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">3</field>
+          <field name="trace_length">13</field>
+          <field name="connector">64d5008dd8c76b3fe742460e94836ae6</field>
+        </item>
+        <item name="40">
+          <field name="activity">check ticket</field>
+          <field name="prev_activity">examine thoroughly</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">2</field>
+          <field name="trace_length">9</field>
+          <field name="connector">918e0499f90b50b89dd0be9a651620a4</field>
+        </item>
+        <item name="41">
+          <field name="activity">examine casually</field>
+          <field name="prev_activity">register request</field>
+          <field name="relation_depth">1</field>
+          <field name="trace_id">4</field>
+          <field name="trace_length">5</field>
+          <field name="connector">c8717416480d971f504473d089ef3851</field>
+        </item>
+    </data>
+</ELA>

@@ -1,0 +1,29 @@
+
+.group {
+    display: none;
+}
+
+.my-list-group
+{
+max-height: 300px;
+margin-bottom: 10px;
+overflow:scroll;
+-webkit-overflow-scrolling: touch;
+}
+
+.navbar
+{
+    padding-top: 0rem !important;
+    padding-right: 0rem !important;
+    padding-bottom: 0rem !important;
+    padding-left: 0rem !important;
+}
+
+.form-group {
+    margin-bottom: 0.5rem !important;
+}
+
+.dropdown-menu {
+    max-height: 150px !important;
+    overflow-y: auto !important;
+}
