@@ -39,7 +39,7 @@ def filter(request):
         if settings.EVENT_LOG_NAME == ':notset:':
             return HttpResponseRedirect(request.path_info)
 
-        return render(request,'filter.html', {'log_name': settings.EVENT_LOG_NAME, 'data':this_data})
+        return render(request,'filter.html', {'log_name': settings.EVENT_LOG_NAME, 'data': this_data})
 
     else:
         if "groupButton" in request.GET:

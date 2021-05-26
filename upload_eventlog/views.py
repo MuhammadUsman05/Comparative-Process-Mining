@@ -104,11 +104,19 @@ def upload_page(request):
                 log_attributes['no_traces'] = no_traces
                 log_attributes['no_events'] = no_events
 
+                # Discover DFG
+                from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
+                dfg = dfg_discovery.apply(xes_log)
+                g6, temp_file = dfg_to_g6(dfg)
+                log_attributes['dfg'] = dfg
+                log_attributes['g6'] = g6
+
+
                 eventlogs = [f for f in listdir(event_logs_path) if isfile(join(event_logs_path, f))]
 
                 return render(request, 'upload.html',{'eventlog_list': eventlogs, 'log_name':filename, 'log_attributes':log_attributes})
 
-            elif "downloadButton" in request.POST: #for event logs
+            elif "downloadButton" in request.POST: # for event logs
                 if "log_list" not in request.POST:
                     return HttpResponseRedirect(request.path_info)
 
@@ -153,3 +161,27 @@ def upload_page(request):
 
         #return render(request, 'upload.html')
 
+def dfg_to_g6(dfg):
+    unique_nodes = []
+
+    for i in dfg:
+        unique_nodes.extend(i)
+    unique_nodes = list(set(unique_nodes))
+
+    unique_nodes_dict = {}
+
+    for index, node in enumerate(unique_nodes):
+        unique_nodes_dict[node] = "node_" + str(index)
+
+    nodes = [{'id': unique_nodes_dict[i], 'label': i} for i in unique_nodes_dict]
+    edges = [{'from': unique_nodes_dict[i[0]], 'to': unique_nodes_dict[i[1]], "data": {"freq": dfg[i]}} for i in
+             dfg]
+    data = {
+        "nodes": nodes,
+        "edges": edges,
+    }
+    temp_path = os.path.join(settings.MEDIA_ROOT, "temp")
+    temp_file = os.path.join(temp_path, 'data.json')
+    with open(temp_file, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+    return data, temp_file

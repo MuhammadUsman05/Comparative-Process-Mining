@@ -2,211 +2,106 @@
     "nodes": [
         {
             "id": "node_0",
-            "label": "examine thoroughly"
+            "label": "Insert Fine Notification"
         },
         {
             "id": "node_1",
-            "label": "decide"
+            "label": "Send Appeal to Prefecture"
         },
         {
             "id": "node_2",
-            "label": "test1"
+            "label": "Payment"
         },
         {
             "id": "node_3",
-            "label": "pay compensation"
+            "label": "Create Fine"
         },
         {
             "id": "node_4",
-            "label": "register request"
+            "label": "Insert Date Appeal to Prefecture"
         },
         {
             "id": "node_5",
-            "label": "examine casually"
+            "label": "Send for Credit Collection"
         },
         {
             "id": "node_6",
-            "label": "check ticket"
+            "label": "Add penalty"
         },
         {
             "id": "node_7",
-            "label": "reject request"
+            "label": "Send Fine"
         }
     ],
     "edges": [
         {
-            "from": "node_4",
-            "to": "node_4",
-            "data": {
-                "freq": 18
-            }
-        },
-        {
-            "from": "node_4",
-            "to": "node_5",
-            "data": {
-                "freq": 3
-            }
-        },
-        {
-            "from": "node_5",
-            "to": "node_5",
-            "data": {
-                "freq": 18
-            }
-        },
-        {
-            "from": "node_5",
-            "to": "node_6",
-            "data": {
-                "freq": 4
-            }
-        },
-        {
-            "from": "node_6",
-            "to": "node_6",
-            "data": {
-                "freq": 27
-            }
-        },
-        {
-            "from": "node_6",
-            "to": "node_2",
-            "data": {
-                "freq": 2
-            }
-        },
-        {
-            "from": "node_2",
-            "to": "node_2",
-            "data": {
-                "freq": 9
-            }
-        },
-        {
-            "from": "node_2",
-            "to": "node_0",
-            "data": {
-                "freq": 1
-            }
-        },
-        {
-            "from": "node_0",
-            "to": "node_0",
-            "data": {
-                "freq": 9
-            }
-        },
-        {
-            "from": "node_0",
-            "to": "node_6",
-            "data": {
-                "freq": 2
-            }
-        },
-        {
-            "from": "node_6",
-            "to": "node_1",
-            "data": {
-                "freq": 4
-            }
-        },
-        {
-            "from": "node_1",
-            "to": "node_1",
-            "data": {
-                "freq": 18
-            }
-        },
-        {
-            "from": "node_1",
-            "to": "node_3",
-            "data": {
-                "freq": 3
-            }
-        },
-        {
             "from": "node_3",
-            "to": "node_3",
-            "data": {
-                "freq": 9
-            }
-        },
-        {
-            "from": "node_4",
-            "to": "node_6",
-            "data": {
-                "freq": 2
-            }
-        },
-        {
-            "from": "node_6",
-            "to": "node_5",
-            "data": {
-                "freq": 2
-            }
-        },
-        {
-            "from": "node_5",
-            "to": "node_1",
-            "data": {
-                "freq": 1
-            }
-        },
-        {
-            "from": "node_4",
-            "to": "node_0",
-            "data": {
-                "freq": 1
-            }
-        },
-        {
-            "from": "node_1",
             "to": "node_7",
             "data": {
-                "freq": 3
+                "freq": 39
             }
         },
         {
             "from": "node_7",
-            "to": "node_7",
+            "to": "node_0",
+            "data": {
+                "freq": 32
+            }
+        },
+        {
+            "from": "node_0",
+            "to": "node_6",
+            "data": {
+                "freq": 31
+            }
+        },
+        {
+            "from": "node_6",
+            "to": "node_5",
+            "data": {
+                "freq": 22
+            }
+        },
+        {
+            "from": "node_6",
+            "to": "node_2",
             "data": {
                 "freq": 9
             }
         },
         {
-            "from": "node_2",
+            "from": "node_0",
+            "to": "node_4",
+            "data": {
+                "freq": 1
+            }
+        },
+        {
+            "from": "node_4",
             "to": "node_6",
             "data": {
                 "freq": 1
             }
         },
         {
-            "from": "node_5",
-            "to": "node_2",
+            "from": "node_6",
+            "to": "node_1",
             "data": {
                 "freq": 1
+            }
+        },
+        {
+            "from": "node_3",
+            "to": "node_2",
+            "data": {
+                "freq": 12
             }
         },
         {
             "from": "node_2",
-            "to": "node_5",
+            "to": "node_2",
             "data": {
-                "freq": 1
-            }
-        },
-        {
-            "from": "node_6",
-            "to": "node_0",
-            "data": {
-                "freq": 1
-            }
-        },
-        {
-            "from": "node_0",
-            "to": "node_1",
-            "data": {
-                "freq": 1
+                "freq": 2
             }
         }
     ]

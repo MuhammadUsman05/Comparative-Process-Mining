@@ -60,6 +60,10 @@
                 <p id="no_trace"> No of traces: {{v}} </p>
               {% elif k == 'no_events' %}
                 <p id="no_event"> No of events: {{v}} </p>
+              {% elif k == 'dfg' %}
+                <p id="dfg"> DFG: <pre>{{ v }}</pre> </p>
+              {% elif k == 'g6' %}
+                <p id="g6"> G6: <pre>{{ v }}</pre></p>
               {% endif %}
             {% endfor %}
 
