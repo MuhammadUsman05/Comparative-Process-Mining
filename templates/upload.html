@@ -104,6 +104,77 @@
   </div>
 </div>
 
+{% if message %}
+<script>
+    alert({{message}})
+</script>
+{% endif %}
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.link {
+stroke: #000;
+stroke-width: 1.5px;
+}
+
+.node {
+cursor: move;
+fill: #ccc;
+stroke: #000;
+stroke-width: 1.5px;
+}
+
+.node.fixed {
+fill: #f00;
+}
+
+#mynetwork {
+    width: 800px;
+    height: 800px;
+    background-color: #ffffff;
+    border: 1px solid lightgray;
+    position: relative;
+    float: left;
+}
+
+
+.canvas {
+width:800px;
+height:800px;
+}
+</style>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.js"> </script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.7.1/dist/g6.min.js"></script>
+</head>
+<body>
+
+
+<div class="container-fluid">
+<form  name="filter" action="filter" method = "POST">
+
+    <div class="row">
+  <div class=" col-sm-6 col-md-7 col-lg-8">
+      {% if log_name != ':notset:' %}
+        <p style="color:green;"> {{log_name}} is used as input.</p>
+      {% else %}
+        <p style="color:red;"> You have not set any event log as input. Use "Event Data" tab to set an event log as input!</p>
+      {% endif %}
+
+    {% csrf_token %}
+
+</div>
+</div>
+<br>
+</form>
+<div id="mygraph"></div>
+</div>
+
+
+
+
 
 
 {% endblock %}
@@ -111,35 +182,371 @@
 {% block script %}
 
 
-  <script>
-    <!--var token = '{{csrf_token}}';-->
-   <!--$(document).ready(function(){-->
+<script type="text/javascript">
 
-    <!--$("select.custom-select").change(function(){-->
-        <!--var selectedlog = $(this).children("option:selected").val();-->
-        <!--$.ajax({-->
-          <!--headers: { "X-CSRFToken": token },-->
-          <!--type: "POST",-->
-          <!--url: "upload_eventlog",-->
-          <!--data: { log_name: selectedlog},-->
-          <!--dataType:'json',-->
-        <!--}).done(function(result) {-->
-           <!--no_trace = result.log_attributes.no_traces-->
-           <!--$('#no_trace').text("No of traces: " + no_trace)-->
+const data = {
+   "nodes":[
+      {
+         "id":"node_0",
+         "name":"Send Fine",
+         "conf":[
+            {
+               "label":"medain",
+               "value":"10"
+            },
+            {
+               "label":"mean",
+               "value":"10"
+            },
+            {
+               "label":"mode",
+               "value":"10"
+            }
+         ]
+      },
+      {
+         "id":"node_1",
+         "name":"Add penalty",
+         "conf":[
+            {
+               "label":"medain",
+               "value":"10"
+            },
+            {
+               "label":"mean",
+               "value":"10"
+            },
+            {
+               "label":"mode",
+               "value":"10"
+            }
+         ]
+      },
+      {
+         "id":"node_2",
+         "name":"Insert Date Appeal to Prefecture",
+         "conf":[
+            {
+               "label":"medain",
+               "value":"10"
+            },
+            {
+               "label":"mean",
+               "value":"10"
+            },
+            {
+               "label":"mode",
+               "value":"10"
+            }
+         ]
+      },
+      {
+         "id":"node_3",
+         "name":"Payment",
+         "conf":[
+            {
+               "label":"medain",
+               "value":"10"
+            },
+            {
+               "label":"mean",
+               "value":"10"
+            },
+            {
+               "label":"mode",
+               "value":"10"
+            }
+         ]
+      },
+      {
+         "id":"node_4",
+         "name":"Insert Fine Notification",
+         "conf":[
+            {
+               "label":"medain",
+               "value":"10"
+            },
+            {
+               "label":"mean",
+               "value":"10"
+            },
+            {
+               "label":"mode",
+               "value":"10"
+            }
+         ]
+      },
+      {
+         "id":"node_5",
+         "name":"Create Fine",
+         "conf":[
+            {
+               "label":"medain",
+               "value":"10"
+            },
+            {
+               "label":"mean",
+               "value":"10"
+            },
+            {
+               "label":"mode",
+               "value":"10"
+            }
+         ]
+      },
+      {
+         "id":"node_6",
+         "name":"Send Appeal to Prefecture",
+         "conf":[
+            {
+               "label":"medain",
+               "value":"10"
+            },
+            {
+               "label":"mean",
+               "value":"10"
+            },
+            {
+               "label":"mode",
+               "value":"10"
+            }
+         ]
+      },
+      {
+         "id":"node_7",
+         "name":"Send for Credit Collection",
+         "conf":[
+            {
+               "label":"medain",
+               "value":"10"
+            },
+            {
+               "label":"mean",
+               "value":"10"
+            },
+            {
+               "label":"mode",
+               "value":"10"
+            }
+         ]
+      }
+   ],
+   "edges":[
+      {
+         "source":"node_5",
+         "target":"node_0",
+         "label":39,
+         "style":{
+            "lineWidth":8,
+            "endArrow":true
+         },
+         "labelCfg":{
+            "style":{
+               "fontSize":39,
+               "fontWeight":"bold"
+            }
+         }
+      },
+      {
+         "source":"node_0",
+         "target":"node_4",
+         "label":32,
+         "style":{
+            "lineWidth":6,
+            "endArrow":true
+         }
+      },
+      {
+         "source":"node_4",
+         "target":"node_1",
+         "label":31,
+         "style":{
+            "lineWidth":6,
+            "endArrow":true
+         }
+      },
+      {
+         "source":"node_1",
+         "target":"node_7",
+         "label":22,
+         "style":{
+            "lineWidth":4,
+            "endArrow":true
+         }
+      },
+      {
+         "source":"node_1",
+         "target":"node_3",
+         "label":9,
+         "style":{
+            "lineWidth":2,
+            "endArrow":true
+         }
+      },
+      {
+         "source":"node_4",
+         "target":"node_2",
+         "label":1,
+         "style":{
+            "lineWidth":2,
+            "endArrow":true
+         }
+      },
+      {
+         "source":"node_2",
+         "target":"node_1",
+         "label":1,
+         "style":{
+            "lineWidth":2,
+            "endArrow":true
+         }
+      },
+      {
+         "source":"node_1",
+         "target":"node_6",
+         "label":1,
+         "style":{
+            "lineWidth":2,
+            "endArrow":true
+         }
+      },
+      {
+         "source":"node_5",
+         "target":"node_3",
+         "label":12,
+         "style":{
+            "lineWidth":2,
+            "endArrow":true
+         }
+      },
+      {
+         "source":"node_3",
+         "target":"node_3",
+         "label":2,
+         "style":{
+            "lineWidth":2,
+            "endArrow":true
+         }
+      }
+   ]
+};
 
-           <!--no_event = result.log_attributes.no_events-->
-           <!--$('#no_event').text("No of events: " + no_event)-->
-        <!--});-->
-        <!--});-->
-    <!--});-->
+G6.registerNode(
+  'sql',
+  {
+    drawShape(cfg, group) {
+      const rect = group.addShape('rect', {
+        attrs: {
+          x: -75,
+          y: -25,
+          width: 150,
+          height: 50,
+          radius: 10,
+          stroke: '#5B8FF9',
+          fill: '#C6E5FF',
+          lineWidth: 3,
+        },
+        name: 'rect-shape',
+      });
+      if (cfg.name ) {
+        group.addShape('text', {
+          attrs: {
+            text: cfg.name,
+            x: 0,
+            y: 0,
+            fill: '#00287E',
+            fontSize: 14,
+            textAlign: 'center',
+            textBaseline: 'middle',
+            fontWeight: 'bold',
+          },
+          name: 'text-shape',
+        });
+      }
+      return rect;
+    },
+  },
+  'single-node',
+);
 
-    $(document).ready(function(){
-      $('[data-toggle="tooltip"]').tooltip();
-    });
+const container = document.getElementById('mygraph');
+const width = container.scrollWidth;
+const height = container.scrollHeight || 500;
+const graph = new G6.Graph({
+  container: 'mygraph',
+  width,
+  height,
+  layout: {
+    type: 'dagre',
+    nodesepFunc: (d) => {
+      if (d.id === '3') {
+        return 500;
+      }
+      return 50;
+    },
+    ranksep: 70,
+    controlPoints: true,
+  },
+  defaultNode: {
+    type: 'sql',
+  },
+  defaultEdge: {
+    type: 'polyline',
+    style: {
+      radius: 20,
+      offset: 45,
+      endArrow: true,
+      lineWidth: 2,
+      stroke: '#C2C8D5',
+    },
+    labelCfg: {
+              style: {
+                fontSize: 25,
+                fontWeight: "bold"
+              }
+            },
+  },
+  nodeStateStyles: {
+    selected: {
+      stroke: '#d9d9d9',
+      fill: '#5394ef',
+    },
+  },
+  modes: {
+    default: [
+      'drag-canvas',
+      'zoom-canvas',
+      'click-select',
+      {
+        type: 'tooltip',
+        formatText(model) {
+          const cfg = model.conf;
+          const text = [];
+          cfg.forEach((row) => {
+            text.push(row.label + ':' + row.value + '<br>');
+          });
+          return text.join('\n');
+        },
+        offset: 30,
+      },
+    ],
+  },
+  fitView: true,
+});
+graph.data(data);
+graph.render();
 
-  </script>
+if (typeof window !== 'undefined')
+  window.onresize = () => {
+    if (!graph || graph.get('destroyed')) return;
+    if (!container || !container.scrollWidth || !container.scrollHeight) return;
+    graph.changeSize(container.scrollWidth, container.scrollHeight);
+  };
 
+//var data = "{{data | escapejs}}";
+//data = JSON.parse(data);
 
+</script>
 
 
 {% endblock %}

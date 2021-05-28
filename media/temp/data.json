@@ -2,7 +2,7 @@
     "nodes": [
         {
             "id": "node_0",
-            "label": "Insert Fine Notification"
+            "label": "Create Fine"
         },
         {
             "id": "node_1",
@@ -10,96 +10,96 @@
         },
         {
             "id": "node_2",
-            "label": "Payment"
+            "label": "Insert Fine Notification"
         },
         {
             "id": "node_3",
-            "label": "Create Fine"
+            "label": "Send Fine"
         },
         {
             "id": "node_4",
-            "label": "Insert Date Appeal to Prefecture"
+            "label": "Payment"
         },
         {
             "id": "node_5",
-            "label": "Send for Credit Collection"
-        },
-        {
-            "id": "node_6",
             "label": "Add penalty"
         },
         {
+            "id": "node_6",
+            "label": "Insert Date Appeal to Prefecture"
+        },
+        {
             "id": "node_7",
-            "label": "Send Fine"
+            "label": "Send for Credit Collection"
         }
     ],
     "edges": [
         {
-            "from": "node_3",
-            "to": "node_7",
+            "from": "node_0",
+            "to": "node_3",
             "data": {
                 "freq": 39
             }
         },
         {
-            "from": "node_7",
-            "to": "node_0",
+            "from": "node_3",
+            "to": "node_2",
             "data": {
                 "freq": 32
             }
         },
         {
-            "from": "node_0",
-            "to": "node_6",
+            "from": "node_2",
+            "to": "node_5",
             "data": {
                 "freq": 31
+            }
+        },
+        {
+            "from": "node_5",
+            "to": "node_7",
+            "data": {
+                "freq": 22
+            }
+        },
+        {
+            "from": "node_5",
+            "to": "node_4",
+            "data": {
+                "freq": 9
+            }
+        },
+        {
+            "from": "node_2",
+            "to": "node_6",
+            "data": {
+                "freq": 1
             }
         },
         {
             "from": "node_6",
             "to": "node_5",
             "data": {
-                "freq": 22
-            }
-        },
-        {
-            "from": "node_6",
-            "to": "node_2",
-            "data": {
-                "freq": 9
-            }
-        },
-        {
-            "from": "node_0",
-            "to": "node_4",
-            "data": {
                 "freq": 1
             }
         },
         {
-            "from": "node_4",
-            "to": "node_6",
-            "data": {
-                "freq": 1
-            }
-        },
-        {
-            "from": "node_6",
+            "from": "node_5",
             "to": "node_1",
             "data": {
                 "freq": 1
             }
         },
         {
-            "from": "node_3",
-            "to": "node_2",
+            "from": "node_0",
+            "to": "node_4",
             "data": {
                 "freq": 12
             }
         },
         {
-            "from": "node_2",
-            "to": "node_2",
+            "from": "node_4",
+            "to": "node_4",
             "data": {
                 "freq": 2
             }
