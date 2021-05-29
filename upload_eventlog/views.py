@@ -107,9 +107,9 @@ def upload_page(request):
                 # Discover DFG
                 from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
                 dfg = dfg_discovery.apply(xes_log)
-                g6, temp_file = dfg_to_g6(dfg)
-                log_attributes['dfg'] = dfg
-                log_attributes['g6'] = g6
+               # g6, temp_file = dfg_to_g6(dfg)
+               # log_attributes['dfg'] = dfg
+                #log_attributes['g6'] = g6
 
 
                 eventlogs = [f for f in listdir(event_logs_path) if isfile(join(event_logs_path, f))]

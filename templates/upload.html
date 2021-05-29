@@ -1,107 +1,122 @@
+<style>
+
+    .link {
+        stroke: #000;
+        stroke-width: 1.5px;
+    }
+
+    .node {
+        cursor: move;
+        fill: #ccc;
+        stroke: #000;
+        stroke-width: 1.5px;
+    }
+
+        .node.fixed {
+            fill: #f00;
+        }
+
+    #mynetwork {
+        width: 800px;
+        height: 800px;
+        background-color: #ffffff;
+        border: 1px solid lightgray;
+        position: relative;
+        float: left;
+    }
+
+
+    .canvas {
+        width: 800px;
+        height: 800px;
+    }
+</style>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.css" type="text/css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.js"></script>
+    <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.7.1/dist/g6.min.js"></script>
+</head>
 {% extends 'base.html' %}
 
 {% block content  %}
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link active" id="eventlogs-tab" data-toggle="tab" href="#eventlogs" role="tab" aria-controls="eventlogs" aria-selected="true">Event Logs</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="n_eventlogs-tab" data-toggle="tab" href="#n_eventlogs" role="tab" aria-controls="n_eventlogs" aria-selected="false">None Event Logs</a>
-  </li>
+    <li class="nav-item">
+        <a class="nav-link active" id="eventlogs-tab" data-toggle="tab" href="#eventlogs" role="tab" aria-controls="eventlogs" aria-selected="true">Event Logs</a>
+    </li>
 </ul>
 <div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active" id="eventlogs" role="tabpanel" aria-labelledby="eventlogs-tab">
+    <div class="tab-pane fade show active" id="eventlogs" role="tabpanel" aria-labelledby="eventlogs-tab">
 
-    <div class="container-fluid">
-        <h3 class="mt-4" style="color:#00529F;">Event Logs</h3>
-           <br>
-        <div class="row">
-          <div class=" col-sm-6 col-md-7 col-lg-8">
-                <form  name="load" action="" method = "POST" enctype="multipart/form-data">
-                    {% csrf_token %}
+        <div class="container-fluid">
+            <h3 class="mt-4" style="color:#00529F;">Event Logs</h3>
+            <br>
+            <div class="row">
+                <div class=" col-sm-6 col-md-7 col-lg-8">
+                    <form name="load" action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
 
-                    <p>Event log: <input type = "file" value="fileupload" name = "event_log" /></p>
-                    <p><input type = "submit" class="btn btn-primary mb-2" value = "Upload EventLog" name = "uploadButton" id ='submitresEL' /></p>
+                        <p>Event log: <input type="file" value="fileupload" name="event_log" /></p>
+                        <p><input type="submit" class="btn btn-primary mb-2" value="Upload EventLog" name="uploadButton" id='submitresEL' /></p>
 
-                </form>
-          </div>
-        </div>
+                    </form>
+                </div>
+            </div>
 
-        <br>
-        <div class="row">
-          <div class=" col-sm-6 col-md-7 col-lg-8">
-                <form  name="choice" action="" method = "POST">
-                    {% csrf_token %}
+            <br>
+            <div class="row">
+                <div class=" col-sm-6 col-md-7 col-lg-8">
+                    <form name="choice" action="" method="POST">
+                        {% csrf_token %}
 
-                    <select name="log_list" class="custom-select" size="10">
-                        {% for eventlog in eventlog_list %}
+                        <select name="log_list" class="custom-select" size="10">
+                            {% for eventlog in eventlog_list %}
                             <option value="{{eventlog}}">{{eventlog}}</option>
-                        {% endfor %}
-                    </select>
-
-                    <input style="margin-top: 10px;" data-toggle="tooltip" data-placement="top" title="Set as the input" type = "submit" class="btn btn-success" value = "Set" name= "setButton" id ='setButton' />
-                    <input style="margin-top: 10px;" type = "submit" class="btn btn-danger" value = "Delete" name= "deleteButton" id ='deleteButton'/>
-                    <input style="float: right; margin-top: 10px;" type = "submit" class="btn btn-info" value = "Download" name= "downloadButton" id ='downloadButton'/>
-
-
-                </form>
-          </div>
-        </div>
-          <br>
-
-         <div class="row">
-          <div class=" col-sm-6 col-md-7 col-lg-8">
+                            {% endfor %}
+                        </select>
+                        {% if log_name %}
+                        <input style="margin-top: 10px;" type="button" class="btn btn-primary" value="Add Model" onclick="AddModel1()" id='AddModel' />
+                        {% endif %}
+                        {% if log_name == null %}
+                        <input style="margin-top: 10px;" data-toggle="tooltip" data-placement="top" title="Set as the input" type="submit" class="btn btn-success" value="Set" name="setButton" id='setButton' />
+                        <input style="margin-top: 10px;" type="submit" class="btn btn-danger" value="Delete" name="deleteButton" id='deleteButton' />
+                        <input style="float: right; margin-top: 10px;" type="submit" class="btn btn-info" value="Download" name="downloadButton" id='downloadButton' />
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+            <br>
             {% if log_name %}
-              <p> {{log_name}} has been set as the input ... </p>
+            <div id="DisplayGraph">
+
+            </div>
+            {% endif %}
+            <!--
+
+    <div class="row">
+        <div class=" col-sm-6 col-md-7 col-lg-8">
+            {% if log_name %}
+            <p> {{log_name}} has been set as the input ... </p>
             {% endif %}
             {% for k,v in log_attributes.items %}
-              {% if k == 'no_traces' %}
-                <p id="no_trace"> No of traces: {{v}} </p>
-              {% elif k == 'no_events' %}
-                <p id="no_event"> No of events: {{v}} </p>
-              {% elif k == 'dfg' %}
-                <p id="dfg"> DFG: <pre>{{ v }}</pre> </p>
-              {% elif k == 'g6' %}
-                <p id="g6"> G6: <pre>{{ v }}</pre></p>
-              {% endif %}
+            {% if k == 'no_traces' %}
+            <p id="no_trace"> No of traces: {{v}} </p>
+            {% elif k == 'no_events' %}
+            <p id="no_event"> No of events: {{v}} </p>
+            {% elif k == 'dfg' %}
+            <p id="dfg"> DFG: <pre>{{ v }}</pre> </p>
+            {% elif k == 'g6' %}
+            <p id="g6"> G6: <pre>{{ v }}</pre></p>
+            {% endif %}
             {% endfor %}
 
-          </div>
         </div>
-      </div>
-
-  </div>
-
-  <div class="tab-pane fade" id="n_eventlogs" role="tabpanel" aria-labelledby="n_eventlogs-tab">
-
-
-  <div class="container-fluid">
-        <h3 class="mt-4" style="color:#00529F;">None Event Logs</h3>
-        <br>
-        <div class="row">
-          <div class=" col-sm-6 col-md-7 col-lg-8">
-                <form  name="n_choice" action="upload_eventlog" method = "POST">
-                    {% csrf_token %}
-
-                    <select name="n_log_list" class="custom-select" size="10">
-                        {% for n_eventlog in n_eventlog_list %}
-                            <option value="{{n_eventlog}}">{{n_eventlog}}</option>
-                        {% endfor %}
-                    </select>
-
-                    <input style="margin-top: 10px;" type = "submit" class="btn btn-danger" value = "Delete" name= "n_deleteButton" id ='n_deleteButton'/>
-                    <input style="float: right; margin-top: 10px;" type = "submit" class="btn btn-info" value = "Download" name= "n_downloadButton" id ='n_downloadButton'/>
-
-                </form>
-
-          </div>
+    </div> -->
         </div>
 
-      </div>
+    </div>
 
-
-  </div>
+    
 </div>
 
 {% if message %}
@@ -109,80 +124,28 @@
     alert({{message}})
 </script>
 {% endif %}
-<!DOCTYPE html>
-<meta charset="utf-8">
-<style>
-
-.link {
-stroke: #000;
-stroke-width: 1.5px;
-}
-
-.node {
-cursor: move;
-fill: #ccc;
-stroke: #000;
-stroke-width: 1.5px;
-}
-
-.node.fixed {
-fill: #f00;
-}
-
-#mynetwork {
-    width: 800px;
-    height: 800px;
-    background-color: #ffffff;
-    border: 1px solid lightgray;
-    position: relative;
-    float: left;
-}
-
-
-.canvas {
-width:800px;
-height:800px;
-}
-</style>
-<head>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.css" type="text/css" />
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.js"> </script>
-<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.7.1/dist/g6.min.js"></script>
-</head>
-<body>
-
-
-<div class="container-fluid">
-<form  name="filter" action="filter" method = "POST">
-
-    <div class="row">
-  <div class=" col-sm-6 col-md-7 col-lg-8">
-      {% if log_name != ':notset:' %}
-        <p style="color:green;"> {{log_name}} is used as input.</p>
-      {% else %}
-        <p style="color:red;"> You have not set any event log as input. Use "Event Data" tab to set an event log as input!</p>
-      {% endif %}
-
-    {% csrf_token %}
-
-</div>
-</div>
-<br>
-</form>
-<div id="mygraph"></div>
-</div>
-
-
-
-
-
-
-{% endblock %}
-
-{% block script %}
-
-
 <script type="text/javascript">
+    var clicks = 0;
+    function AddModel1()
+    {
+        clicks += 1;
+        debugger;
+        // create a new div element
+        const newDiv = document.createElement("div");
+        newDiv.setAttribute("id", clicks);       
+        newDiv.setAttribute("style", "border : 1px solid #000000; height: 400px; width: 70%;float:left;");
+        const currentDiv = document.getElementById("DisplayGraph");
+        const newDiv1 = document.createElement("div");
+        newDiv1.setAttribute("id", "div");
+        newDiv1.setAttribute("style", "border : 1px solid #000000; height: 400px; width: 30%;float:left;");
+        document.body.appendChild(newDiv, currentDiv);
+        document.body.appendChild(newDiv1, currentDiv);
+    };
+
+</script>
+
+
+    <script type="text/javascript">
 
 const data = {
    "nodes":[
@@ -469,11 +432,11 @@ G6.registerNode(
   'single-node',
 );
 
-const container = document.getElementById('mygraph');
+const container = document.getElementById('1');
 const width = container.scrollWidth;
-const height = container.scrollHeight || 500;
+const height = container.scrollHeight;
 const graph = new G6.Graph({
-  container: 'mygraph',
+  container:'1',
   width,
   height,
   layout: {
@@ -546,7 +509,7 @@ if (typeof window !== 'undefined')
 //var data = "{{data | escapejs}}";
 //data = JSON.parse(data);
 
-</script>
+    </script>
 
 
-{% endblock %}
+    {% endblock %}
