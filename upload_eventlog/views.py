@@ -108,7 +108,256 @@ def upload_page(request):
                 from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
                 dfg = dfg_discovery.apply(xes_log)
                 g6, temp_file = dfg_to_g6(dfg)
-                log_attributes['dfg'] = dfg
+
+                jsondata = {
+                    'nodes': [
+                        {
+                            'id': 'node_0',
+                            'name': 'Send Fine',
+                            'conf': [
+                                {
+                                    'label': 'medain',
+                                    'value': '10'
+                                },
+                                {
+                                    'label': 'mean',
+                                    'value': '10'
+                                },
+                                {
+                                    'label': 'mode',
+                                    'value': '10'
+                                }
+                            ]
+                        },
+                        {
+                            'id': 'node_1',
+                            'name': 'Add penalty',
+                            'conf': [
+                                {
+                                    'label': 'medain',
+                                    'value': '10'
+                                },
+                                {
+                                    'label': 'mean',
+                                    'value': '10'
+                                },
+                                {
+                                    'label': 'mode',
+                                    'value': '10'
+                                }
+                            ]
+                        },
+                        {
+                            'id': 'node_2',
+                            'name': 'Insert Date Appeal to Prefecture',
+                            'conf': [
+                                {
+                                    'label': 'medain',
+                                    'value': '10'
+                                },
+                                {
+                                    'label': 'mean',
+                                    'value': '10'
+                                },
+                                {
+                                    'label': 'mode',
+                                    'value': '10'
+                                }
+                            ]
+                        },
+                        {
+                            'id': 'node_3',
+                            'name': 'Payment',
+                            'conf': [
+                                {
+                                    'label': 'medain',
+                                    'value': '10'
+                                },
+                                {
+                                    'label': 'mean',
+                                    'value': '10'
+                                },
+                                {
+                                    'label': 'mode',
+                                    'value': '10'
+                                }
+                            ]
+                        },
+                        {
+                            'id': 'node_4',
+                            'name': 'Insert Fine Notification',
+                            'conf': [
+                                {
+                                    'label': 'medain',
+                                    'value': '10'
+                                },
+                                {
+                                    'label': 'mean',
+                                    'value': '10'
+                                },
+                                {
+                                    'label': 'mode',
+                                    'value': '10'
+                                }
+                            ]
+                        },
+                        {
+                            'id': 'node_5',
+                            'name': 'Create Fine',
+                            'conf': [
+                                {
+                                    'label': 'medain',
+                                    'value': '10'
+                                },
+                                {
+                                    'label': 'mean',
+                                    'value': '10'
+                                },
+                                {
+                                    'label': 'mode',
+                                    'value': '10'
+                                }
+                            ]
+                        },
+                        {
+                            'id': 'node_6',
+                            'name': 'Send Appeal to Prefecture',
+                            'conf': [
+                                {
+                                    'label': 'medain',
+                                    'value': '10'
+                                },
+                                {
+                                    'label': 'mean',
+                                    'value': '10'
+                                },
+                                {
+                                    'label': 'mode',
+                                    'value': '10'
+                                }
+                            ]
+                        },
+                        {
+                            'id': 'node_7',
+                            'name': 'Send for Credit Collection',
+                            'conf': [
+                                {
+                                    'label': 'medain',
+                                    'value': '10'
+                                },
+                                {
+                                    'label': 'mean',
+                                    'value': '10'
+                                },
+                                {
+                                    'label': 'mode',
+                                    'value': '10'
+                                }
+                            ]
+                        }
+                    ],
+                    'edges': [
+                        {
+                            'source': 'node_5',
+                            'target': 'node_0',
+                            'label': 39,
+                            'style': {
+                                'lineWidth': 8,
+                                'endArrow': True
+                            },
+                            'labelCfg': {
+                                'style': {
+                                    'fontSize': 39,
+                                    'fontWeight': 'bold'
+                                }
+                            }
+                        },
+                        {
+                            'source': 'node_0',
+                            'target': 'node_4',
+                            'label': 32,
+                            'style': {
+                                'lineWidth': 6,
+                                'endArrow': True
+                            }
+                        },
+                        {
+                            'source': 'node_4',
+                            'target': 'node_1',
+                            'label': 31,
+                            'style': {
+                                'lineWidth': 6,
+                                'endArrow': True
+                            }
+                        },
+                        {
+                            'source': 'node_1',
+                            'target': 'node_7',
+                            'label': 22,
+                            'style': {
+                                'lineWidth': 4,
+                                'endArrow': True
+                            }
+                        },
+                        {
+                            'source': 'node_1',
+                            'target': 'node_3',
+                            'label': 9,
+                            'style': {
+                                'lineWidth': 2,
+                                'endArrow': True
+                            }
+                        },
+                        {
+                            'source': 'node_4',
+                            'target': 'node_2',
+                            'label': 1,
+                            'style': {
+                                'lineWidth': 2,
+                                'endArrow': True
+                            }
+                        },
+                        {
+                            'source': 'node_2',
+                            'target': 'node_1',
+                            'label': 1,
+                            'style': {
+                                'lineWidth': 2,
+                                'endArrow': True
+                            }
+                        },
+                        {
+                            'source': 'node_1',
+                            'target': 'node_6',
+                            'label': 1,
+                            'style': {
+                                'lineWidth': 2,
+                                'endArrow': True
+                            }
+                        },
+                        {
+                            'source': 'node_5',
+                            'target': 'node_3',
+                            'label': 12,
+                            'style': {
+                                'lineWidth': 2,
+                                'endArrow': True
+                            }
+                        },
+                        {
+                            'source': 'node_3',
+                            'target': 'node_3',
+                            'label': 2,
+                            'style': {
+                                'lineWidth': 2,
+                                'endArrow': True
+                            }
+                        }
+                    ]
+                }
+
+                json_data = json.dumps(jsondata)
+                log_attributes['dfg'] = json_data
                 log_attributes['g6'] = g6
 
 
