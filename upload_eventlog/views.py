@@ -9,7 +9,12 @@ from django.http import HttpResponse
 from mimetypes import guess_type
 from wsgiref.util import FileWrapper
 import json
+import pandas as pd
+from pm4py.objects.log.importer import xes
 from pm4py.objects.log.importer.xes import importer as xes_importer_factory
+from pm4py.objects.log.util import dataframe_utils
+from pm4py.objects.conversion.log import converter as log_converter
+from pm4py.objects.conversion.log.versions import to_data_frame as log_to_data_frame
 
 
 # Create your views here.
@@ -98,7 +103,8 @@ def upload_page(request):
 
                 file_dir = os.path.join(event_logs_path, filename)
 
-                xes_log = xes_importer_factory.apply(file_dir)
+                xes_log = convert_eventfile_to_log(file_dir)
+                
                 no_traces = len(xes_log)
                 no_events = sum([len(trace) for trace in xes_log])
                 log_attributes['no_traces'] = no_traces
@@ -185,3 +191,30 @@ def dfg_to_g6(dfg):
     with open(temp_file, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
     return data, temp_file
+
+
+def convert_eventfile_to_log(file_path):
+
+    file_name, file_extension = os.path.splitext(file_path)
+
+    if file_extension == '.csv':
+        
+        log = pd.read_csv(file_path, sep = ',')
+        log = dataframe_utils.convert_timestamp_columns_in_df(log)
+        #log = log.sort_values('<timestamp_column>')
+        log = log_converter.apply(log)
+
+    else:
+
+        log = xes_importer_factory.apply(file_path)
+    
+    #df = log_to_data_frame.apply(log)
+    
+    return log
+
+
+def convert_eventlog_to_json(log):
+
+    df = log_to_data_frame.apply(log)
+
+    return df.to_json(orient = "records")
