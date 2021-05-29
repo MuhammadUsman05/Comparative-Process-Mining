@@ -2,410 +2,309 @@
     "nodes": [
         {
             "id": "node_0",
-            "label": "get review 2"
+            "name": "decide",
+            "conf": [
+                {
+                    "label": "Name",
+                    "value": "decide"
+                }
+            ]
         },
         {
             "id": "node_1",
-            "label": "invite reviewers"
+            "name": "register request",
+            "conf": [
+                {
+                    "label": "Name",
+                    "value": "register request"
+                }
+            ]
         },
         {
             "id": "node_2",
-            "label": "collect reviews"
+            "name": "reject request",
+            "conf": [
+                {
+                    "label": "Name",
+                    "value": "reject request"
+                }
+            ]
         },
         {
             "id": "node_3",
-            "label": "invite additional reviewer"
+            "name": "check ticket",
+            "conf": [
+                {
+                    "label": "Name",
+                    "value": "check ticket"
+                }
+            ]
         },
         {
             "id": "node_4",
-            "label": "accept"
+            "name": "pay compensation",
+            "conf": [
+                {
+                    "label": "Name",
+                    "value": "pay compensation"
+                }
+            ]
         },
         {
             "id": "node_5",
-            "label": "time-out 2"
+            "name": "test1",
+            "conf": [
+                {
+                    "label": "Name",
+                    "value": "test1"
+                }
+            ]
         },
         {
             "id": "node_6",
-            "label": "reject"
+            "name": "examine casually",
+            "conf": [
+                {
+                    "label": "Name",
+                    "value": "examine casually"
+                }
+            ]
         },
         {
             "id": "node_7",
-            "label": "time-out 1"
-        },
-        {
-            "id": "node_8",
-            "label": "time-out 3"
-        },
-        {
-            "id": "node_9",
-            "label": "time-out X"
-        },
-        {
-            "id": "node_10",
-            "label": "decide"
-        },
-        {
-            "id": "node_11",
-            "label": "get review X"
-        },
-        {
-            "id": "node_12",
-            "label": "get review 3"
-        },
-        {
-            "id": "node_13",
-            "label": "get review 1"
+            "name": "examine thoroughly",
+            "conf": [
+                {
+                    "label": "Name",
+                    "value": "examine thoroughly"
+                }
+            ]
         }
     ],
     "edges": [
         {
-            "from": "node_1",
-            "to": "node_1",
-            "data": {
-                "freq": 100
+            "source": "node_1",
+            "target": "node_1",
+            "label": 6,
+            "style": {
+                "lineWidth": 6,
+                "endArrow": true
             }
         },
         {
-            "from": "node_1",
-            "to": "node_0",
-            "data": {
-                "freq": 19
+            "source": "node_1",
+            "target": "node_6",
+            "label": 3,
+            "style": {
+                "lineWidth": 3,
+                "endArrow": true
             }
         },
         {
-            "from": "node_0",
-            "to": "node_12",
-            "data": {
-                "freq": 12
+            "source": "node_6",
+            "target": "node_6",
+            "label": 6,
+            "style": {
+                "lineWidth": 6,
+                "endArrow": true
             }
         },
         {
-            "from": "node_12",
-            "to": "node_13",
-            "data": {
-                "freq": 9
+            "source": "node_6",
+            "target": "node_3",
+            "label": 4,
+            "style": {
+                "lineWidth": 4,
+                "endArrow": true
             }
         },
         {
-            "from": "node_13",
-            "to": "node_2",
-            "data": {
-                "freq": 11
+            "source": "node_3",
+            "target": "node_3",
+            "label": 9,
+            "style": {
+                "lineWidth": 9,
+                "endArrow": true
             }
         },
         {
-            "from": "node_2",
-            "to": "node_2",
-            "data": {
-                "freq": 100
+            "source": "node_3",
+            "target": "node_5",
+            "label": 2,
+            "style": {
+                "lineWidth": 2,
+                "endArrow": true
             }
         },
         {
-            "from": "node_2",
-            "to": "node_10",
-            "data": {
-                "freq": 100
+            "source": "node_5",
+            "target": "node_5",
+            "label": 3,
+            "style": {
+                "lineWidth": 3,
+                "endArrow": true
             }
         },
         {
-            "from": "node_10",
-            "to": "node_10",
-            "data": {
-                "freq": 626
+            "source": "node_5",
+            "target": "node_7",
+            "label": 1,
+            "style": {
+                "lineWidth": 1,
+                "endArrow": true
             }
         },
         {
-            "from": "node_10",
-            "to": "node_3",
-            "data": {
-                "freq": 526
+            "source": "node_7",
+            "target": "node_7",
+            "label": 3,
+            "style": {
+                "lineWidth": 3,
+                "endArrow": true
             }
         },
         {
-            "from": "node_3",
-            "to": "node_3",
-            "data": {
-                "freq": 526
+            "source": "node_7",
+            "target": "node_3",
+            "label": 2,
+            "style": {
+                "lineWidth": 2,
+                "endArrow": true
             }
         },
         {
-            "from": "node_3",
-            "to": "node_11",
-            "data": {
-                "freq": 263
+            "source": "node_3",
+            "target": "node_0",
+            "label": 4,
+            "style": {
+                "lineWidth": 4,
+                "endArrow": true
             }
         },
         {
-            "from": "node_11",
-            "to": "node_10",
-            "data": {
-                "freq": 263
+            "source": "node_0",
+            "target": "node_0",
+            "label": 6,
+            "style": {
+                "lineWidth": 6,
+                "endArrow": true
             }
         },
         {
-            "from": "node_10",
-            "to": "node_6",
-            "data": {
-                "freq": 55
+            "source": "node_0",
+            "target": "node_4",
+            "label": 3,
+            "style": {
+                "lineWidth": 3,
+                "endArrow": true
             }
         },
         {
-            "from": "node_6",
-            "to": "node_6",
-            "data": {
-                "freq": 55
+            "source": "node_4",
+            "target": "node_4",
+            "label": 3,
+            "style": {
+                "lineWidth": 3,
+                "endArrow": true
             }
         },
         {
-            "from": "node_12",
-            "to": "node_7",
-            "data": {
-                "freq": 11
+            "source": "node_1",
+            "target": "node_3",
+            "label": 2,
+            "style": {
+                "lineWidth": 2,
+                "endArrow": true
             }
         },
         {
-            "from": "node_7",
-            "to": "node_2",
-            "data": {
-                "freq": 22
+            "source": "node_3",
+            "target": "node_6",
+            "label": 2,
+            "style": {
+                "lineWidth": 2,
+                "endArrow": true
             }
         },
         {
-            "from": "node_3",
-            "to": "node_9",
-            "data": {
-                "freq": 263
+            "source": "node_6",
+            "target": "node_0",
+            "label": 1,
+            "style": {
+                "lineWidth": 1,
+                "endArrow": true
             }
         },
         {
-            "from": "node_9",
-            "to": "node_10",
-            "data": {
-                "freq": 263
+            "source": "node_1",
+            "target": "node_7",
+            "label": 1,
+            "style": {
+                "lineWidth": 1,
+                "endArrow": true
             }
         },
         {
-            "from": "node_10",
-            "to": "node_4",
-            "data": {
-                "freq": 45
+            "source": "node_0",
+            "target": "node_2",
+            "label": 3,
+            "style": {
+                "lineWidth": 3,
+                "endArrow": true
             }
         },
         {
-            "from": "node_4",
-            "to": "node_4",
-            "data": {
-                "freq": 45
+            "source": "node_2",
+            "target": "node_2",
+            "label": 3,
+            "style": {
+                "lineWidth": 3,
+                "endArrow": true
             }
         },
         {
-            "from": "node_1",
-            "to": "node_12",
-            "data": {
-                "freq": 19
+            "source": "node_5",
+            "target": "node_3",
+            "label": 1,
+            "style": {
+                "lineWidth": 1,
+                "endArrow": true
             }
         },
         {
-            "from": "node_13",
-            "to": "node_0",
-            "data": {
-                "freq": 10
+            "source": "node_6",
+            "target": "node_5",
+            "label": 1,
+            "style": {
+                "lineWidth": 1,
+                "endArrow": true
             }
         },
         {
-            "from": "node_0",
-            "to": "node_2",
-            "data": {
-                "freq": 10
+            "source": "node_5",
+            "target": "node_6",
+            "label": 1,
+            "style": {
+                "lineWidth": 1,
+                "endArrow": true
             }
         },
         {
-            "from": "node_12",
-            "to": "node_5",
-            "data": {
-                "freq": 15
+            "source": "node_3",
+            "target": "node_7",
+            "label": 1,
+            "style": {
+                "lineWidth": 1,
+                "endArrow": true
             }
         },
         {
-            "from": "node_5",
-            "to": "node_7",
-            "data": {
-                "freq": 10
-            }
-        },
-        {
-            "from": "node_0",
-            "to": "node_7",
-            "data": {
-                "freq": 9
-            }
-        },
-        {
-            "from": "node_7",
-            "to": "node_12",
-            "data": {
-                "freq": 9
-            }
-        },
-        {
-            "from": "node_12",
-            "to": "node_2",
-            "data": {
-                "freq": 11
-            }
-        },
-        {
-            "from": "node_1",
-            "to": "node_5",
-            "data": {
-                "freq": 12
-            }
-        },
-        {
-            "from": "node_5",
-            "to": "node_8",
-            "data": {
-                "freq": 8
-            }
-        },
-        {
-            "from": "node_8",
-            "to": "node_13",
-            "data": {
-                "freq": 7
-            }
-        },
-        {
-            "from": "node_7",
-            "to": "node_5",
-            "data": {
-                "freq": 11
-            }
-        },
-        {
-            "from": "node_5",
-            "to": "node_2",
-            "data": {
-                "freq": 26
-            }
-        },
-        {
-            "from": "node_1",
-            "to": "node_7",
-            "data": {
-                "freq": 16
-            }
-        },
-        {
-            "from": "node_7",
-            "to": "node_0",
-            "data": {
-                "freq": 7
-            }
-        },
-        {
-            "from": "node_0",
-            "to": "node_8",
-            "data": {
-                "freq": 8
-            }
-        },
-        {
-            "from": "node_8",
-            "to": "node_2",
-            "data": {
-                "freq": 20
-            }
-        },
-        {
-            "from": "node_5",
-            "to": "node_13",
-            "data": {
-                "freq": 7
-            }
-        },
-        {
-            "from": "node_13",
-            "to": "node_8",
-            "data": {
-                "freq": 10
-            }
-        },
-        {
-            "from": "node_1",
-            "to": "node_13",
-            "data": {
-                "freq": 16
-            }
-        },
-        {
-            "from": "node_8",
-            "to": "node_5",
-            "data": {
-                "freq": 9
-            }
-        },
-        {
-            "from": "node_1",
-            "to": "node_8",
-            "data": {
-                "freq": 18
-            }
-        },
-        {
-            "from": "node_8",
-            "to": "node_0",
-            "data": {
-                "freq": 5
-            }
-        },
-        {
-            "from": "node_13",
-            "to": "node_5",
-            "data": {
-                "freq": 8
-            }
-        },
-        {
-            "from": "node_12",
-            "to": "node_0",
-            "data": {
-                "freq": 4
-            }
-        },
-        {
-            "from": "node_13",
-            "to": "node_12",
-            "data": {
-                "freq": 6
-            }
-        },
-        {
-            "from": "node_8",
-            "to": "node_7",
-            "data": {
-                "freq": 9
-            }
-        },
-        {
-            "from": "node_5",
-            "to": "node_12",
-            "data": {
-                "freq": 4
-            }
-        },
-        {
-            "from": "node_7",
-            "to": "node_8",
-            "data": {
-                "freq": 6
-            }
-        },
-        {
-            "from": "node_0",
-            "to": "node_13",
-            "data": {
-                "freq": 6
+            "source": "node_7",
+            "target": "node_0",
+            "label": 1,
+            "style": {
+                "lineWidth": 1,
+                "endArrow": true
             }
         }
     ]

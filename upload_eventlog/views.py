@@ -173,8 +173,14 @@ def dfg_to_g6(dfg):
     for index, node in enumerate(unique_nodes):
         unique_nodes_dict[node] = "node_" + str(index)
 
-    nodes = [{'id': unique_nodes_dict[i], 'label': i} for i in unique_nodes_dict]
-    edges = [{'from': unique_nodes_dict[i[0]], 'to': unique_nodes_dict[i[1]], "data": {"freq": dfg[i]}} for i in
+    nodes = [{'id': unique_nodes_dict[i], 'name': i, 'conf': [
+                                {
+                                    'label': 'Name',
+                                    'value': i
+                                }
+                            ]} for i in unique_nodes_dict]
+
+    edges = [{'source': unique_nodes_dict[i[0]], 'target': unique_nodes_dict[i[1]], 'label': dfg[i], "style": {"lineWidth": dfg[i], "endArrow": True}} for i in
              dfg]
     data = {
         "nodes": nodes,

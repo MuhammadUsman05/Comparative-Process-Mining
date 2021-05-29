@@ -40,6 +40,13 @@
 
 {% block content  %}
 
+
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.js"> </script>
+<script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.7.1/dist/g6.min.js"></script>
+</head>
+
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
         <a class="nav-link active" id="eventlogs-tab" data-toggle="tab" href="#eventlogs" role="tab" aria-controls="eventlogs" aria-selected="true">Event Logs</a>
@@ -499,17 +506,22 @@ const graph = new G6.Graph({
 graph.data(data);
 graph.render();
 
-if (typeof window !== 'undefined')
-  window.onresize = () => {
-    if (!graph || graph.get('destroyed')) return;
-    if (!container || !container.scrollWidth || !container.scrollHeight) return;
-    graph.changeSize(container.scrollWidth, container.scrollHeight);
-  };
+                        if (typeof window !== 'undefined')
+                          window.onresize = () => {
+                            if (!graph || graph.get('destroyed')) return;
+                            if (!container || !container.scrollWidth || !container.scrollHeight) return;
+                            graph.changeSize(container.scrollWidth, container.scrollHeight);
+                          };
 
-//var data = "{{data | escapejs}}";
-//data = JSON.parse(data);
+                        //var data = "{{data | escapejs}}";
+                        //data = JSON.parse(data);
 
     </script>
 
+{% if message %}
+<script>
+    alert({{message}})
+</script>
+{% endif %}
 
     {% endblock %}
