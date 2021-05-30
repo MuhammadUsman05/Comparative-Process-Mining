@@ -114,8 +114,9 @@ def upload_page(request):
                 from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
                 dfg = dfg_discovery.apply(xes_log)
                 g6, temp_file = dfg_to_g6(dfg)
-                log_attributes['dfg'] = dfg
-                log_attributes['g6'] = g6
+                dfg_g6_json = json.dumps(g6)
+
+                log_attributes['dfg'] = dfg_g6_json
 
 
                 eventlogs = [f for f in listdir(event_logs_path) if isfile(join(event_logs_path, f))]
@@ -179,8 +180,14 @@ def dfg_to_g6(dfg):
     for index, node in enumerate(unique_nodes):
         unique_nodes_dict[node] = "node_" + str(index)
 
-    nodes = [{'id': unique_nodes_dict[i], 'label': i} for i in unique_nodes_dict]
-    edges = [{'from': unique_nodes_dict[i[0]], 'to': unique_nodes_dict[i[1]], "data": {"freq": dfg[i]}} for i in
+    nodes = [{'id': unique_nodes_dict[i], 'name': i, 'conf': [
+                                {
+                                    'label': 'Name',
+                                    'value': i
+                                }
+                            ]} for i in unique_nodes_dict]
+
+    edges = [{'source': unique_nodes_dict[i[0]], 'target': unique_nodes_dict[i[1]], 'label': dfg[i], "style": {"lineWidth": dfg[i], "endArrow": True}} for i in
              dfg]
     data = {
         "nodes": nodes,

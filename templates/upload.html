@@ -1,145 +1,418 @@
 {% extends 'base.html' %}
 
 {% block content  %}
+<style>
+
+    .link {
+        stroke: #000;
+        stroke-width: 1.5px;
+    }
+
+    .node {
+        cursor: move;
+        fill: #ccc;
+        stroke: #000;
+        stroke-width: 1.5px;
+    }
+
+        .node.fixed {
+            fill: #f00;
+        }
+
+    #mynetwork {
+        width: 800px;
+        height: 800px;
+        background-color: #ffffff;
+        border: 1px solid lightgray;
+        position: relative;
+        float: left;
+    }
+
+
+    .canvas {
+        width: 800px;
+        height: 800px;
+    }
+
+    input {
+        text-align: center;
+        border: 1px solid #6C757D;
+    }
+
+        input[type="number"] {
+            -webkit-appearance: textfield !important;
+            -moz-appearance: textfield !important;
+            appearance: textfield !important;
+        }
+
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+        }
+
+    .wrapper {
+        border: 2px #dcd3d3 solid;
+        width: 80%;
+        height: 20%;
+        padding: 5px;
+        display: flex;
+        border-radius: 15px;
+    }
+
+    .plusminus {
+        height: 100%;
+        width: 30%;
+        background: white;
+        border: none;
+        font-size: 40px;
+        color: #5f5fce;
+    }
+
+    .num {
+        height: 100%;
+        width: 39%;
+        border: none;
+        font-size: 30px;
+    }
+</style>
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.css" type="text/css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.js"></script>
+    <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.7.1/dist/g6.min.js"></script>
+</head>
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link active" id="eventlogs-tab" data-toggle="tab" href="#eventlogs" role="tab" aria-controls="eventlogs" aria-selected="true">Event Logs</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" id="n_eventlogs-tab" data-toggle="tab" href="#n_eventlogs" role="tab" aria-controls="n_eventlogs" aria-selected="false">None Event Logs</a>
-  </li>
+    <li class="nav-item">
+        <a class="nav-link active" id="eventlogs-tab" data-toggle="tab" href="#eventlogs" role="tab" aria-controls="eventlogs" aria-selected="true">Event Logs</a>
+    </li>
 </ul>
 <div class="tab-content" id="myTabContent">
-  <div class="tab-pane fade show active" id="eventlogs" role="tabpanel" aria-labelledby="eventlogs-tab">
+    <div class="tab-pane fade show active" id="eventlogs" role="tabpanel" aria-labelledby="eventlogs-tab">
 
-    <div class="container-fluid">
-        <h3 class="mt-4" style="color:#00529F;">Event Logs</h3>
-           <br>
-        <div class="row">
-          <div class=" col-sm-6 col-md-7 col-lg-8">
-                <form  name="load" action="" method = "POST" enctype="multipart/form-data">
-                    {% csrf_token %}
+        <div class="container-fluid">
+            <h3 class="mt-4" style="color:#00529F;">Event Logs</h3>
+            <br>
+            <div class="row">
+                <div class=" col-sm-6 col-md-7 col-lg-8">
+                    <form name="load" action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
 
-                    <p>Event log: <input type = "file" value="fileupload" name = "event_log" /></p>
-                    <p><input type = "submit" class="btn btn-primary mb-2" value = "Upload EventLog" name = "uploadButton" id ='submitresEL' /></p>
+                        <p>Event log: <input type="file" value="fileupload" name="event_log" /></p>
+                        <p><input type="submit" class="btn btn-primary mb-2" value="Upload EventLog" name="uploadButton" id='submitresEL' /></p>
 
-                </form>
-          </div>
-        </div>
+                    </form>
+                </div>
+            </div>
 
-        <br>
-        <div class="row">
-          <div class=" col-sm-6 col-md-7 col-lg-8">
-                <form  name="choice" action="" method = "POST">
-                    {% csrf_token %}
+            <br>
+            <div class="row">
+                <div class=" col-sm-6 col-md-7 col-lg-8">
+                    <form name="choice" action="" method="POST">
+                        {% csrf_token %}
 
-                    <select name="log_list" class="custom-select" size="10">
-                        {% for eventlog in eventlog_list %}
+                        <select name="log_list" class="custom-select" size="10">
+                            {% for eventlog in eventlog_list %}
                             <option value="{{eventlog}}">{{eventlog}}</option>
-                        {% endfor %}
-                    </select>
+                            {% endfor %}
+                        </select>
+                        {% if log_name %}
+                        <input style="margin-top: 10px;" type="button" class="btn btn-primary" value="Add Model" onclick="AddModel1()" id='AddModel' />
+                        {% endif %}
+                        {% if log_name == null %}
+                        <input style="margin-top: 10px;" data-toggle="tooltip" data-placement="top" title="Set as the input" type="submit" class="btn btn-success" value="Set" name="setButton" id='setButton' />
+                        <input style="margin-top: 10px;" type="submit" class="btn btn-danger" value="Delete" name="deleteButton" id='deleteButton' />
+                        <input style="float: right; margin-top: 10px;" type="submit" class="btn btn-info" value="Download" name="downloadButton" id='downloadButton' />
+                        {% endif %}
+                    </form>
+                </div>
 
-                    <input style="margin-top: 10px;" data-toggle="tooltip" data-placement="top" title="Set as the input" type = "submit" class="btn btn-success" value = "Set" name= "setButton" id ='setButton' />
-                    <input style="margin-top: 10px;" type = "submit" class="btn btn-danger" value = "Delete" name= "deleteButton" id ='deleteButton'/>
-                    <input style="float: right; margin-top: 10px;" type = "submit" class="btn btn-info" value = "Download" name= "downloadButton" id ='downloadButton'/>
+            </div>
+            <br>
+            <div id="DisplayGraph">
+
+            </div>
+            <div id="applyFilters" style="display:none">
+                <br />
+
+                <ul style="list-style-type:none">
+                    <li>
+                        <br />
+                        Choose a Column Name to Filter:
+                        <select id="ColumnName">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </li>
+
+                    <li>
+                        <br />
+                        Choose a Column Value:
+                        <select id="ColumnValue">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </li>
+                    <li>
+                        <br />
+                        <input type="checkbox" id="ValueSelect" value="All Except this value">
+                        <label for="vehicle1"> All except this value </label><br>
+                    </li>
+                    <li>
+                        <br />
+                        <div class="wrapper">
+                            <button class="plusminus" onclick="handleMinus()">-</button>
+                            <progress id="myProgress" value="10" max="100" style="margin:auto"></progress>
+                            <button class="plusminus" onclick="handlePlus()">+</button>
+                        </div>
+                    </li>
+                    <li>
+                        <br />
+                        <div>
+                            {% for k,v in log_attributes.items %}
+                            {% if k == 'no_traces' %}
+                            <p id="no_trace"> No of traces: {{v}} </p>
+                            {% elif k == 'no_events' %}
+                            <p id="no_event"> No of events: {{v}} </p>
+                            {% endif %}
+                            {% endfor %}
+
+                        </div>
 
 
-                </form>
-          </div>
+                    </li>
+
+                </ul>
+            </div>
+            <br>
+            <div class="row" style="display:none">
+                <div class=" col-sm-6 col-md-7 col-lg-8">
+                    {% if log_name %}
+                    <p> {{log_name}} has been set as the input ... </p>
+                    {% endif %}
+                    {% for k,v in log_attributes.items %}
+                    {% if k == 'no_traces' %}
+                    <p id="no_trace"> No of traces: {{v}} </p>
+                    {% elif k == 'no_events' %}
+                    <p id="no_event"> No of events: {{v}} </p>
+                    {% elif k == 'dfg' %}
+                    <p id="dfg"> DFG: <pre>{{ v }}</pre> </p>
+                    <div id="mygraph"></div>
+
+                    {% block script %}
+                    <script type="text/javascript">
+                        var clicks = 0;
+                        const graph = new G6.Graph({
+                            container,
+                            width,
+                            height,
+                            layout: {
+                                type: 'dagre',
+                                nodesepFunc: (d) => {
+                                    if (d.id === '3') {
+                                        return 500;
+                                    }
+                                    return 50;
+                                },
+                                ranksep: 70,
+                                controlPoints: true,
+                            },
+                            defaultNode: {
+                                type: 'sql',
+                            },
+                            defaultEdge: {
+                                type: 'polyline',
+                                style: {
+                                    radius: 20,
+                                    offset: 45,
+                                    endArrow: true,
+                                    lineWidth: 2,
+                                    stroke: '#C2C8D5',
+                                },
+                                labelCfg: {
+                                    style: {
+                                        fontSize: 25,
+                                        fontWeight: "bold"
+                                    }
+                                },
+                            },
+                            nodeStateStyles: {
+                                selected: {
+                                    stroke: '#d9d9d9',
+                                    fill: '#5394ef',
+                                },
+                            },
+                            modes: {
+                                default: [
+                                    'drag-canvas',
+                                    'zoom-canvas',
+                                    'click-select',
+                                    {
+                                        type: 'tooltip',
+                                        formatText(model) {
+                                            const cfg = model.conf;
+                                            const text = [];
+                                            cfg.forEach((row) => {
+                                                text.push(row.label + ':' + row.value + '<br>');
+                                            });
+                                            return text.join('\n');
+                                        },
+                                        offset: 30,
+                                    },
+                                ],
+                            },
+                            fitView: true,
+                        });
+                      function AddModel1() {
+                          clicks += 1;
+                          // create a new div element
+                          const newDiv = document.createElement("div");
+                          newDiv.setAttribute("id", clicks);
+                          newDiv.setAttribute("style", "border : 1px solid #000000; height: 500px; width: 70%;float:left;");
+                          const currentDiv = document.getElementById("DisplayGraph");
+                          const Duplicatediv = document.getElementById("applyFilters");
+                          const newDiv1 = Duplicatediv.cloneNode(true);
+                          newDiv1.setAttribute("id", ('Div' + clicks));
+                          newDiv1.setAttribute("style", "border : 1px solid #000000; height: 500px; width: 30%;float:left;");
+                          document.body.appendChild(newDiv, currentDiv);
+                          document.body.appendChild(newDiv1, currentDiv);
+                          const container = document.getElementById(clicks);
+                          const width = container.scrollWidth;
+                          const height = container.scrollHeight || 500;
+                          const graph = new G6.Graph({
+                              container,
+                              width,
+                              height,
+                              layout: {
+                                  type: 'dagre',
+                                  nodesepFunc: (d) => {
+                                      if (d.id === '3') {
+                                          return 500;
+                                      }
+                                      return 50;
+                                  },
+                                  ranksep: 70,
+                                  controlPoints: true,
+                              },
+                              defaultNode: {
+                                  type: 'sql',
+                              },
+                              defaultEdge: {
+                                  type: 'polyline',
+                                  style: {
+                                      radius: 20,
+                                      offset: 45,
+                                      endArrow: true,
+                                      lineWidth: 2,
+                                      stroke: '#C2C8D5',
+                                  },
+                                  labelCfg: {
+                                      style: {
+                                          fontSize: 25,
+                                          fontWeight: "bold"
+                                      }
+                                  },
+                              },
+                              nodeStateStyles: {
+                                  selected: {
+                                      stroke: '#d9d9d9',
+                                      fill: '#5394ef',
+                                  },
+                              },
+                              modes: {
+                                  default: [
+                                      'drag-canvas',
+                                      'zoom-canvas',
+                                      'click-select',
+                                      {
+                                          type: 'tooltip',
+                                          formatText(model) {
+                                              const cfg = model.conf;
+                                              const text = [];
+                                              cfg.forEach((row) => {
+                                                  text.push(row.label + ':' + row.value + '<br>');
+                                              });
+                                              return text.join('\n');
+                                          },
+                                          offset: 30,
+                                      },
+                                  ],
+                              },
+                              fitView: true,
+                          });
+
+                          G6.registerNode(
+                              'sql',
+                              {
+                                  drawShape(cfg, group) {
+                                      const rect = group.addShape('rect', {
+                                          attrs: {
+                                              x: -75,
+                                              y: -25,
+                                              width: 150,
+                                              height: 50,
+                                              radius: 10,
+                                              stroke: '#5B8FF9',
+                                              fill: '#C6E5FF',
+                                              lineWidth: 3,
+                                          },
+                                          name: 'rect-shape',
+                                      });
+                                      if (cfg.name) {
+                                          group.addShape('text', {
+                                              attrs: {
+                                                  text: cfg.name,
+                                                  x: 0,
+                                                  y: 0,
+                                                  fill: '#00287E',
+                                                  fontSize: 14,
+                                                  textAlign: 'center',
+                                                  textBaseline: 'middle',
+                                                  fontWeight: 'bold',
+                                              },
+                                              name: 'text-shape',
+                                          });
+                                      }
+                                      return rect;
+                                  },
+                              },
+                              'single-node',
+                          );
+                          console.log('foo was there')
+                          var var_data = "{{v}}";
+                          var_data_parsed = JSON.parse(var_data.replace(/&quot;/g, '"'));
+                          graph.data(var_data_parsed);
+                          graph.render();
+
+                          if (typeof window !== 'undefined')
+                              window.onresize = () => {
+                                  if (!graph || graph1.get('destroyed')) return;
+                                  if (!container || !container.scrollWidth || !container.scrollHeight) return;
+                                  graph.changeSize(container.scrollWidth, container.scrollHeight);
+                              };
+                      }
+
+                    </script>
+
+                    {% endblock %}
+                    {% endif %}
+                    {% endfor %}
+
+                </div>
+            </div>
         </div>
-          <br>
 
-         <div class="row">
-          <div class=" col-sm-6 col-md-7 col-lg-8">
-            {% if log_name %}
-              <p> {{log_name}} has been set as the input ... </p>
-            {% endif %}
-            {% for k,v in log_attributes.items %}
-              {% if k == 'no_traces' %}
-                <p id="no_trace"> No of traces: {{v}} </p>
-              {% elif k == 'no_events' %}
-                <p id="no_event"> No of events: {{v}} </p>
-              {% elif k == 'dfg' %}
-                <p id="dfg"> DFG: <pre>{{ v }}</pre> </p>
-              {% elif k == 'g6' %}
-                <p id="g6"> G6: <pre>{{ v }}</pre></p>
-              {% endif %}
-            {% endfor %}
-
-          </div>
-        </div>
-      </div>
-
-  </div>
-
-  <div class="tab-pane fade" id="n_eventlogs" role="tabpanel" aria-labelledby="n_eventlogs-tab">
+    </div>
 
 
-  <div class="container-fluid">
-        <h3 class="mt-4" style="color:#00529F;">None Event Logs</h3>
-        <br>
-        <div class="row">
-          <div class=" col-sm-6 col-md-7 col-lg-8">
-                <form  name="n_choice" action="upload_eventlog" method = "POST">
-                    {% csrf_token %}
-
-                    <select name="n_log_list" class="custom-select" size="10">
-                        {% for n_eventlog in n_eventlog_list %}
-                            <option value="{{n_eventlog}}">{{n_eventlog}}</option>
-                        {% endfor %}
-                    </select>
-
-                    <input style="margin-top: 10px;" type = "submit" class="btn btn-danger" value = "Delete" name= "n_deleteButton" id ='n_deleteButton'/>
-                    <input style="float: right; margin-top: 10px;" type = "submit" class="btn btn-info" value = "Download" name= "n_downloadButton" id ='n_downloadButton'/>
-
-                </form>
-
-          </div>
-        </div>
-
-      </div>
-
-
-  </div>
-</div>
-
-
-
-{% endblock %}
-
-{% block script %}
-
-
-  <script>
-    <!--var token = '{{csrf_token}}';-->
-   <!--$(document).ready(function(){-->
-
-    <!--$("select.custom-select").change(function(){-->
-        <!--var selectedlog = $(this).children("option:selected").val();-->
-        <!--$.ajax({-->
-          <!--headers: { "X-CSRFToken": token },-->
-          <!--type: "POST",-->
-          <!--url: "upload_eventlog",-->
-          <!--data: { log_name: selectedlog},-->
-          <!--dataType:'json',-->
-        <!--}).done(function(result) {-->
-           <!--no_trace = result.log_attributes.no_traces-->
-           <!--$('#no_trace').text("No of traces: " + no_trace)-->
-
-           <!--no_event = result.log_attributes.no_events-->
-           <!--$('#no_event').text("No of events: " + no_event)-->
-        <!--});-->
-        <!--});-->
-    <!--});-->
-
-    $(document).ready(function(){
-      $('[data-toggle="tooltip"]').tooltip();
-    });
-
-  </script>
-
-
-
+{% if message %}
+<script>
+    alert({{message}})
+</script>
+{% endif %}
 
 {% endblock %}
