@@ -1,0 +1,8 @@
+
+venv/
+
+.vscode/
+
+.idea/
+
+media/
