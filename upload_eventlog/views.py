@@ -14,7 +14,7 @@ from pm4py.objects.log.importer import xes
 from pm4py.objects.log.importer.xes import importer as xes_importer_factory
 from pm4py.objects.log.util import dataframe_utils
 from pm4py.objects.conversion.log import converter as log_converter
-from pm4py.objects.conversion.log.versions import to_data_frame as log_to_data_frame
+from pm4py.objects.conversion.log.variants import to_data_frame as log_to_data_frame
 
 
 # Create your views here.
