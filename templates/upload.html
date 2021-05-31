@@ -116,13 +116,12 @@
                             <option value="{{eventlog}}">{{eventlog}}</option>
                             {% endfor %}
                         </select>
-                        {% if log_name %}
-                        <input style="margin-top: 10px;" type="button" class="btn btn-primary" value="Add Model" onclick="AddModel1()" id='AddModel' />
-                        {% endif %}
-                        {% if log_name == null %}
+
                         <input style="margin-top: 10px;" data-toggle="tooltip" data-placement="top" title="Set as the input" type="submit" class="btn btn-success" value="Set" name="setButton" id='setButton' />
                         <input style="margin-top: 10px;" type="submit" class="btn btn-danger" value="Delete" name="deleteButton" id='deleteButton' />
                         <input style="float: right; margin-top: 10px;" type="submit" class="btn btn-info" value="Download" name="downloadButton" id='downloadButton' />
+                        {% if log_name != null %}
+                        <input style="margin-top: 10px;" type="button" class="btn btn-primary" value="Add Model" onclick="AddModel1()" id='AddModel' />
                         {% endif %}
                     </form>
                 </div>
@@ -131,62 +130,64 @@
             <br>
             <div id="DisplayGraph">
 
-            </div>
-            <div id="applyFilters" style="display:none">
-                <br />
 
-                <ul style="list-style-type:none">
-                    <li>
-                        <br />
-                        Choose a Column Name to Filter:
-                        <select id="ColumnName">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                        </select>
-                    </li>
+                <div id="applyFilters" style="display:none">
+                    <br />
 
-                    <li>
-                        <br />
-                        Choose a Column Value:
-                        <select id="ColumnValue">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                        </select>
-                    </li>
-                    <li>
-                        <br />
-                        <input type="checkbox" id="ValueSelect" value="All Except this value">
-                        <label for="vehicle1"> All except this value </label><br>
-                    </li>
-                    <li>
-                        <br />
-                        <div class="wrapper">
-                            <button class="plusminus" onclick="handleMinus()">-</button>
-                            <progress id="myProgress" value="10" max="100" style="margin:auto"></progress>
-                            <button class="plusminus" onclick="handlePlus()">+</button>
-                        </div>
-                    </li>
-                    <li>
-                        <br />
-                        <div>
-                            {% for k,v in log_attributes.items %}
-                            {% if k == 'no_traces' %}
-                            <p id="no_trace"> No of traces: {{v}} </p>
-                            {% elif k == 'no_events' %}
-                            <p id="no_event"> No of events: {{v}} </p>
-                            {% endif %}
-                            {% endfor %}
+                    <ul style="list-style-type:none">
+                        <li>
+                            <br />
+                            Choose a Column Name to Filter:
+                            <select id="ColumnName">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </li>
 
-                        </div>
+                        <li>
+                            <br />
+                            Choose a Column Value:
+                            <select id="ColumnValue">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </li>
+                        <li>
+                            <br />
+                            <input type="checkbox" id="ValueSelect" value="All Except this value">
+                            <label for="vehicle1"> All except this value </label><br>
+                        </li>
+                        <li>
+                            <br />
+                            <div class="wrapper">
+                                <button class="plusminus" type="submit" onclick="handleMinus()">-</button>
+                                <progress id="myProgress" value="10" max="100" style="margin:auto"></progress>
+                                <button class="plusminus" type="submit" onclick="handlePlus()">+</button>
+                            </div>
+                        </li>
+                        <li>
+                            <br />
+                            <div>
+                                {% for k,v in log_attributes.items %}
+                                {% if k == 'no_traces' %}
+                                <p id="no_trace" style="font-size:x-large;font-family:Arial; float:left;"> Number of traces: {{v}} </p>
+                                {% elif k == 'no_events' %}
+                                <p id="no_event" style="font-size:x-large;font-family:Arial; float:right; margin-right:15px;"> Number of events: {{v}} </p>
+                                {% endif %}
+                                {% endfor %}
 
+                            </div>
 
-                    </li>
-
-                </ul>
+                        </li>
+                        <li>
+                            <input style="margin-top: 10px;" type="submit" class="btn btn-danger" onclick="RemoveGraph(this.id)" value="Remove Graph" id='removeGraph' />
+                        </li>
+                    </ul>
+                </div>
             </div>
             <br>
             <div class="row" style="display:none">
@@ -390,12 +391,41 @@
 
                           if (typeof window !== 'undefined')
                               window.onresize = () => {
-                                  if (!graph || graph1.get('destroyed')) return;
+                                  if (!graph || graph.get('destroyed')) return;
                                   if (!container || !container.scrollWidth || !container.scrollHeight) return;
                                   graph.changeSize(container.scrollWidth, container.scrollHeight);
                               };
                       }
 
+
+                        function handlePlus()
+                        {
+                            debugger;
+                            var x = document.getElementById("myProgress").value;
+                            const Bar = document.getElementById("myProgress");
+                            if (x <= 90)
+                            {
+                                Bar.value = x + 10;
+                                document.getElementById("myProgress").innerHTML = Bar.value;
+                            }
+                        }
+
+                        function handleMinus() {
+                            debugger;
+                            var x = document.getElementById("myProgress").value;
+                            const Bar = document.getElementById("myProgress");
+                            if (x >= 10) {
+                                Bar.value = x - 10;
+                                document.getElementById("myProgress").innerHTML = Bar.value;
+                            }
+                        }
+
+                        function RemoveGraph(id)
+                        {
+                            debugger;
+                            // alert(id);
+                            alert(this.parentNode);
+                        }
                     </script>
 
                     {% endblock %}

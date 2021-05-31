@@ -188,8 +188,11 @@ def dfg_to_g6(dfg):
                                     'value': i
                                 }
                             ]} for i in unique_nodes_dict]
+    freqList = [int(dfg[i]) for i in dfg]
+    maxVal = max(freqList)
+    minVal = min(freqList)
 
-    edges = [{'source': unique_nodes_dict[i[0]], 'target': unique_nodes_dict[i[1]], 'label': dfg[i], "style": {"lineWidth": dfg[i], "endArrow": True}} for i in
+    edges = [{'source': unique_nodes_dict[i[0]], 'target': unique_nodes_dict[i[1]], 'label': dfg[i], "style": {"lineWidth": ((int(dfg[i]) - minVal)/(maxVal - minVal) *(20-2)+2), "endArrow": True}} for i in
              dfg]
     data = {
         "nodes": nodes,
