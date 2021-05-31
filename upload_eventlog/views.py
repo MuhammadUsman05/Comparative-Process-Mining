@@ -118,6 +118,8 @@ def upload_page(request):
 
                 log_attributes['dfg'] = dfg_g6_json
 
+                # Get all the column names and respective values
+                log_attributes['ColumnNamesValues'] = convert_eventlog_to_json(xes_log)
 
                 eventlogs = [f for f in listdir(event_logs_path) if isfile(join(event_logs_path, f))]
 
@@ -216,12 +218,23 @@ def convert_eventfile_to_log(file_path):
         log = xes_importer_factory.apply(file_path)
     
     #df = log_to_data_frame.apply(log)
-    
+    convert_eventlog_to_json(log)
     return log
 
 
 def convert_eventlog_to_json(log):
 
     df = log_to_data_frame.apply(log)
+    
+    jsonstr = "{ "
+    for col in df:
+        jsonstr += "\"" + col + "\"" + ": "
+        jsonstr += pd.Series(df[col].unique()).to_json(orient = "columns", date_format = 'iso')
+        jsonstr += ", "
+        #print(pd.Series(df[col].unique()).to_json(orient = "columns"))
 
-    return df.to_json(orient = "records")
+    jsonstr += " }"
+
+    print(jsonstr)
+
+    return df.to_json(orient = "columns")
