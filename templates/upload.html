@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 
-{% block content  %}
+{% block content %}
 <style>
-
     .link {
         stroke: #000;
         stroke-width: 1.5px;
@@ -15,9 +14,9 @@
         stroke-width: 1.5px;
     }
 
-        .node.fixed {
-            fill: #f00;
-        }
+    .node.fixed {
+        fill: #f00;
+    }
 
     #mynetwork {
         width: 800px;
@@ -39,16 +38,16 @@
         border: 1px solid #6C757D;
     }
 
-        input[type="number"] {
-            -webkit-appearance: textfield !important;
-            -moz-appearance: textfield !important;
-            appearance: textfield !important;
-        }
+    input[type="number"] {
+        -webkit-appearance: textfield !important;
+        -moz-appearance: textfield !important;
+        appearance: textfield !important;
+    }
 
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-        }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+    }
 
     .wrapper {
         border: 2px #dcd3d3 solid;
@@ -80,11 +79,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.css" type="text/css" />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.js"></script>
     <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.7.1/dist/g6.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" id="eventlogs-tab" data-toggle="tab" href="#eventlogs" role="tab" aria-controls="eventlogs" aria-selected="true">Event Logs</a>
+        <a class="nav-link active" id="eventlogs-tab" data-toggle="tab" href="#eventlogs" role="tab"
+            aria-controls="eventlogs" aria-selected="true">Event Logs</a>
     </li>
 </ul>
 <div class="tab-content" id="myTabContent">
@@ -99,7 +101,8 @@
                         {% csrf_token %}
 
                         <p>Event log: <input type="file" value="fileupload" name="event_log" /></p>
-                        <p><input type="submit" class="btn btn-primary mb-2" value="Upload EventLog" name="uploadButton" id='submitresEL' /></p>
+                        <p><input type="submit" class="btn btn-primary mb-2" value="Upload EventLog" name="uploadButton"
+                                id='submitresEL' /></p>
 
                     </form>
                 </div>
@@ -117,11 +120,16 @@
                             {% endfor %}
                         </select>
 
-                        <input style="margin-top: 10px;" data-toggle="tooltip" data-placement="top" title="Set as the input" type="submit" class="btn btn-success" value="Set" name="setButton" id='setButton' />
-                        <input style="margin-top: 10px;" type="submit" class="btn btn-danger" value="Delete" name="deleteButton" id='deleteButton' />
-                        <input style="float: right; margin-top: 10px;" type="submit" class="btn btn-info" value="Download" name="downloadButton" id='downloadButton' />
+                        <input style="margin-top: 10px;" data-toggle="tooltip" data-placement="top"
+                            title="Set as the input" type="submit" class="btn btn-success" value="Set" name="setButton"
+                            id='setButton' />
+                        <input style="margin-top: 10px;" type="submit" class="btn btn-danger" value="Delete"
+                            name="deleteButton" id='deleteButton' />
+                        <input style="float: right; margin-top: 10px;" type="submit" class="btn btn-info"
+                            value="Download" name="downloadButton" id='downloadButton' />
                         {% if log_name != null %}
-                        <input style="margin-top: 10px;" type="button" class="btn btn-primary" value="Add Model" onclick="AddModel1()" id='AddModel' />
+                        <input style="margin-top: 10px;" type="button" class="btn btn-primary" value="Add Model"
+                            onclick="AddModel1()" id='AddModel' />
                         {% endif %}
                     </form>
                 </div>
@@ -138,24 +146,55 @@
                         <li>
                             <br />
                             Choose a Column Name to Filter:
-                            <select id="ColumnName">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
+                            {% for k,v in log_attributes.items %}
+                            {% if k == 'ColumnNamesValues' %}
+                            <select id="ColName-dropdown" name="ColName">
                             </select>
-                        </li>
-
                         <li>
                             <br />
-                            Choose a Column Value:
-                            <select id="ColumnValue">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
+                            Choose a Column Value to Filter:
+                            <select id="ColVal-dropdown" name="ColVal">
                             </select>
                         </li>
+                        <script>
+                            var col_data = "{{v}}";
+                            col_data_parsed = JSON.parse(col_data.replace(/&quot;/g, '"'));
+                            let dropdown = $('#ColName-dropdown');
+                            let dropdownVal = $('#ColVal-dropdown');
+                            dropdown.empty();
+                            dropdownVal.empty();
+                            dropdown.append('<option selected="true" disabled>Choose Column</option>');
+                            dropdownVal.append('<option selected="true" disabled>Choose Column Value</option>');
+                            dropdown.prop('selectedIndex', 0);
+                            dropdownVal.prop('selectedIndex', 0);
+
+                            $(document).ready(function () {
+                                // Populate dropdown with list of columns
+                                $.each(col_data_parsed, function (key, entry) {
+                                    dropdown.append($('<option></option>').attr('value', key).text(key));
+                                });
+
+                                $(document).on("change", "select#ColName-dropdown", function () {
+                                    var selectedCol = $("select#ColName-dropdown option:selected").text();
+                                    var parsedColName = selectedCol.replaceAll('Choose Column', '');
+                                    var colValues = col_data_parsed[parsedColName];
+                                    updateSelectColValBox(colValues);
+                                });
+
+                                var updateSelectColValBox = function (colValues) {
+                                    var colValueArray = Object.values(colValues);
+                                    var listItems = "";
+                                    for (var i = 0; i < colValueArray.length; i++) {
+                                        listItems += "<option value='" + colValueArray[i] + "'>" + colValueArray[i] + "</option>";
+                                    }
+                                    $("select#ColVal-dropdown").html(listItems);
+                                }
+                            });
+                        </script>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
                         <li>
                             <br />
                             <input type="checkbox" id="ValueSelect" value="All Except this value">
@@ -174,9 +213,12 @@
                             <div>
                                 {% for k,v in log_attributes.items %}
                                 {% if k == 'no_traces' %}
-                                <p id="no_trace" style="font-size:x-large;font-family:Arial; float:left;"> Number of traces: {{v}} </p>
+                                <p id="no_trace" style="font-size:x-large;font-family:Arial; float:left;"> Number of
+                                    traces: {{v}} </p>
                                 {% elif k == 'no_events' %}
-                                <p id="no_event" style="font-size:x-large;font-family:Arial; float:right; margin-right:15px;"> Number of events: {{v}} </p>
+                                <p id="no_event"
+                                    style="font-size:x-large;font-family:Arial; float:right; margin-right:15px;"> Number
+                                    of events: {{v}} </p>
                                 {% endif %}
                                 {% endfor %}
 
@@ -184,7 +226,8 @@
 
                         </li>
                         <li>
-                            <input style="margin-top: 10px;" type="submit" class="btn btn-danger" onclick="RemoveGraph(this.id)" value="Remove Graph" id='removeGraph' />
+                            <input style="margin-top: 10px;" type="submit" class="btn btn-danger"
+                                onclick="RemoveGraph(this.id)" value="Remove Graph" id='removeGraph' />
                         </li>
                     </ul>
                 </div>
@@ -201,7 +244,9 @@
                     {% elif k == 'no_events' %}
                     <p id="no_event"> No of events: {{v}} </p>
                     {% elif k == 'dfg' %}
-                    <p id="dfg"> DFG: <pre>{{ v }}</pre> </p>
+                    <p id="dfg"> DFG:
+                    <pre>{{ v }}</pre>
+                    </p>
                     <div id="mygraph"></div>
 
                     {% block script %}
@@ -268,143 +313,141 @@
                             },
                             fitView: true,
                         });
-                      function AddModel1() {
-                          clicks += 1;
-                          // create a new div element
-                          const newDiv = document.createElement("div");
-                          newDiv.setAttribute("id", clicks);
-                          newDiv.setAttribute("style", "border : 1px solid #000000; height: 500px; width: 70%;float:left;");
-                          const currentDiv = document.getElementById("DisplayGraph");
-                          const Duplicatediv = document.getElementById("applyFilters");
-                          const newDiv1 = Duplicatediv.cloneNode(true);
-                          newDiv1.setAttribute("id", ('Div' + clicks));
-                          newDiv1.setAttribute("style", "border : 1px solid #000000; height: 500px; width: 30%;float:left;");
-                          document.body.appendChild(newDiv, currentDiv);
-                          document.body.appendChild(newDiv1, currentDiv);
-                          const container = document.getElementById(clicks);
-                          const width = container.scrollWidth;
-                          const height = container.scrollHeight || 500;
-                          const graph = new G6.Graph({
-                              container,
-                              width,
-                              height,
-                              layout: {
-                                  type: 'dagre',
-                                  nodesepFunc: (d) => {
-                                      if (d.id === '3') {
-                                          return 500;
-                                      }
-                                      return 50;
-                                  },
-                                  ranksep: 70,
-                                  controlPoints: true,
-                              },
-                              defaultNode: {
-                                  type: 'sql',
-                              },
-                              defaultEdge: {
-                                  type: 'polyline',
-                                  style: {
-                                      radius: 20,
-                                      offset: 45,
-                                      endArrow: true,
-                                      lineWidth: 2,
-                                      stroke: '#C2C8D5',
-                                  },
-                                  labelCfg: {
-                                      style: {
-                                          fontSize: 25,
-                                          fontWeight: "bold"
-                                      }
-                                  },
-                              },
-                              nodeStateStyles: {
-                                  selected: {
-                                      stroke: '#d9d9d9',
-                                      fill: '#5394ef',
-                                  },
-                              },
-                              modes: {
-                                  default: [
-                                      'drag-canvas',
-                                      'zoom-canvas',
-                                      'click-select',
-                                      {
-                                          type: 'tooltip',
-                                          formatText(model) {
-                                              const cfg = model.conf;
-                                              const text = [];
-                                              cfg.forEach((row) => {
-                                                  text.push(row.label + ':' + row.value + '<br>');
-                                              });
-                                              return text.join('\n');
-                                          },
-                                          offset: 30,
-                                      },
-                                  ],
-                              },
-                              fitView: true,
-                          });
+                        function AddModel1() {
+                            clicks += 1;
+                            // create a new div element
+                            const newDiv = document.createElement("div");
+                            newDiv.setAttribute("id", clicks);
+                            newDiv.setAttribute("style", "border : 1px solid #000000; height: 500px; width: 70%;float:left;");
+                            const currentDiv = document.getElementById("DisplayGraph");
+                            const Duplicatediv = document.getElementById("applyFilters");
+                            const newDiv1 = Duplicatediv.cloneNode(true);
+                            newDiv1.setAttribute("id", ('Div' + clicks));
+                            newDiv1.setAttribute("style", "border : 1px solid #000000; height: 500px; width: 30%;float:left;");
+                            document.body.appendChild(newDiv, currentDiv);
+                            document.body.appendChild(newDiv1, currentDiv);
+                            const container = document.getElementById(clicks);
+                            const width = container.scrollWidth;
+                            const height = container.scrollHeight || 500;
+                            const graph = new G6.Graph({
+                                container,
+                                width,
+                                height,
+                                layout: {
+                                    type: 'dagre',
+                                    nodesepFunc: (d) => {
+                                        if (d.id === '3') {
+                                            return 500;
+                                        }
+                                        return 50;
+                                    },
+                                    ranksep: 70,
+                                    controlPoints: true,
+                                },
+                                defaultNode: {
+                                    type: 'sql',
+                                },
+                                defaultEdge: {
+                                    type: 'polyline',
+                                    style: {
+                                        radius: 20,
+                                        offset: 45,
+                                        endArrow: true,
+                                        lineWidth: 2,
+                                        stroke: '#C2C8D5',
+                                    },
+                                    labelCfg: {
+                                        style: {
+                                            fontSize: 25,
+                                            fontWeight: "bold"
+                                        }
+                                    },
+                                },
+                                nodeStateStyles: {
+                                    selected: {
+                                        stroke: '#d9d9d9',
+                                        fill: '#5394ef',
+                                    },
+                                },
+                                modes: {
+                                    default: [
+                                        'drag-canvas',
+                                        'zoom-canvas',
+                                        'click-select',
+                                        {
+                                            type: 'tooltip',
+                                            formatText(model) {
+                                                const cfg = model.conf;
+                                                const text = [];
+                                                cfg.forEach((row) => {
+                                                    text.push(row.label + ':' + row.value + '<br>');
+                                                });
+                                                return text.join('\n');
+                                            },
+                                            offset: 30,
+                                        },
+                                    ],
+                                },
+                                fitView: true,
+                            });
 
-                          G6.registerNode(
-                              'sql',
-                              {
-                                  drawShape(cfg, group) {
-                                      const rect = group.addShape('rect', {
-                                          attrs: {
-                                              x: -75,
-                                              y: -25,
-                                              width: 150,
-                                              height: 50,
-                                              radius: 10,
-                                              stroke: '#5B8FF9',
-                                              fill: '#C6E5FF',
-                                              lineWidth: 3,
-                                          },
-                                          name: 'rect-shape',
-                                      });
-                                      if (cfg.name) {
-                                          group.addShape('text', {
-                                              attrs: {
-                                                  text: cfg.name,
-                                                  x: 0,
-                                                  y: 0,
-                                                  fill: '#00287E',
-                                                  fontSize: 14,
-                                                  textAlign: 'center',
-                                                  textBaseline: 'middle',
-                                                  fontWeight: 'bold',
-                                              },
-                                              name: 'text-shape',
-                                          });
-                                      }
-                                      return rect;
-                                  },
-                              },
-                              'single-node',
-                          );
-                          console.log('foo was there')
-                          var var_data = "{{v}}";
-                          var_data_parsed = JSON.parse(var_data.replace(/&quot;/g, '"'));
-                          graph.data(var_data_parsed);
-                          graph.render();
+                            G6.registerNode(
+                                'sql',
+                                {
+                                    drawShape(cfg, group) {
+                                        const rect = group.addShape('rect', {
+                                            attrs: {
+                                                x: -75,
+                                                y: -25,
+                                                width: 150,
+                                                height: 50,
+                                                radius: 10,
+                                                stroke: '#5B8FF9',
+                                                fill: '#C6E5FF',
+                                                lineWidth: 3,
+                                            },
+                                            name: 'rect-shape',
+                                        });
+                                        if (cfg.name) {
+                                            group.addShape('text', {
+                                                attrs: {
+                                                    text: cfg.name,
+                                                    x: 0,
+                                                    y: 0,
+                                                    fill: '#00287E',
+                                                    fontSize: 14,
+                                                    textAlign: 'center',
+                                                    textBaseline: 'middle',
+                                                    fontWeight: 'bold',
+                                                },
+                                                name: 'text-shape',
+                                            });
+                                        }
+                                        return rect;
+                                    },
+                                },
+                                'single-node',
+                            );
+                            console.log('foo was there')
+                            var var_data = "{{v}}";
+                            var_data_parsed = JSON.parse(var_data.replace(/&quot;/g, '"'));
+                            graph.data(var_data_parsed);
+                            graph.render();
 
-                          if (typeof window !== 'undefined')
-                              window.onresize = () => {
-                                  if (!graph || graph.get('destroyed')) return;
-                                  if (!container || !container.scrollWidth || !container.scrollHeight) return;
-                                  graph.changeSize(container.scrollWidth, container.scrollHeight);
-                              };
-                      }
+                            if (typeof window !== 'undefined')
+                                window.onresize = () => {
+                                    if (!graph || graph.get('destroyed')) return;
+                                    if (!container || !container.scrollWidth || !container.scrollHeight) return;
+                                    graph.changeSize(container.scrollWidth, container.scrollHeight);
+                                };
+                        }
 
 
-                        function handlePlus()
-                        {
+                        function handlePlus() {
                             debugger;
                             var x = document.getElementById("myProgress").value;
                             const Bar = document.getElementById("myProgress");
-                            if (x <= 90)
-                            {
+                            if (x <= 90) {
                                 Bar.value = x + 10;
                                 document.getElementById("myProgress").innerHTML = Bar.value;
                             }
@@ -420,12 +463,15 @@
                             }
                         }
 
-                        function RemoveGraph(id)
-                        {
+                        function RemoveGraph(id) {
                             debugger;
                             // alert(id);
                             alert(this.parentNode);
                         }
+
+
+
+
                     </script>
 
                     {% endblock %}
@@ -439,10 +485,10 @@
     </div>
 
 
-{% if message %}
-<script>
-    alert({{message}})
-</script>
-{% endif %}
+    {% if message %}
+    <script>
+        alert({{ message }})
+    </script>
+    {% endif %}
 
-{% endblock %}
+    {% endblock %}
