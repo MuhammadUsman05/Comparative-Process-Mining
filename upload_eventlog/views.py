@@ -120,7 +120,7 @@ def upload_page(request):
 
                 # Get all the column names and respective values
                 log_attributes['ColumnNamesValues'] = convert_eventlog_to_json(xes_log)
-
+                
                 eventlogs = [f for f in listdir(event_logs_path) if isfile(join(event_logs_path, f))]
 
                 return render(request, 'upload.html',{'eventlog_list': eventlogs, 'log_name':filename, 'log_attributes':log_attributes})
@@ -229,15 +229,21 @@ def convert_eventlog_to_json(log):
 
     df = log_to_data_frame.apply(log)
     
+    firstIteration = True
     jsonstr = "{ "
     for col in df:
+
+        if not firstIteration:
+            jsonstr += ", "
+        else:            
+            firstIteration = False
+
         jsonstr += "\"" + col + "\"" + ": "
-        jsonstr += pd.Series(df[col].unique()).to_json(orient = "columns", date_format = 'iso')
-        jsonstr += ", "
-        #print(pd.Series(df[col].unique()).to_json(orient = "columns"))
+        
+        uniqueSortedData = pd.Series(df[col].unique()).sort_values(ascending = True)
+        uniqueSortedData = uniqueSortedData.reset_index(drop=True) 
+        jsonstr += uniqueSortedData.to_json(orient = "columns", date_format = 'iso')
 
     jsonstr += " }"
 
-    print(jsonstr)
-
-    return df.to_json(orient = "columns")
+    return jsonstr
