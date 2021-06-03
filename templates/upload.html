@@ -113,36 +113,74 @@
         var clicks = 0;
         var col_data = "{{log_attributes.ColumnNamesValues}}";
         col_data_parsed = JSON.parse(col_data.replace(/&quot;/g, '"'));
-
+        var idToGet = 0;
         $(document).ready(function () {
-            let dropdown = $('#ColName-dropdown');
-            let dropdownVal = $('#ColVal-dropdown');
-            dropdown.empty();
-            dropdownVal.empty();
-            dropdown.append('<option selected="true" disabled>Choose Column</option>');
-            dropdownVal.append('<option selected="true" disabled>Choose Column Value</option>');
-            dropdown.prop('selectedIndex', 0);
-            dropdownVal.prop('selectedIndex', 0);
-            // Populate dropdown with list of columns
-            $.each(col_data_parsed, function (key, entry) {
-                dropdown.append($('<option></option>').attr('value', key).text(key));
-            });
+            
+            $('#AddModel').click(function () {
+                idToGet = clicks - 1;
+               
+                let dropdown = $('#LCN' + idToGet);
+                let dropdownVal = $('#LCV' + idToGet);
+                dropdown.empty();
+                dropdownVal.empty();
+                dropdown.append('<option selected="true" disabled>Choose Column</option>');
+                dropdownVal.append('<option selected="true" disabled>Choose Column Value</option>');
+                dropdown.prop('selectedIndex', 0);
+                dropdownVal.prop('selectedIndex', 0);
+                // Populate dropdown with list of columns
+                $.each(col_data_parsed, function (key, entry) {
+                    dropdown.append($('<option></option>').attr('value', key).text(key));
+                });
 
-            $(document).on("change", "select#ColName-dropdown", function () {
-                var selectedCol = $("select#ColName-dropdown option:selected").text();
-                var parsedColName = selectedCol.replaceAll('Choose Column', '');
-                var colValues = col_data_parsed[parsedColName];
-                updateSelectColValBox(colValues);
-            });
+                $(document).on("change", ("select#LCN" + idToGet), function () {
+                    var selectedCol = $(("select#LCN" + idToGet+ " option:selected")).text();
+                    var parsedColName = selectedCol.replaceAll('Choose Column', '');
+                    var colValues = col_data_parsed[parsedColName];
+                    updateSelectColValBox(colValues);
+                });
 
-            var updateSelectColValBox = function (colValues) {
-                var colValueArray = Object.values(colValues);
-                var listItems = "";
-                for (var i = 0; i < colValueArray.length; i++) {
-                    listItems += "<option value='" + colValueArray[i] + "'>" + colValueArray[i] + "</option>";
+                var updateSelectColValBox = function (colValues) {
+                    var colValueArray = Object.values(colValues);
+                    var listItems = "";
+                    for (var i = 0; i < colValueArray.length; i++) {
+                        listItems += "<option value='" + colValueArray[i] + "'>" + colValueArray[i] + "</option>";
+                    }
+                    $(("select#LCV" + idToGet)).html(listItems);
                 }
-                $("select#ColVal-dropdown").html(listItems);
-            }
+
+                let Rdropdown = $('#RCN' + clicks);
+                let RdropdownVal = $('#RCV' + clicks);
+                Rdropdown.empty();
+                RdropdownVal.empty();
+                Rdropdown.append('<option selected="true" disabled>Choose Column</option>');
+                RdropdownVal.append('<option selected="true" disabled>Choose Column Value</option>');
+                Rdropdown.prop('selectedIndex', 0);
+                RdropdownVal.prop('selectedIndex', 0);
+                // Populate dropdown with list of columns
+                $.each(col_data_parsed, function (key, entry) {
+                    Rdropdown.append($('<option></option>').attr('value', key).text(key));
+                });
+
+                $(document).on("change", ("select#RCN" + clicks), function () {
+                    var selectedCol = $(("select#RCN" + clicks + " option:selected")).text();
+                    var parsedColName = selectedCol.replaceAll('Choose Column', '');
+                    var colValues = col_data_parsed[parsedColName];
+                    updateSelectColValBox1(colValues);
+                });
+
+                var updateSelectColValBox1 = function (colValues) {
+                    var colValueArray = Object.values(colValues);
+                    var listItems = "";
+                    for (var i = 0; i < colValueArray.length; i++) {
+                        listItems += "<option value='" + colValueArray[i] + "'>" + colValueArray[i] + "</option>";
+                    }
+                    $(("select#RCV" + clicks)).html(listItems);
+                }
+
+
+            });
+
+           
         });
 
         function CreateForm(id,divElement)
