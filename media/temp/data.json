@@ -2,128 +2,281 @@
     "nodes": [
         {
             "id": "node_0",
-            "name": "Insert Date Appeal to Prefecture",
+            "name": "Inform User",
             "conf": [
                 {
                     "label": "Name",
-                    "value": "Insert Date Appeal to Prefecture"
+                    "value": "Inform User"
                 }
             ]
         },
         {
             "id": "node_1",
-            "name": "Create Fine",
+            "name": "Repair (Complex)",
             "conf": [
                 {
                     "label": "Name",
-                    "value": "Create Fine"
+                    "value": "Repair (Complex)"
                 }
             ]
         },
         {
             "id": "node_2",
-            "name": "Insert Fine Notification",
+            "name": "Restart Repair",
             "conf": [
                 {
                     "label": "Name",
-                    "value": "Insert Fine Notification"
+                    "value": "Restart Repair"
                 }
             ]
         },
         {
             "id": "node_3",
-            "name": "Add penalty",
+            "name": "Repair (Simple)",
             "conf": [
                 {
                     "label": "Name",
-                    "value": "Add penalty"
+                    "value": "Repair (Simple)"
                 }
             ]
         },
         {
             "id": "node_4",
-            "name": "Send for Credit Collection",
+            "name": "Analyze Defect",
             "conf": [
                 {
                     "label": "Name",
-                    "value": "Send for Credit Collection"
+                    "value": "Analyze Defect"
                 }
             ]
         },
         {
             "id": "node_5",
-            "name": "Send Fine",
+            "name": "Archive Repair",
             "conf": [
                 {
                     "label": "Name",
-                    "value": "Send Fine"
+                    "value": "Archive Repair"
                 }
             ]
         },
         {
             "id": "node_6",
-            "name": "Send Appeal to Prefecture",
+            "name": "Test Repair",
             "conf": [
                 {
                     "label": "Name",
-                    "value": "Send Appeal to Prefecture"
+                    "value": "Test Repair"
                 }
             ]
         },
         {
             "id": "node_7",
-            "name": "Payment",
+            "name": "Register",
             "conf": [
                 {
                     "label": "Name",
-                    "value": "Payment"
+                    "value": "Register"
                 }
             ]
         }
     ],
     "edges": [
         {
+            "source": "node_7",
+            "target": "node_4",
+            "label": 1104,
+            "style": {
+                "lineWidth": 16.905405405405403,
+                "endArrow": true
+            }
+        },
+        {
+            "source": "node_4",
+            "target": "node_4",
+            "label": 1104,
+            "style": {
+                "lineWidth": 16.905405405405403,
+                "endArrow": true
+            }
+        },
+        {
+            "source": "node_4",
+            "target": "node_1",
+            "label": 528,
+            "style": {
+                "lineWidth": 9.121621621621621,
+                "endArrow": true
+            }
+        },
+        {
             "source": "node_1",
-            "target": "node_5",
-            "label": 39,
+            "target": "node_1",
+            "label": 414,
+            "style": {
+                "lineWidth": 7.581081081081081,
+                "endArrow": true
+            }
+        },
+        {
+            "source": "node_1",
+            "target": "node_6",
+            "label": 720,
+            "style": {
+                "lineWidth": 11.716216216216216,
+                "endArrow": true
+            }
+        },
+        {
+            "source": "node_6",
+            "target": "node_6",
+            "label": 1333,
             "style": {
                 "lineWidth": 20.0,
                 "endArrow": true
             }
         },
         {
-            "source": "node_5",
-            "target": "node_2",
-            "label": 32,
+            "source": "node_6",
+            "target": "node_0",
+            "label": 472,
             "style": {
-                "lineWidth": 16.684210526315788,
+                "lineWidth": 8.364864864864865,
+                "endArrow": true
+            }
+        },
+        {
+            "source": "node_0",
+            "target": "node_5",
+            "label": 205,
+            "style": {
+                "lineWidth": 4.756756756756756,
+                "endArrow": true
+            }
+        },
+        {
+            "source": "node_4",
+            "target": "node_3",
+            "label": 421,
+            "style": {
+                "lineWidth": 7.675675675675675,
+                "endArrow": true
+            }
+        },
+        {
+            "source": "node_3",
+            "target": "node_3",
+            "label": 626,
+            "style": {
+                "lineWidth": 10.445945945945946,
+                "endArrow": true
+            }
+        },
+        {
+            "source": "node_3",
+            "target": "node_6",
+            "label": 783,
+            "style": {
+                "lineWidth": 12.567567567567568,
+                "endArrow": true
+            }
+        },
+        {
+            "source": "node_6",
+            "target": "node_2",
+            "label": 341,
+            "style": {
+                "lineWidth": 6.594594594594595,
                 "endArrow": true
             }
         },
         {
             "source": "node_2",
             "target": "node_3",
-            "label": 31,
+            "label": 300,
             "style": {
-                "lineWidth": 16.210526315789473,
+                "lineWidth": 6.04054054054054,
                 "endArrow": true
             }
         },
         {
             "source": "node_3",
-            "target": "node_4",
-            "label": 22,
+            "target": "node_0",
+            "label": 161,
             "style": {
-                "lineWidth": 11.947368421052632,
+                "lineWidth": 4.162162162162162,
                 "endArrow": true
             }
         },
         {
-            "source": "node_3",
-            "target": "node_7",
-            "label": 9,
+            "source": "node_0",
+            "target": "node_3",
+            "label": 223,
             "style": {
-                "lineWidth": 5.789473684210526,
+                "lineWidth": 5.0,
+                "endArrow": true
+            }
+        },
+        {
+            "source": "node_6",
+            "target": "node_5",
+            "label": 795,
+            "style": {
+                "lineWidth": 12.72972972972973,
+                "endArrow": true
+            }
+        },
+        {
+            "source": "node_1",
+            "target": "node_0",
+            "label": 313,
+            "style": {
+                "lineWidth": 6.216216216216216,
+                "endArrow": true
+            }
+        },
+        {
+            "source": "node_0",
+            "target": "node_1",
+            "label": 402,
+            "style": {
+                "lineWidth": 7.418918918918919,
+                "endArrow": true
+            }
+        },
+        {
+            "source": "node_0",
+            "target": "node_6",
+            "label": 180,
+            "style": {
+                "lineWidth": 4.418918918918919,
+                "endArrow": true
+            }
+        },
+        {
+            "source": "node_4",
+            "target": "node_0",
+            "label": 155,
+            "style": {
+                "lineWidth": 4.081081081081081,
+                "endArrow": true
+            }
+        },
+        {
+            "source": "node_2",
+            "target": "node_1",
+            "label": 105,
+            "style": {
+                "lineWidth": 3.4054054054054053,
+                "endArrow": true
+            }
+        },
+        {
+            "source": "node_0",
+            "target": "node_2",
+            "label": 65,
+            "style": {
+                "lineWidth": 2.864864864864865,
                 "endArrow": true
             }
         },
@@ -133,42 +286,6 @@
             "label": 1,
             "style": {
                 "lineWidth": 2.0,
-                "endArrow": true
-            }
-        },
-        {
-            "source": "node_0",
-            "target": "node_3",
-            "label": 1,
-            "style": {
-                "lineWidth": 2.0,
-                "endArrow": true
-            }
-        },
-        {
-            "source": "node_3",
-            "target": "node_6",
-            "label": 1,
-            "style": {
-                "lineWidth": 2.0,
-                "endArrow": true
-            }
-        },
-        {
-            "source": "node_1",
-            "target": "node_7",
-            "label": 12,
-            "style": {
-                "lineWidth": 7.210526315789474,
-                "endArrow": true
-            }
-        },
-        {
-            "source": "node_7",
-            "target": "node_7",
-            "label": 2,
-            "style": {
-                "lineWidth": 2.473684210526316,
                 "endArrow": true
             }
         }
