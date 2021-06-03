@@ -14,9 +14,9 @@
         stroke-width: 1.5px;
     }
 
-    .node.fixed {
-        fill: #f00;
-    }
+        .node.fixed {
+            fill: #f00;
+        }
 
     #mynetwork {
         width: 800px;
@@ -38,16 +38,16 @@
         border: 1px solid #6C757D;
     }
 
-    input[type="number"] {
-        -webkit-appearance: textfield !important;
-        -moz-appearance: textfield !important;
-        appearance: textfield !important;
-    }
+        input[type="number"] {
+            -webkit-appearance: textfield !important;
+            -moz-appearance: textfield !important;
+            appearance: textfield !important;
+        }
 
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-    }
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+        }
 
     .wrapper {
         border: 2px #dcd3d3 solid;
@@ -75,30 +75,33 @@
     }
 
     .range-wrap {
-  position: relative;
-  margin: 0 auto 3rem;
-}
-.range {
-  width: 100%;
-}
-.bubble {
-  background: red;
-  color: white;
-  padding: 4px 12px;
-  position: absolute;
-  border-radius: 4px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.bubble::after {
-  content: "";
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  background: red;
-  top: -1px;
-  left: 50%;
-}
+        position: relative;
+        margin: 0 auto 3rem;
+    }
+
+    .range {
+        width: 100%;
+    }
+
+    .bubble {
+        background: red;
+        color: white;
+        padding: 4px 12px;
+        position: absolute;
+        border-radius: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+        .bubble::after {
+            content: "";
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: red;
+            top: -1px;
+            left: 50%;
+        }
 </style>
 
 <head>
@@ -106,13 +109,378 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.js"></script>
     <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.7.1/dist/g6.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        var clicks = 0;
+        var col_data = "{{log_attributes.ColumnNamesValues}}";
+        col_data_parsed = JSON.parse(col_data.replace(/&quot;/g, '"'));
+
+        $(document).ready(function () {
+            let dropdown = $('#ColName-dropdown');
+            let dropdownVal = $('#ColVal-dropdown');
+            dropdown.empty();
+            dropdownVal.empty();
+            dropdown.append('<option selected="true" disabled>Choose Column</option>');
+            dropdownVal.append('<option selected="true" disabled>Choose Column Value</option>');
+            dropdown.prop('selectedIndex', 0);
+            dropdownVal.prop('selectedIndex', 0);
+            // Populate dropdown with list of columns
+            $.each(col_data_parsed, function (key, entry) {
+                dropdown.append($('<option></option>').attr('value', key).text(key));
+            });
+
+            $(document).on("change", "select#ColName-dropdown", function () {
+                var selectedCol = $("select#ColName-dropdown option:selected").text();
+                var parsedColName = selectedCol.replaceAll('Choose Column', '');
+                var colValues = col_data_parsed[parsedColName];
+                updateSelectColValBox(colValues);
+            });
+
+            var updateSelectColValBox = function (colValues) {
+                var colValueArray = Object.values(colValues);
+                var listItems = "";
+                for (var i = 0; i < colValueArray.length; i++) {
+                    listItems += "<option value='" + colValueArray[i] + "'>" + colValueArray[i] + "</option>";
+                }
+                $("select#ColVal-dropdown").html(listItems);
+            }
+        });
+
+        function CreateForm(id,divElement)
+        {
+            var leftId = id;
+            var rightId = id + 1;
+            var br = document.createElement("br");
+            var form = document.createElement("form");
+            form.setAttribute("method", "post");
+            form.setAttribute("id", id);
+            form.setAttribute("action", "submit.php");
+            // Create an input element for ColName
+            var ColNamePara = document.createElement("p");
+            var ColNameText = document.createTextNode("Column Name: ");
+            ColNamePara.appendChild(ColNameText);
+            ColNamePara.setAttribute("style", "width: 50%;float:left;height: 10%;");
+
+            var ColName = document.createElement("select");
+            ColName.setAttribute("value", "Column Name");
+            ColName.setAttribute("id", ('LCN' + leftId));
+            ColName.setAttribute("style", "width: 50%;float:left;height: 10%;");
+
+
+            // Create an input element for ColValue
+            var ColValPara = document.createElement("p");
+            var ColValueText = document.createTextNode("Column Value: ");
+            ColValPara.appendChild(ColValueText);
+            ColValPara.setAttribute("style", "width: 50%;float:left;height: 10%;");
+
+            var ColVal = document.createElement("select");
+            ColVal.setAttribute("value", "Column Value");
+            ColVal.setAttribute("id", ('LCV' + leftId));
+            ColVal.setAttribute("style", "width: 50%;float:left;height: 10%;");
+
+
+            // Create an input element for CheckBox
+            var FilterValPara = document.createElement("p");
+            var FilterValText = document.createTextNode("All except this value");
+            FilterValPara.appendChild(FilterValText);
+            FilterValPara.setAttribute("style", "width: 45%;float:left;height: 10%;");
+
+            var FilterVal = document.createElement("input");
+            FilterVal.setAttribute("type", "checkbox");
+            FilterVal.setAttribute("value", "All except this Value");
+            FilterVal.setAttribute("style", "width: 5%;float:left;");
+            FilterVal.setAttribute("id", ('LCB' + leftId));
+
+
+
+            var FilterEdges = document.createElement("input");
+            FilterEdges.setAttribute("type", "range");
+            FilterEdges.setAttribute("class", "range");
+            FilterEdges.setAttribute("min", 0);
+            FilterEdges.setAttribute("max", 100);
+            FilterEdges.setAttribute("value", 0);
+            FilterEdges.setAttribute("step", 10);
+            FilterEdges.setAttribute("style", "width: 45%;float:left;height: 10%;");
+            FilterEdges.setAttribute("oninput", "this.nextElementSibling.value = this.value");
+            FilterEdges.setAttribute("id", ('LFE' + leftId));
+
+
+            var FilterEdgeValue = document.createElement("output");
+            FilterEdgeValue.setAttribute("style", "width: 5%;float:left;height: 10%;");
+
+            // Right Graph Filters
+            var RColNamePara = document.createElement("p");
+            var RColNameText = document.createTextNode("Column Name: ");
+            RColNamePara.appendChild(RColNameText);
+            RColNamePara.setAttribute("style", "width: 50%;float:right;height: 10%;");
+            var RColName = document.createElement("select");
+            RColName.setAttribute("value", "Column Name");
+            RColName.setAttribute("id", ('RCN' + rightId));
+            RColName.setAttribute("style", "width: 50%;float:right;height: 10%;");
+
+
+            // Create an input element for ColValue
+            var RColValPara = document.createElement("p");
+            var RColValueText = document.createTextNode("Column Value: ");
+            RColValPara.appendChild(RColValueText);
+            RColValPara.setAttribute("style", "width: 50%;float:right;height: 10%;");
+
+            var RColVal = document.createElement("select");
+            RColVal.setAttribute("value", "Column Value");
+            RColVal.setAttribute("id", ('RCV' + rightId));
+            RColVal.setAttribute("style", "width: 50%;float:right;height: 10%;");
+
+
+            // Create an input element for CheckBox
+            var RFilterValPara = document.createElement("p");
+            var RFilterValText = document.createTextNode("All except this value");
+            RFilterValPara.appendChild(RFilterValText);
+            RFilterValPara.setAttribute("style", "width: 45%;float:right;height: 10%;");
+
+            var RFilterVal = document.createElement("input");
+            RFilterVal.setAttribute("type", "checkbox");
+            RFilterVal.setAttribute("value", "All except this Value");
+            RFilterVal.setAttribute("style", "width: 5%;float:left;");
+            RFilterVal.setAttribute("id", ('RCB' + rightId));
+
+
+
+            var RFilterEdges = document.createElement("input");
+            RFilterEdges.setAttribute("type", "range");
+            RFilterEdges.setAttribute("class", "range");
+            RFilterEdges.setAttribute("min", 0);
+            RFilterEdges.setAttribute("max", 100);
+            RFilterEdges.setAttribute("value", 0);
+            RFilterEdges.setAttribute("step", 10);
+            RFilterEdges.setAttribute("style", "width: 45%;float:right;height: 10%;");
+            RFilterEdges.setAttribute("oninput", "this.nextElementSibling.value = this.value");
+            RFilterEdges.setAttribute("id", ('RFE' + rightId));
+
+
+            var RFilterEdgeValue = document.createElement("output");
+            RFilterEdgeValue.setAttribute("style", "width: 5%;float:right;height: 10%;");
+
+
+
+            var s = document.createElement("input");
+            s.setAttribute("type", "submit");
+            s.setAttribute("value", "Compare");
+            s.setAttribute("class", "btn btn-outline-secondary");
+            s.setAttribute("style", "display: block ; margin: 0 auto;");
+
+            form.appendChild(ColNamePara);
+            form.appendChild(RColNamePara);
+            form.appendChild(br.cloneNode());
+            form.appendChild(ColName);
+            form.appendChild(RColName);
+            form.appendChild(br.cloneNode());
+            form.appendChild(br.cloneNode());
+
+            form.appendChild(ColValPara);
+            form.appendChild(RColValPara);
+            form.appendChild(br.cloneNode());
+            form.appendChild(ColVal);
+            form.appendChild(RColVal);
+            form.appendChild(br.cloneNode());
+            form.appendChild(br.cloneNode());
+
+            form.appendChild(FilterVal);
+            form.appendChild(FilterValPara);
+            form.appendChild(RFilterVal);
+            form.appendChild(RFilterValPara);
+            form.appendChild(br.cloneNode());
+
+            form.appendChild(FilterEdges);
+            form.appendChild(FilterEdgeValue);
+            form.appendChild(RFilterEdges);
+            form.appendChild(RFilterEdgeValue);
+            form.appendChild(br.cloneNode());
+            form.appendChild(br.cloneNode());
+            form.appendChild(br.cloneNode());
+
+            form.appendChild(s);
+            divElement.appendChild(form);
+        }
+
+
+        function AddModel1(data) {
+            clicks += 1;
+            var leftDivId = clicks;
+            // create a new div element
+            const leftDiv = document.createElement("div");
+            leftDiv.setAttribute("id", leftDivId);
+            leftDiv.setAttribute("style", "border : 1px solid #000000; height: 500px; width: 35%;float:left;");
+            const currentDiv = document.getElementById("DisplayGraph");
+            const Duplicatediv = document.getElementById("GetFiltersDiv");
+            const centerDiv = Duplicatediv.cloneNode(true);
+            centerDiv.setAttribute("id", ('Div' + clicks));
+            centerDiv.setAttribute("style", "border : 1px solid #000000; height: 500px; width: 30%;float:left;");
+            CreateForm(clicks, centerDiv);
+            const rightDiv = document.createElement("div");
+            clicks += 1;
+            var rightDivId = clicks;
+            rightDiv.setAttribute("id", rightDivId);
+            rightDiv.setAttribute("style", "border : 1px solid #000000; height: 500px; width: 35%;float:left;");
+            document.body.appendChild(leftDiv, currentDiv);
+            document.body.appendChild(centerDiv, currentDiv);
+            document.body.appendChild(rightDiv, currentDiv);
+            CreateGraph(data, leftDivId);
+            CreateGraph(data, rightDivId);
+            rangeInput();
+        }
+
+        function CreateGraph(JObj, id)
+        {
+            const container = document.getElementById(id);
+            const width = container.scrollWidth;
+            const height = container.scrollHeight || 500;
+            const graph = new G6.Graph({
+                container,
+                width,
+                height,
+                layout: {
+                    type: 'dagre',
+                    nodesepFunc: (d) => {
+                        if (d.id === '3') {
+                            return 500;
+                        }
+                        return 50;
+                    },
+                    ranksep: 70,
+                    controlPoints: true,
+                },
+                defaultNode: {
+                    type: 'sql',
+                },
+                defaultEdge: {
+                    type: 'polyline',
+                    style: {
+                        radius: 20,
+                        offset: 45,
+                        endArrow: true,
+                        lineWidth: 2,
+                        stroke: '#C2C8D5',
+                    },
+                    labelCfg: {
+                        style: {
+                            fontSize: 25,
+                            fontWeight: "bold"
+                        }
+                    },
+                },
+                nodeStateStyles: {
+                    selected: {
+                        stroke: '#d9d9d9',
+                        fill: '#5394ef',
+                    },
+                },
+                modes: {
+                    default: [
+                        'drag-canvas',
+                        'zoom-canvas',
+                        'click-select',
+                        {
+                            type: 'tooltip',
+                            formatText(model) {
+                                const cfg = model.conf;
+                                const text = [];
+                                cfg.forEach((row) => {
+                                    text.push(row.label + ':' + row.value + '<br>');
+                                });
+                                return text.join('\n');
+                            },
+                            offset: 30,
+                        },
+                    ],
+                },
+                fitView: true,
+            });
+
+            G6.registerNode(
+                'sql',
+                {
+                    drawShape(cfg, group) {
+                        const rect = group.addShape('rect', {
+                            attrs: {
+                                x: -75,
+                                y: -25,
+                                width: 150,
+                                height: 50,
+                                radius: 10,
+                                stroke: '#5B8FF9',
+                                fill: '#C6E5FF',
+                                lineWidth: 3,
+                            },
+                            name: 'rect-shape',
+                        });
+                        if (cfg.name) {
+                            group.addShape('text', {
+                                attrs: {
+                                    text: cfg.name,
+                                    x: 0,
+                                    y: 0,
+                                    fill: '#00287E',
+                                    fontSize: 14,
+                                    textAlign: 'center',
+                                    textBaseline: 'middle',
+                                    fontWeight: 'bold',
+                                },
+                                name: 'text-shape',
+                            });
+                        }
+                        return rect;
+                    },
+                },
+                'single-node',
+            );
+            console.log('foo was there')
+            //var var_data = "{{v}}";
+            var_data_parsed = JSON.parse(JObj.replace(/&quot;/g, '"'));
+            graph.data(var_data_parsed);
+            graph.render();
+
+            if (typeof window !== 'undefined')
+                window.onresize = () => {
+                    if (!graph || graph.get('destroyed')) return;
+                    if (!container || !container.scrollWidth || !container.scrollHeight) return;
+                    graph.changeSize(container.scrollWidth, container.scrollHeight);
+                };
+
+
+        }
+
+        function rangeInput() {
+            const allRanges = document.querySelectorAll(".range-wrap");
+            allRanges.forEach(wrap => {
+                const range = wrap.querySelector(".range");
+                const bubble = wrap.querySelector(".bubble");
+
+                range.addEventListener("input", () => {
+                    console.log("event listerner input kay andar hu may");
+                    setBubble(range, bubble);
+                });
+                console.log("foofoofoo");
+                setBubble(range, bubble);
+            });
+        }
+        function setBubble(range, bubble) {
+            console.log("setBubble Call hua hai");
+            const val = range.value;
+            const min = range.min ? range.min : 0;
+            const max = range.max ? range.max : 100;
+            const newVal = Number(((val - min) * 100) / (max - min));
+            bubble.innerHTML = val;
+
+            // Sorta magic numbers based on size of the native UI thumb
+            bubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.15}px))`;
+        }
+    </script>
 
 </head>
 
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
         <a class="nav-link active" id="eventlogs-tab" data-toggle="tab" href="#eventlogs" role="tab"
-            aria-controls="eventlogs" aria-selected="true">Event Logs</a>
+           aria-controls="eventlogs" aria-selected="true">Event Logs</a>
     </li>
 </ul>
 <div class="tab-content" id="myTabContent">
@@ -127,8 +495,10 @@
                         {% csrf_token %}
 
                         <p>Event log: <input type="file" value="fileupload" name="event_log" /></p>
-                        <p><input type="submit" class="btn btn-primary mb-2" value="Upload EventLog" name="uploadButton"
-                                id='submitresEL' /></p>
+                        <p>
+                            <input type="submit" class="btn btn-primary mb-2" value="Upload EventLog" name="uploadButton"
+                                   id='submitresEL' />
+                        </p>
 
                     </form>
                 </div>
@@ -147,399 +517,28 @@
                         </select>
 
                         <input style="margin-top: 10px;" data-toggle="tooltip" data-placement="top"
-                            title="Set as the input" type="submit" class="btn btn-success" value="Set" name="setButton"
-                            id='setButton' />
+                               title="Set as the input" type="submit" class="btn btn-success" value="Set" name="setButton"
+                               id='setButton' />
                         <input style="margin-top: 10px;" type="submit" class="btn btn-danger" value="Delete"
-                            name="deleteButton" id='deleteButton' />
+                               name="deleteButton" id='deleteButton' />
                         <input style="float: right; margin-top: 10px;" type="submit" class="btn btn-info"
-                            value="Download" name="downloadButton" id='downloadButton' />
+                               value="Download" name="downloadButton" id='downloadButton' />
+
                         {% if log_name != null %}
                         <input style="margin-top: 10px;" type="button" class="btn btn-primary" value="Add Model"
-                            onclick="AddModel1()" id='AddModel' />
+                               onclick="AddModel1('{{log_attributes.dfg}}')" id='AddModel' />
                         {% endif %}
                     </form>
                 </div>
 
             </div>
             <br>
-            <div id="DisplayGraph">
-
-
-                <div id="applyFilters" style="display:none">
-                    <br />
-
-                    <ul style="list-style-type:none">
-                        <li>
-                            <br />
-                            Choose a Column Name to Filter:
-                            {% for k,v in log_attributes.items %}
-                            {% if k == 'ColumnNamesValues' %}
-                            <select id="ColName-dropdown" name="ColName">
-                            </select>
-                        <li>
-                            <br />
-                            Choose a Column Value to Filter:
-                            <select id="ColVal-dropdown" name="ColVal">
-                            </select>
-                        </li>
-                        <script>
-                            var col_data = "{{v}}";
-                            col_data_parsed = JSON.parse(col_data.replace(/&quot;/g, '"'));
-                            let dropdown = $('#ColName-dropdown');
-                            let dropdownVal = $('#ColVal-dropdown');
-                            dropdown.empty();
-                            dropdownVal.empty();
-                            dropdown.append('<option selected="true" disabled>Choose Column</option>');
-                            dropdownVal.append('<option selected="true" disabled>Choose Column Value</option>');
-                            dropdown.prop('selectedIndex', 0);
-                            dropdownVal.prop('selectedIndex', 0);
-
-                            $(document).ready(function () {
-                                // Populate dropdown with list of columns
-                                $.each(col_data_parsed, function (key, entry) {
-                                    dropdown.append($('<option></option>').attr('value', key).text(key));
-                                });
-
-                                $(document).on("change", "select#ColName-dropdown", function () {
-                                    var selectedCol = $("select#ColName-dropdown option:selected").text();
-                                    var parsedColName = selectedCol.replaceAll('Choose Column', '');
-                                    var colValues = col_data_parsed[parsedColName];
-                                    updateSelectColValBox(colValues);
-                                });
-
-                                var updateSelectColValBox = function (colValues) {
-                                    var colValueArray = Object.values(colValues);
-                                    var listItems = "";
-                                    for (var i = 0; i < colValueArray.length; i++) {
-                                        listItems += "<option value='" + colValueArray[i] + "'>" + colValueArray[i] + "</option>";
-                                    }
-                                    $("select#ColVal-dropdown").html(listItems);
-                                }
-                            });
-                        </script>
-                        </li>
-                        {% endif %}
-                        {% endfor %}
-
-                        <li>
-                            <br />
-                            <input type="checkbox" id="ValueSelect" value="All Except this value">
-                            <label for="vehicle1"> All except this value </label><br>
-                        </li>
-                        <li>
-                            <br />
-                            <div class="range-wrap" style="width: 75%;">
-                                <input type="range" class="range" min="0" max="100" value="0" step="10">
-                                <output class="bubble"></output>
-                              </div>
-                            <!-- <button class="plusminus" type="submit" onclick="handleMinus()">-</button>
-                                <progress id="myProgress" value="10" max="100" style="margin:auto"></progress>
-                                <button class="plusminus" type="submit" onclick="handlePlus()">+</button> -->
-                            <script>
-                                
-                                function rangeInput(){
-                                const allRanges = document.querySelectorAll(".range-wrap");
-                                allRanges.forEach(wrap => {
-                                const range = wrap.querySelector(".range");
-                                const bubble = wrap.querySelector(".bubble");
-
-                                range.addEventListener("input", () => {
-                                    console.log("event listerner input kay andar hu may");
-                                    setBubble(range, bubble);
-                                });
-                                console.log("foofoofoo");
-                                setBubble(range, bubble);
-                                });
-                            }
-                                function setBubble(range, bubble) {
-                                    console.log("setBubble Call hua hai");
-                                const val = range.value;
-                                const min = range.min ? range.min : 0;
-                                const max = range.max ? range.max : 100;
-                                const newVal = Number(((val - min) * 100) / (max - min));
-                                bubble.innerHTML = val;
-
-                                // Sorta magic numbers based on size of the native UI thumb
-                                bubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.15}px))`;
-                                }
-                            
-                            
-                            </script>
-
-                        </li>
-                        <li>
-                            <br />
-                            <div>
-                                {% for k,v in log_attributes.items %}
-                                {% if k == 'no_traces' %}
-                                <p id="no_trace" style="font-size:x-large;font-family:Arial; float:left;"> Number of
-                                    traces: {{v}} </p>
-                                {% elif k == 'no_events' %}
-                                <p id="no_event"
-                                    style="font-size:x-large;font-family:Arial; float:right; margin-right:15px;"> Number
-                                    of events: {{v}} </p>
-                                {% endif %}
-                                {% endfor %}
-
-                            </div>
-
-                        </li>
-                        <li>
-                            <input style="margin-top: 10px;" type="submit" class="btn btn-danger"
-                                onclick="RemoveGraph(this.id)" value="Remove Graph" id='removeGraph' />
-                        </li>
-                    </ul>
-                </div>
+            <div id="GetFiltersDiv" style="display:none">
+                <h4>Benchmarking</h4>
+                <p>Select columns and its values to compare</p>
             </div>
             <br>
-            <div class="row" style="display:none">
-                <div class=" col-sm-6 col-md-7 col-lg-8">
-                    {% if log_name %}
-                    <p> {{log_name}} has been set as the input ... </p>
-                    {% endif %}
-                    {% for k,v in log_attributes.items %}
-                    {% if k == 'no_traces' %}
-                    <p id="no_trace"> No of traces: {{v}} </p>
-                    {% elif k == 'no_events' %}
-                    <p id="no_event"> No of events: {{v}} </p>
-                    {% elif k == 'dfg' %}
-                    <p id="dfg"> DFG:
-                    <pre>{{ v }}</pre>
-                    </p>
-                    <div id="mygraph"></div>
 
-                    {% block script %}
-                    <script type="text/javascript">
-                        var clicks = 0;
-                        const graph = new G6.Graph({
-                            container,
-                            width,
-                            height,
-                            layout: {
-                                type: 'dagre',
-                                nodesepFunc: (d) => {
-                                    if (d.id === '3') {
-                                        return 500;
-                                    }
-                                    return 50;
-                                },
-                                ranksep: 70,
-                                controlPoints: true,
-                            },
-                            defaultNode: {
-                                type: 'sql',
-                            },
-                            defaultEdge: {
-                                type: 'polyline',
-                                style: {
-                                    radius: 20,
-                                    offset: 45,
-                                    endArrow: true,
-                                    lineWidth: 2,
-                                    stroke: '#C2C8D5',
-                                },
-                                labelCfg: {
-                                    style: {
-                                        fontSize: 25,
-                                        fontWeight: "bold"
-                                    }
-                                },
-                            },
-                            nodeStateStyles: {
-                                selected: {
-                                    stroke: '#d9d9d9',
-                                    fill: '#5394ef',
-                                },
-                            },
-                            modes: {
-                                default: [
-                                    'drag-canvas',
-                                    'zoom-canvas',
-                                    'click-select',
-                                    {
-                                        type: 'tooltip',
-                                        formatText(model) {
-                                            const cfg = model.conf;
-                                            const text = [];
-                                            cfg.forEach((row) => {
-                                                text.push(row.label + ':' + row.value + '<br>');
-                                            });
-                                            return text.join('\n');
-                                        },
-                                        offset: 30,
-                                    },
-                                ],
-                            },
-                            fitView: true,
-                        });
-                        function AddModel1() {
-                            clicks += 1;
-                            // create a new div element
-                            const newDiv = document.createElement("div");
-                            newDiv.setAttribute("id", clicks);
-                            newDiv.setAttribute("style", "border : 1px solid #000000; height: 500px; width: 70%;float:left;");
-                            const currentDiv = document.getElementById("DisplayGraph");
-                            const Duplicatediv = document.getElementById("applyFilters");
-                            const newDiv1 = Duplicatediv.cloneNode(true);
-                            newDiv1.setAttribute("id", ('Div' + clicks));
-                            newDiv1.setAttribute("style", "border : 1px solid #000000; height: 500px; width: 30%;float:left;");
-                            document.body.appendChild(newDiv, currentDiv);
-                            document.body.appendChild(newDiv1, currentDiv);
-                            const container = document.getElementById(clicks);
-                            const width = container.scrollWidth;
-                            const height = container.scrollHeight || 500;
-                            const graph = new G6.Graph({
-                                container,
-                                width,
-                                height,
-                                layout: {
-                                    type: 'dagre',
-                                    nodesepFunc: (d) => {
-                                        if (d.id === '3') {
-                                            return 500;
-                                        }
-                                        return 50;
-                                    },
-                                    ranksep: 70,
-                                    controlPoints: true,
-                                },
-                                defaultNode: {
-                                    type: 'sql',
-                                },
-                                defaultEdge: {
-                                    type: 'polyline',
-                                    style: {
-                                        radius: 20,
-                                        offset: 45,
-                                        endArrow: true,
-                                        lineWidth: 2,
-                                        stroke: '#C2C8D5',
-                                    },
-                                    labelCfg: {
-                                        style: {
-                                            fontSize: 25,
-                                            fontWeight: "bold"
-                                        }
-                                    },
-                                },
-                                nodeStateStyles: {
-                                    selected: {
-                                        stroke: '#d9d9d9',
-                                        fill: '#5394ef',
-                                    },
-                                },
-                                modes: {
-                                    default: [
-                                        'drag-canvas',
-                                        'zoom-canvas',
-                                        'click-select',
-                                        {
-                                            type: 'tooltip',
-                                            formatText(model) {
-                                                const cfg = model.conf;
-                                                const text = [];
-                                                cfg.forEach((row) => {
-                                                    text.push(row.label + ':' + row.value + '<br>');
-                                                });
-                                                return text.join('\n');
-                                            },
-                                            offset: 30,
-                                        },
-                                    ],
-                                },
-                                fitView: true,
-                            });
-
-                            G6.registerNode(
-                                'sql',
-                                {
-                                    drawShape(cfg, group) {
-                                        const rect = group.addShape('rect', {
-                                            attrs: {
-                                                x: -75,
-                                                y: -25,
-                                                width: 150,
-                                                height: 50,
-                                                radius: 10,
-                                                stroke: '#5B8FF9',
-                                                fill: '#C6E5FF',
-                                                lineWidth: 3,
-                                            },
-                                            name: 'rect-shape',
-                                        });
-                                        if (cfg.name) {
-                                            group.addShape('text', {
-                                                attrs: {
-                                                    text: cfg.name,
-                                                    x: 0,
-                                                    y: 0,
-                                                    fill: '#00287E',
-                                                    fontSize: 14,
-                                                    textAlign: 'center',
-                                                    textBaseline: 'middle',
-                                                    fontWeight: 'bold',
-                                                },
-                                                name: 'text-shape',
-                                            });
-                                        }
-                                        return rect;
-                                    },
-                                },
-                                'single-node',
-                            );
-                            console.log('foo was there')
-                            var var_data = "{{v}}";
-                            var_data_parsed = JSON.parse(var_data.replace(/&quot;/g, '"'));
-                            graph.data(var_data_parsed);
-                            graph.render();
-
-                            if (typeof window !== 'undefined')
-                                window.onresize = () => {
-                                    if (!graph || graph.get('destroyed')) return;
-                                    if (!container || !container.scrollWidth || !container.scrollHeight) return;
-                                    graph.changeSize(container.scrollWidth, container.scrollHeight);
-                                };
-                            rangeInput();
-                        }
-
-
-                        function handlePlus() {
-                            debugger;
-                            var x = document.getElementById("myProgress").value;
-                            const Bar = document.getElementById("myProgress");
-                            if (x <= 90) {
-                                Bar.value = x + 10;
-                                document.getElementById("myProgress").innerHTML = Bar.value;
-                            }
-                        }
-
-                        function handleMinus() {
-                            debugger;
-                            var x = document.getElementById("myProgress").value;
-                            const Bar = document.getElementById("myProgress");
-                            if (x >= 10) {
-                                Bar.value = x - 10;
-                                document.getElementById("myProgress").innerHTML = Bar.value;
-                            }
-                        }
-
-                        function RemoveGraph(id) {
-                            debugger;
-                            // alert(id);
-                            alert(this.parentNode);
-                        }
-
-
-
-
-                    </script>
-
-                    {% endblock %}
-                    {% endif %}
-                    {% endfor %}
-
-                </div>
-            </div>
         </div>
 
     </div>
@@ -552,3 +551,4 @@
     {% endif %}
 
     {% endblock %}
+</div>
