@@ -230,6 +230,10 @@
 
 
 
+            var FilterEdgesPara = document.createElement("p");
+            var FilterEdgesText = document.createTextNode("Filters Edge Percentage: ");
+            FilterEdgesPara.appendChild(FilterEdgesText);
+            FilterEdgesPara.setAttribute("style", "width: 50%;float:left;height: 10%;");
             var FilterEdges = document.createElement("input");
             FilterEdges.setAttribute("type", "range");
             FilterEdges.setAttribute("class", "range");
@@ -281,7 +285,10 @@
             RFilterVal.setAttribute("id", ('RCB' + rightId));
 
 
-
+            var RFilterEdgesPara = document.createElement("p");
+            var RFilterEdgesText = document.createTextNode("Filters Edge Percentage: ");
+            RFilterEdgesPara.appendChild(RFilterEdgesText);
+            RFilterEdgesPara.setAttribute("style", "width: 50%;float:right;height: 10%;");
             var RFilterEdges = document.createElement("input");
             RFilterEdges.setAttribute("type", "range");
             RFilterEdges.setAttribute("class", "range");
@@ -327,8 +334,13 @@
             form.appendChild(RFilterValPara);
             form.appendChild(br.cloneNode());
 
+            form.appendChild(FilterEdgesPara);
+            form.appendChild(RFilterEdgesPara);
+            form.appendChild(br.cloneNode());
             form.appendChild(FilterEdges);
             form.appendChild(FilterEdgeValue);
+            
+            form.appendChild(br.cloneNode());
             form.appendChild(RFilterEdges);
             form.appendChild(RFilterEdgeValue);
             form.appendChild(br.cloneNode());
