@@ -113,12 +113,15 @@
         var clicks = 0;
         var col_data = "{{log_attributes.ColumnNamesValues}}";
         col_data_parsed = JSON.parse(col_data.replace(/&quot;/g, '"'));
+        var Events = 0;
+        var Traces = 0;
+        
         var idToGet = 0;
         $(document).ready(function () {
             
             $('#AddModel').click(function () {
                 idToGet = clicks - 1;
-               
+
                 let dropdown = $('#LCN' + idToGet);
                 let dropdownVal = $('#LCV' + idToGet);
                 dropdown.empty();
@@ -185,6 +188,8 @@
 
         function CreateForm(id,divElement)
         {
+            Events = "{{log_attributes.no_events}}";
+            Traces = "{{log_attributes.no_traces}}";
             var leftId = id;
             var rightId = id + 1;
             var br = document.createElement("br");
@@ -196,31 +201,31 @@
             var ColNamePara = document.createElement("p");
             var ColNameText = document.createTextNode("Column Name: ");
             ColNamePara.appendChild(ColNameText);
-            ColNamePara.setAttribute("style", "width: 50%;float:left;height: 10%;");
+            ColNamePara.setAttribute("style", "width: 50%;float:left;");
 
             var ColName = document.createElement("select");
             ColName.setAttribute("value", "Column Name");
             ColName.setAttribute("id", ('LCN' + leftId));
-            ColName.setAttribute("style", "width: 50%;float:left;height: 10%;");
+            ColName.setAttribute("style", "width: 50%;float:left;");
 
 
             // Create an input element for ColValue
             var ColValPara = document.createElement("p");
             var ColValueText = document.createTextNode("Column Value: ");
             ColValPara.appendChild(ColValueText);
-            ColValPara.setAttribute("style", "width: 50%;float:left;height: 10%;");
+            ColValPara.setAttribute("style", "width: 50%;float:left;");
 
             var ColVal = document.createElement("select");
             ColVal.setAttribute("value", "Column Value");
             ColVal.setAttribute("id", ('LCV' + leftId));
-            ColVal.setAttribute("style", "width: 50%;float:left;height: 10%;");
+            ColVal.setAttribute("style", "width: 50%;float:left;");
 
 
             // Create an input element for CheckBox
             var FilterValPara = document.createElement("p");
             var FilterValText = document.createTextNode("All except this value");
             FilterValPara.appendChild(FilterValText);
-            FilterValPara.setAttribute("style", "width: 45%;float:left;height: 10%;");
+            FilterValPara.setAttribute("style", "width: 45%;float:left;");
 
             var FilterVal = document.createElement("input");
             FilterVal.setAttribute("type", "checkbox");
@@ -233,7 +238,7 @@
             var FilterEdgesPara = document.createElement("p");
             var FilterEdgesText = document.createTextNode("Filters Edge Percentage: ");
             FilterEdgesPara.appendChild(FilterEdgesText);
-            FilterEdgesPara.setAttribute("style", "width: 50%;float:left;height: 10%;");
+            FilterEdgesPara.setAttribute("style", "width: 50%;float:left;");
             var FilterEdges = document.createElement("input");
             FilterEdges.setAttribute("type", "range");
             FilterEdges.setAttribute("class", "range");
@@ -241,42 +246,42 @@
             FilterEdges.setAttribute("max", 100);
             FilterEdges.setAttribute("value", 0);
             FilterEdges.setAttribute("step", 10);
-            FilterEdges.setAttribute("style", "width: 45%;float:left;height: 10%;");
+            FilterEdges.setAttribute("style", "width: 45%;float:left;height:10%");
             FilterEdges.setAttribute("oninput", "this.nextElementSibling.value = this.value");
             FilterEdges.setAttribute("id", ('LFE' + leftId));
 
 
             var FilterEdgeValue = document.createElement("output");
-            FilterEdgeValue.setAttribute("style", "width: 5%;float:left;height: 10%;");
+            FilterEdgeValue.setAttribute("style", "width: 5%;float:left;height:10%");
 
             // Right Graph Filters
             var RColNamePara = document.createElement("p");
             var RColNameText = document.createTextNode("Column Name: ");
             RColNamePara.appendChild(RColNameText);
-            RColNamePara.setAttribute("style", "width: 50%;float:right;height: 10%;");
+            RColNamePara.setAttribute("style", "width: 50%;float:right;");
             var RColName = document.createElement("select");
             RColName.setAttribute("value", "Column Name");
             RColName.setAttribute("id", ('RCN' + rightId));
-            RColName.setAttribute("style", "width: 50%;float:right;height: 10%;");
+            RColName.setAttribute("style", "width: 50%;float:right;");
 
 
             // Create an input element for ColValue
             var RColValPara = document.createElement("p");
             var RColValueText = document.createTextNode("Column Value: ");
             RColValPara.appendChild(RColValueText);
-            RColValPara.setAttribute("style", "width: 50%;float:right;height: 10%;");
+            RColValPara.setAttribute("style", "width: 50%;float:right;");
 
             var RColVal = document.createElement("select");
             RColVal.setAttribute("value", "Column Value");
             RColVal.setAttribute("id", ('RCV' + rightId));
-            RColVal.setAttribute("style", "width: 50%;float:right;height: 10%;");
+            RColVal.setAttribute("style", "width: 50%;float:right;");
 
 
             // Create an input element for CheckBox
             var RFilterValPara = document.createElement("p");
             var RFilterValText = document.createTextNode("All except this value");
             RFilterValPara.appendChild(RFilterValText);
-            RFilterValPara.setAttribute("style", "width: 45%;float:right;height: 10%;");
+            RFilterValPara.setAttribute("style", "width: 45%;float:right;");
 
             var RFilterVal = document.createElement("input");
             RFilterVal.setAttribute("type", "checkbox");
@@ -288,7 +293,7 @@
             var RFilterEdgesPara = document.createElement("p");
             var RFilterEdgesText = document.createTextNode("Filters Edge Percentage: ");
             RFilterEdgesPara.appendChild(RFilterEdgesText);
-            RFilterEdgesPara.setAttribute("style", "width: 50%;float:right;height: 10%;");
+            RFilterEdgesPara.setAttribute("style", "width: 50%;float:right;height:5%");
             var RFilterEdges = document.createElement("input");
             RFilterEdges.setAttribute("type", "range");
             RFilterEdges.setAttribute("class", "range");
@@ -296,13 +301,13 @@
             RFilterEdges.setAttribute("max", 100);
             RFilterEdges.setAttribute("value", 0);
             RFilterEdges.setAttribute("step", 10);
-            RFilterEdges.setAttribute("style", "width: 45%;float:right;height: 10%;");
+            RFilterEdges.setAttribute("style", "width: 45%;float:right;height:10");
             RFilterEdges.setAttribute("oninput", "this.nextElementSibling.value = this.value");
             RFilterEdges.setAttribute("id", ('RFE' + rightId));
 
 
             var RFilterEdgeValue = document.createElement("output");
-            RFilterEdgeValue.setAttribute("style", "width: 5%;float:right;height: 10%;");
+            RFilterEdgeValue.setAttribute("style", "width: 5%;float:right;height:10%");
 
 
 
@@ -310,7 +315,7 @@
             s.setAttribute("type", "submit");
             s.setAttribute("value", "Compare");
             s.setAttribute("class", "btn btn-outline-secondary");
-            s.setAttribute("style", "display: block ; margin: 0 auto;");
+            s.setAttribute("style", "display: block ; margin:auto;");
 
             form.appendChild(ColNamePara);
             form.appendChild(RColNamePara);
@@ -318,14 +323,12 @@
             form.appendChild(ColName);
             form.appendChild(RColName);
             form.appendChild(br.cloneNode());
-            form.appendChild(br.cloneNode());
 
             form.appendChild(ColValPara);
             form.appendChild(RColValPara);
             form.appendChild(br.cloneNode());
             form.appendChild(ColVal);
             form.appendChild(RColVal);
-            form.appendChild(br.cloneNode());
             form.appendChild(br.cloneNode());
 
             form.appendChild(FilterVal);
@@ -349,6 +352,51 @@
 
             form.appendChild(s);
             divElement.appendChild(form);
+
+            divElement.appendChild(br.cloneNode());
+
+            var Event = document.createElement("h4");
+            var EventText = document.createTextNode("Events");
+            Event.appendChild(EventText);
+            Event.setAttribute("style", "width: 100%;color:grey;text-align:center");
+            divElement.appendChild(Event);
+            var LEvents = document.createElement("h4");
+            var LEventsText = document.createTextNode(Events);
+            LEvents.appendChild(LEventsText);
+            LEvents.setAttribute("style", "width: 45%;float:left;color:green;text-align:center");
+            var VS = document.createElement("p");
+            var VSText = document.createTextNode("VS");
+            VS.appendChild(VSText);
+            VS.setAttribute("style", "width: 10%;float:left;color:grey;text-align:center");
+            var REvents = document.createElement("h4");
+            var REventsText = document.createTextNode(Events);
+            REvents.appendChild(REventsText);
+            REvents.setAttribute("style", "width: 45%;float:right;color:green;text-align:center");
+            divElement.appendChild(LEvents);
+            divElement.appendChild(VS);
+            divElement.appendChild(REvents);
+            divElement.appendChild(br.cloneNode());
+            var Trace = document.createElement("h4");
+            var TraceText = document.createTextNode("Traces");
+            Trace.appendChild(TraceText);
+            Trace.setAttribute("style", "width: 100%;color:grey;text-align:center;margin:auto;float:left");
+            divElement.appendChild(Trace);
+            var LTraces = document.createElement("h4");
+            var LTracesText = document.createTextNode(Traces);
+            LTraces.appendChild(LTracesText);
+            LTraces.setAttribute("style", "width: 45%;float:left;color:green;text-align:center");
+            var RTraces = document.createElement("h4");
+            var RTracesText = document.createTextNode(Traces);
+            RTraces.appendChild(RTracesText);
+            RTraces.setAttribute("style", "width: 45%;float:right;color:green;text-align:center");
+            var VS1 = document.createElement("p");
+            var VSText1 = document.createTextNode("VS");
+            VS1.appendChild(VSText1);
+            VS1.setAttribute("style", "width: 10%;float:left;color:grey;text-align:center");
+            divElement.appendChild(LTraces);
+            divElement.appendChild(VS1);
+            divElement.appendChild(RTraces);
+            divElement.appendChild(br.cloneNode());
         }
 
 
@@ -358,18 +406,18 @@
             // create a new div element
             const leftDiv = document.createElement("div");
             leftDiv.setAttribute("id", leftDivId);
-            leftDiv.setAttribute("style", "border : 1px solid #000000; height: 500px; width: 35%;float:left;");
+            leftDiv.setAttribute("style", "border : 1px solid #000000; height: 600px; width: 35%;float:left;");
             const currentDiv = document.getElementById("DisplayGraph");
             const Duplicatediv = document.getElementById("GetFiltersDiv");
             const centerDiv = Duplicatediv.cloneNode(true);
             centerDiv.setAttribute("id", ('Div' + clicks));
-            centerDiv.setAttribute("style", "border : 1px solid #000000; height: 500px; width: 30%;float:left;");
+            centerDiv.setAttribute("style", "border : 1px solid #000000; height: 600px; width: 30%;float:left;");
             CreateForm(clicks, centerDiv);
             const rightDiv = document.createElement("div");
             clicks += 1;
             var rightDivId = clicks;
             rightDiv.setAttribute("id", rightDivId);
-            rightDiv.setAttribute("style", "border : 1px solid #000000; height: 500px; width: 35%;float:left;");
+            rightDiv.setAttribute("style", "border : 1px solid #000000; height: 600px; width: 35%;float:left;");
             document.body.appendChild(leftDiv, currentDiv);
             document.body.appendChild(centerDiv, currentDiv);
             document.body.appendChild(rightDiv, currentDiv);
