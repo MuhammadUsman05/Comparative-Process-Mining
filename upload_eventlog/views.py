@@ -10,6 +10,7 @@ from mimetypes import guess_type
 from wsgiref.util import FileWrapper
 import json
 import pandas as pd
+from pm4py.objects.conversion.log import variants
 from pm4py.objects.log.importer import xes
 from pm4py.objects.log.importer.xes import importer as xes_importer_factory
 from pm4py.objects.log.util import dataframe_utils
@@ -18,6 +19,7 @@ from pm4py.objects.conversion.log.variants import to_data_frame as log_to_data_f
 import heapq
 import pm4py
 from pm4py.algo.filtering.dfg import dfg_filtering
+from pm4py.statistics.traces.log import case_statistics
 
 # Create your views here.
 
@@ -113,10 +115,6 @@ def upload_page(request):
                 # }
                 # log = filter_log(log, filters, True)
 
-                no_traces = len(log)
-                no_events = sum([len(trace) for trace in log])
-                log_attributes['no_traces'] = no_traces
-                log_attributes['no_events'] = no_events
 
                 dfg = log_to_dfg(log, 1)
 
@@ -129,6 +127,17 @@ def upload_page(request):
                 log_attributes['ColumnNamesValues'] = convert_eventlog_to_json(log)
 
                 eventlogs = [f for f in listdir(event_logs_path) if isfile(join(event_logs_path, f))]
+
+
+                #Get all the log statistics
+                no_cases, no_events, no_variants, total_case_duration, avg_case_duration, median_case_duration = get_Log_Statistics(log)
+                log_attributes['no_cases'] = no_cases
+                log_attributes['no_events'] = no_events
+                log_attributes['no_variants'] = no_variants
+                log_attributes['total_case_duration'] = total_case_duration
+                log_attributes['avg_case_duration'] = avg_case_duration
+                log_attributes['median_case_duration'] = median_case_duration
+
 
                 return render(request, 'upload.html',
                               {'eventlog_list': eventlogs, 'log_name': filename, 'log_attributes': log_attributes})
@@ -263,9 +272,9 @@ def convert_eventfile_to_log(file_path):
     else:
 
         log = xes_importer_factory.apply(file_path)
-
-    # df = log_to_data_frame.apply(log)
-    convert_eventlog_to_json(log)
+    
+    #df = log_to_data_frame.apply(log)
+    
     return log
 
 
@@ -290,3 +299,30 @@ def convert_eventlog_to_json(log):
     jsonstr += " }"
 
     return jsonstr
+
+
+def get_Log_Statistics(log):
+
+    no_cases = len(log)
+
+    no_events = sum([len(trace) for trace in log])
+    
+    variants = case_statistics.variants_get.get_variants(log)
+    no_variants = len(variants)
+
+    all_case_durations = case_statistics.get_all_casedurations(log, parameters={
+    case_statistics.Parameters.TIMESTAMP_KEY: "time:timestamp"})
+
+    total_case_duration = sum(all_case_durations)
+    total_case_duration = round(total_case_duration, 2)
+
+    avg_case_duration = total_case_duration/no_cases
+    avg_case_duration = round(avg_case_duration, 2)
+
+    median_case_duration = case_statistics.get_median_caseduration(log, parameters={
+        case_statistics.Parameters.TIMESTAMP_KEY: "time:timestamp"
+    })
+    median_case_duration = round(median_case_duration, 2)
+
+    print(no_cases, no_events, no_variants, total_case_duration, avg_case_duration, median_case_duration)
+    return no_cases, no_events, no_variants, total_case_duration, avg_case_duration, median_case_duration
