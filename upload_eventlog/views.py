@@ -313,16 +313,26 @@ def get_Log_Statistics(log):
     all_case_durations = case_statistics.get_all_casedurations(log, parameters={
     case_statistics.Parameters.TIMESTAMP_KEY: "time:timestamp"})
 
-    total_case_duration = sum(all_case_durations)
+    total_case_duration = (sum(all_case_durations))/60
     total_case_duration = round(total_case_duration, 2)
 
     avg_case_duration = total_case_duration/no_cases
     avg_case_duration = round(avg_case_duration, 2)
 
-    median_case_duration = case_statistics.get_median_caseduration(log, parameters={
+    median_case_duration = (case_statistics.get_median_caseduration(log, parameters={
         case_statistics.Parameters.TIMESTAMP_KEY: "time:timestamp"
-    })
+    }))/60
     median_case_duration = round(median_case_duration, 2)
 
+    total_case_duration = str(total_case_duration)
+    total_case_duration += 'm'
+
+    avg_case_duration = str(avg_case_duration)
+    avg_case_duration += 'm'
+    
+    median_case_duration = str(median_case_duration)
+    median_case_duration += 'm'
+
     print(no_cases, no_events, no_variants, total_case_duration, avg_case_duration, median_case_duration)
+
     return no_cases, no_events, no_variants, total_case_duration, avg_case_duration, median_case_duration
