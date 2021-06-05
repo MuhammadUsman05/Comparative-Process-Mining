@@ -115,7 +115,7 @@
         col_data_parsed = JSON.parse(col_data.replace(/&quot;/g, '"'));
         var Events = 0;
         var Traces = 0;
-        
+        var selectId = 0;
         var idToGet = 0;
         $(document).ready(function () {
             
@@ -135,20 +135,22 @@
                     dropdown.append($('<option></option>').attr('value', key).text(key));
                 });
 
-                $(document).on("change", ("select#LCN" + idToGet), function () {
-                    var selectedCol = $(("select#LCN" + idToGet+ " option:selected")).text();
+                $("select").on("change", function () {
+                    selectId = $(this).attr("id");
+                    var selectedCol = $(("select#" + selectId+ " option:selected")).text();
                     var parsedColName = selectedCol.replaceAll('Choose Column', '');
                     var colValues = col_data_parsed[parsedColName];
                     updateSelectColValBox(colValues);
                 });
 
                 var updateSelectColValBox = function (colValues) {
+                    selectId = selectId.slice(-1);
                     var colValueArray = Object.values(colValues);
                     var listItems = "";
                     for (var i = 0; i < colValueArray.length; i++) {
                         listItems += "<option value='" + colValueArray[i] + "'>" + colValueArray[i] + "</option>";
                     }
-                    $(("select#LCV" + idToGet)).html(listItems);
+                    $(("select#LCV" + selectId)).html(listItems);
                 }
 
                 let Rdropdown = $('#RCN' + clicks);
@@ -164,20 +166,22 @@
                     Rdropdown.append($('<option></option>').attr('value', key).text(key));
                 });
 
-                $(document).on("change", ("select#RCN" + clicks), function () {
-                    var selectedCol = $(("select#RCN" + clicks + " option:selected")).text();
+                $("select").on("change", function () {
+                    selectId = $(this).attr("id");
+                    var selectedCol = $(("select#" + selectId + " option:selected")).text();
                     var parsedColName = selectedCol.replaceAll('Choose Column', '');
                     var colValues = col_data_parsed[parsedColName];
                     updateSelectColValBox1(colValues);
                 });
 
                 var updateSelectColValBox1 = function (colValues) {
+                    selectId = selectId.slice(-1);
                     var colValueArray = Object.values(colValues);
                     var listItems = "";
                     for (var i = 0; i < colValueArray.length; i++) {
                         listItems += "<option value='" + colValueArray[i] + "'>" + colValueArray[i] + "</option>";
                     }
-                    $(("select#RCV" + clicks)).html(listItems);
+                    $(("select#RCV" + selectId)).html(listItems);
                 }
 
 
@@ -399,9 +403,8 @@
             median_case_duration = "{{log_attributes.median_case_duration}}";
 
 
-            var DisplayAttributes = document.createElement("div");
-            //DisplayAttributes.setAttribute("rows", 8);
-            DisplayAttributes.setAttribute("style", "width:100%;height:150px;overflow-x:hidden;overflow-y:scroll;");
+            var DisplayAttributes = document.createElement("Div");
+            DisplayAttributes.setAttribute("style", "width: 100%;height:150px;overflow-y:scroll");
 
             divElement.appendChild(DisplayAttributes);
 
