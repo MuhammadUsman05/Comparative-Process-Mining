@@ -109,6 +109,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis-network.min.js"></script>
     <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.7.1/dist/g6.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
     <script type="text/javascript">
         var clicks = 0;
         var col_data = "{{log_attributes.ColumnNamesValues}}";
@@ -117,11 +118,36 @@
         var Traces = 0;
         var selectId = 0;
         var idToGet = 0;
+        var leftGraphId = 0;
+        var rightGraphId = 0;
+        var Type_array = {
+            ValueA: 'Frequency',
+            ValueB: 'Performance',
+            ValueC: 'Case duration'
+        };
+        var LDict = new Object();
+        var RDict = new Object();
+        var filename = new Object();
         $(document).ready(function () {
-            
+
+
+            $(document).on("click", "button", function () {
+                var buttonId = $(this).attr('id');
+                selectId = buttonId.slice(-1);    
+                var RselectId = parseInt(selectId) + 1;
+                //alert(RselectId);
+                leftGraphId = document.getElementById(selectId);
+                //alert(leftGraphId);
+                rightGraphId = document.getElementById((selectId + 1));
+                GetFormValues(selectId, "L");
+                GetFormValues((RselectId), "R");
+                GetAjax("L");
+                GetAjax("R");
+            });
+
+
             $('#AddModel').click(function () {
                 idToGet = clicks - 1;
-
                 let dropdown = $('#LCN' + idToGet);
                 let dropdownVal = $('#LCV' + idToGet);
                 dropdown.empty();
@@ -137,10 +163,22 @@
 
                 $("select").on("change", function () {
                     selectId = $(this).attr("id");
-                    var selectedCol = $(("select#" + selectId+ " option:selected")).text();
-                    var parsedColName = selectedCol.replaceAll('Choose Column', '');
-                    var colValues = col_data_parsed[parsedColName];
-                    updateSelectColValBox(colValues);
+                    var OptionSet = selectId.slice(0, -1);
+                    if (OptionSet == "LCN")
+                    {
+                        var selectedCol = $(("select#" + selectId + " option:selected")).text();
+                        var parsedColName = selectedCol.replaceAll('Choose Column', '');
+                        var colValues = col_data_parsed[parsedColName];
+                        updateSelectColValBox(colValues);
+                    }
+                    if (OptionSet == "RCN")
+                    {
+                        var selectedCol = $(("select#" + selectId + " option:selected")).text();
+                        var parsedColName = selectedCol.replaceAll('Choose Column', '');
+                        var colValues = col_data_parsed[parsedColName];
+                        updateSelectColValBox1(colValues);
+                    }
+                        
                 });
 
                 var updateSelectColValBox = function (colValues) {
@@ -166,14 +204,6 @@
                     Rdropdown.append($('<option></option>').attr('value', key).text(key));
                 });
 
-                $("select").on("change", function () {
-                    selectId = $(this).attr("id");
-                    var selectedCol = $(("select#" + selectId + " option:selected")).text();
-                    var parsedColName = selectedCol.replaceAll('Choose Column', '');
-                    var colValues = col_data_parsed[parsedColName];
-                    updateSelectColValBox1(colValues);
-                });
-
                 var updateSelectColValBox1 = function (colValues) {
                     selectId = selectId.slice(-1);
                     var colValueArray = Object.values(colValues);
@@ -184,11 +214,43 @@
                     $(("select#RCV" + selectId)).html(listItems);
                 }
 
-
             });
 
-           
+
         });
+
+        function GetAjax(position)
+        {
+            if (position == "L")
+            {
+                var FilterDataGraph = LDict;
+            }
+            if (position == "R")
+            {
+                var FilterDataGraph = RDict;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: 'AjaxCall',
+                processData: false,
+                contentType: "application/json",
+                headers: { 'X-CSRFToken': "{{ csrf_token }}" },
+                data: JSON.stringify({ 'Graph': FilterDataGraph }),
+                success: function (data) {
+                    alert("Success");
+                    //alert(data.name);
+                    alert(data);
+                    //alert(data.colValue);
+                    //alert(data.Checkbox);
+                    //alert(data.Type);
+                    //alert(data.FilterPercentage);
+                },
+                failure: function (data) {
+                    alert('Got an error dude');
+                }
+            });
+        }
 
         function CreateForm(id,divElement)
         {
@@ -196,10 +258,9 @@
             var leftId = id;
             var rightId = id + 1;
             var br = document.createElement("br");
-            var form = document.createElement("form");
-            form.setAttribute("method", "post");
-            form.setAttribute("id", id);
-            form.setAttribute("action", "submit.php");
+           // var form = document.createElement("form");
+           // form.setAttribute("method", "get");
+           // form.setAttribute("id", id);
             // Create an input element for ColName
             var ColNamePara = document.createElement("p");
             var ColNameText = document.createTextNode("Column Name: ");
@@ -222,7 +283,18 @@
             ColVal.setAttribute("value", "Column Value");
             ColVal.setAttribute("id", ('LCV' + leftId));
             ColVal.setAttribute("style", "width: 50%;float:left;");
+            //
+            var TypeValuePara = document.createElement("p");
+            var TypeValueText = document.createTextNode("Type Value: ");
+            TypeValuePara.appendChild(TypeValueText);
+            TypeValuePara.setAttribute("style", "width: 50%;float:left;");
 
+            var TypeValue = document.createElement("select");
+            TypeValue.setAttribute("id", ('LTV' + leftId));
+            for (index in Type_array) {
+                TypeValue.options[TypeValue.options.length] = new Option(Type_array[index], index);
+            }
+            TypeValue.setAttribute("style", "width: 50%;float:left;");
 
             // Create an input element for CheckBox
             var FilterValPara = document.createElement("p");
@@ -291,12 +363,25 @@
             RFilterVal.setAttribute("value", "All except this Value");
             RFilterVal.setAttribute("style", "width: 5%;float:left;");
             RFilterVal.setAttribute("id", ('RCB' + rightId));
+            //
+            var RTypeValuePara = document.createElement("p");
+            var RTypeValueText = document.createTextNode("Type Value: ");
+            RTypeValuePara.appendChild(RTypeValueText);
+            RTypeValuePara.setAttribute("style", "width: 50%;float:left;");
 
+            var RTypeValue = document.createElement("select");
+            RTypeValue.setAttribute("id", ('RTV' + rightId));
+            for (i in Type_array) {
+                RTypeValue.options[RTypeValue.options.length] = new Option(Type_array[i], i);
+            }
+            RTypeValue.setAttribute("style", "width: 50%;float:left;");
+
+            //
 
             var RFilterEdgesPara = document.createElement("p");
             var RFilterEdgesText = document.createTextNode("Filters Edge Percentage: ");
             RFilterEdgesPara.appendChild(RFilterEdgesText);
-            RFilterEdgesPara.setAttribute("style", "width: 50%;float:right;height:5%");
+            RFilterEdgesPara.setAttribute("style", "width: 50%;float:right");
             var RFilterEdges = document.createElement("input");
             RFilterEdges.setAttribute("type", "range");
             RFilterEdges.setAttribute("class", "range");
@@ -304,7 +389,7 @@
             RFilterEdges.setAttribute("max", 100);
             RFilterEdges.setAttribute("value", 0);
             RFilterEdges.setAttribute("step", 10);
-            RFilterEdges.setAttribute("style", "width: 45%;float:right;height:10");
+            RFilterEdges.setAttribute("style", "width: 45%;float:right;height:10%");
             RFilterEdges.setAttribute("oninput", "this.nextElementSibling.value = this.value");
             RFilterEdges.setAttribute("id", ('RFE' + rightId));
 
@@ -314,47 +399,52 @@
 
 
 
-            var s = document.createElement("input");
+            var s = document.createElement("button");
             s.setAttribute("type", "submit");
-            s.setAttribute("value", "Compare");
+            s.innerHTML = "Compare";
+            s.setAttribute("id", ('B' + clicks));
             s.setAttribute("class", "btn btn-outline-secondary");
             s.setAttribute("style", "display: block ; margin:auto;");
 
-            form.appendChild(ColNamePara);
-            form.appendChild(RColNamePara);
-            form.appendChild(br.cloneNode());
-            form.appendChild(ColName);
-            form.appendChild(RColName);
-            form.appendChild(br.cloneNode());
+            divElement.appendChild(ColNamePara);
+            divElement.appendChild(RColNamePara);
+            divElement.appendChild(br.cloneNode());
+            divElement.appendChild(ColName);
+            divElement.appendChild(RColName);
+            divElement.appendChild(br.cloneNode());
 
-            form.appendChild(ColValPara);
-            form.appendChild(RColValPara);
-            form.appendChild(br.cloneNode());
-            form.appendChild(ColVal);
-            form.appendChild(RColVal);
-            form.appendChild(br.cloneNode());
+            divElement.appendChild(ColValPara);
+            divElement.appendChild(RColValPara);
+            divElement.appendChild(br.cloneNode());
+            divElement.appendChild(ColVal);
+            divElement.appendChild(RColVal);
+            divElement.appendChild(br.cloneNode());
 
-            form.appendChild(FilterVal);
-            form.appendChild(FilterValPara);
-            form.appendChild(RFilterVal);
-            form.appendChild(RFilterValPara);
-            form.appendChild(br.cloneNode());
+            divElement.appendChild(FilterVal);
+            divElement.appendChild(FilterValPara);
+            divElement.appendChild(RFilterVal);
+            divElement.appendChild(RFilterValPara);
+            divElement.appendChild(br.cloneNode());
 
-            form.appendChild(FilterEdgesPara);
-            form.appendChild(RFilterEdgesPara);
-            form.appendChild(br.cloneNode());
-            form.appendChild(FilterEdges);
-            form.appendChild(FilterEdgeValue);
-            
-            form.appendChild(br.cloneNode());
-            form.appendChild(RFilterEdges);
-            form.appendChild(RFilterEdgeValue);
-            form.appendChild(br.cloneNode());
-            form.appendChild(br.cloneNode());
-            form.appendChild(br.cloneNode());
+            divElement.appendChild(TypeValuePara);
+            divElement.appendChild(RTypeValuePara);
+            divElement.appendChild(br.cloneNode());
+            divElement.appendChild(TypeValue);
+            divElement.appendChild(RTypeValue);
+            divElement.appendChild(br.cloneNode());
 
-            form.appendChild(s);
-            divElement.appendChild(form);
+            divElement.appendChild(FilterEdgesPara);
+            divElement.appendChild(RFilterEdgesPara);
+            divElement.appendChild(br.cloneNode());
+            divElement.appendChild(FilterEdges);
+            divElement.appendChild(FilterEdgeValue);
+            divElement.appendChild(RFilterEdges);
+            divElement.appendChild(RFilterEdgeValue);
+            divElement.appendChild(br.cloneNode());
+
+
+            divElement.appendChild(s);
+           // divElement.appendChild(form);
 
             divElement.appendChild(br.cloneNode());
             ShowAttributes(divElement);
@@ -388,9 +478,28 @@
             divElement.appendChild(br.cloneNode());
         }
 
+        function GetFormValues(id,position)
+        {
+            if (position == "R")
+            {
+                RDict["FileName"] = filename;
+                RDict["ColumnName"] = $(("select#" + ("RCN" + id) + " option:selected")).text();
+                RDict["ColumnValue"] = $(("select#" + ("RCV" + id) + " option:selected")).text();
+                RDict["Checkbox"] = document.getElementById(("RCB" + id)).checked;
+                RDict["Type"] = $(("select#" + ("RTV" + id) + " option:selected")).text();
+                RDict["FilterPercentage"] = document.getElementById(("RFE" + id)).value;
+            }
+            if (position == "L")
+            {
+                LDict["FileName"] = filename;
+                LDict["ColumnName"] = $(("select#" + ("LCN" + id) + " option:selected")).text();
+                LDict["ColumnValue"] = $(("select#" + ("LCV" + id) + " option:selected")).text();
+                LDict["Checkbox"] = document.getElementById(("LCB" + id)).checked;
+                LDict["Type"] = $(("select#" + ("LTV" + id) + " option:selected")).text();
+                LDict["FilterPercentage"] = document.getElementById(("LFE" + id)).value;
 
-
-
+            }
+        }
 
         function ShowAttributes(divElement)
         {
@@ -418,23 +527,24 @@
         }
 
         function AddModel1(data) {
+            filename = "{{ log_name}}"
             clicks += 1;
             var leftDivId = clicks;
             // create a new div element
             const leftDiv = document.createElement("div");
             leftDiv.setAttribute("id", leftDivId);
-            leftDiv.setAttribute("style", "border : 1px solid #000000; height: 600px; width: 35%;float:left;");
+            leftDiv.setAttribute("style", "border : 1px solid #000000; height: 650px; width: 35%;float:left;");
             const currentDiv = document.getElementById("DisplayGraph");
             const Duplicatediv = document.getElementById("GetFiltersDiv");
             const centerDiv = Duplicatediv.cloneNode(true);
             centerDiv.setAttribute("id", ('Div' + clicks));
-            centerDiv.setAttribute("style", "border : 1px solid #000000; height: 600px; width: 30%;float:left;");
+            centerDiv.setAttribute("style", "border : 1px solid #000000; height: 650px; width: 30%;float:left;");
             CreateForm(clicks, centerDiv);
             const rightDiv = document.createElement("div");
             clicks += 1;
             var rightDivId = clicks;
             rightDiv.setAttribute("id", rightDivId);
-            rightDiv.setAttribute("style", "border : 1px solid #000000; height: 600px; width: 35%;float:left;");
+            rightDiv.setAttribute("style", "border : 1px solid #000000; height: 650px; width: 35%;float:left;");
             document.body.appendChild(leftDiv, currentDiv);
             document.body.appendChild(centerDiv, currentDiv);
             document.body.appendChild(rightDiv, currentDiv);
@@ -624,7 +734,6 @@
                 <div class=" col-sm-6 col-md-7 col-lg-8">
                     <form name="choice" action="" method="POST">
                         {% csrf_token %}
-
                         <select name="log_list" class="custom-select" size="10">
                             {% for eventlog in eventlog_list %}
                             <option value="{{eventlog}}">{{eventlog}}</option>

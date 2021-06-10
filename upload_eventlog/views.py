@@ -277,6 +277,38 @@ def convert_eventfile_to_log(file_path):
     
     return log
 
+def AjaxCall(request):
+    event_logs_path = os.path.join(settings.MEDIA_ROOT, "event_logs")
+    FilterData = json.load(request)['Graph']
+    ColName = FilterData['ColumnName']
+    if(ColName == "Choose Column"):
+        ColName = ""
+    ColValue = FilterData['ColumnValue']
+    Checkbox = FilterData['Checkbox']
+    Type = FilterData['Type']
+    FileName = FilterData['FileName']
+    FilterPercentage = FilterData['FilterPercentage']
+    if(ColValue == "Choose Column Value"):
+        ColValue = ""
+    
+        
+    dict = {'name':ColName,'colValue':ColValue,'Checkbox':Checkbox,'Type':Type,'FilterPercentage':FilterPercentage,'FileName':FileName}
+    settings.EVENT_LOG_NAME = FileName
+    file_dir = os.path.join(event_logs_path, FileName)
+    log = convert_eventfile_to_log(file_dir)
+
+                # Apply Filters on log
+    filters = {
+    'concept:name': ['amount']
+    }
+    log = filter_log(log, filters, True)
+    dfg = log_to_dfg(log, 1)
+    g6, temp_file = dfg_to_g6(dfg)
+    #dfg_g6_json = json.dumps(g6)
+    #print(log_attributes['dfg'])
+    return HttpResponse(json.dumps(g6), content_type="application/json")
+
+
 
 def convert_eventlog_to_json(log):
     df = log_to_data_frame.apply(log)
