@@ -141,8 +141,7 @@
                 rightGraphId = document.getElementById((selectId + 1));
                 GetFormValues(selectId, "L");
                 GetFormValues((RselectId), "R");
-                GetAjax("L");
-                GetAjax("R");
+                GetAjax(LDict, RDict);
             });
 
 
@@ -219,16 +218,17 @@
 
         });
 
-        function GetAjax(position)
+        function GetAjax(FilterDataGraphL, FilterDataGraphR)
         {
-            if (position == "L")
-            {
-                var FilterDataGraph = LDict;
-            }
-            if (position == "R")
-            {
-                var FilterDataGraph = RDict;
-            }
+            // if (position == "L")
+            // {
+            //     var FilterDataGraph = LDict;
+            // }
+            // if (position == "R")
+            // {
+            //     var FilterDataGraph = RDict;
+            // }
+
 
             $.ajax({
                 type: 'POST',
@@ -236,7 +236,7 @@
                 processData: false,
                 contentType: "application/json",
                 headers: { 'X-CSRFToken': "{{ csrf_token }}" },
-                data: JSON.stringify({ 'Graph': FilterDataGraph }),
+                data: JSON.stringify({ 'GraphL': FilterDataGraphL, 'GraphR': FilterDataGraphR }),
                 success: function (data) {
                     alert("Success");
                     //alert(data.name);
