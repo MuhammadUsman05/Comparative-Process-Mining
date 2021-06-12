@@ -284,28 +284,48 @@ def AjaxCall(request):
     if(ColName == "Choose Column"):
         ColName = ""
     ColValue = FilterData['ColumnValue']
-    Checkbox = FilterData['Checkbox']
+    KeepAllExceptThese = FilterData['Checkbox']
     Type = FilterData['Type']
     FileName = FilterData['FileName']
-    FilterPercentage = FilterData['FilterPercentage']
+    Percentage_most_freq_edges = int(FilterData['FilterPercentage'])
     if(ColValue == "Choose Column Value"):
         ColValue = ""
-    
-        
-    dict = {'name':ColName,'colValue':ColValue,'Checkbox':Checkbox,'Type':Type,'FilterPercentage':FilterPercentage,'FileName':FileName}
+
+    # dict = {'name':ColName,'colValue':ColValue,'Checkbox':Checkbox,'Type':Type,'FilterPercentage':FilterPercentage,'FileName':FileName}
+
     settings.EVENT_LOG_NAME = FileName
     file_dir = os.path.join(event_logs_path, FileName)
     log = convert_eventfile_to_log(file_dir)
 
-                # Apply Filters on log
-    filters = {
-    'concept:name': ['amount']
-    }
-    log = filter_log(log, filters, True)
-    dfg = log_to_dfg(log, 1)
+    # Apply Filters on log
+    if(ColName != ""):
+        filters = {
+            ColName: [ColValue]
+        }
+        log = filter_log(log, filters, not KeepAllExceptThese)
+
+
+    dfg = log_to_dfg(log, Percentage_most_freq_edges)
+
     g6, temp_file = dfg_to_g6(dfg)
-    #dfg_g6_json = json.dumps(g6)
-    #print(log_attributes['dfg'])
+    dfg_g6_json = json.dumps(g6)
+
+    log_attributes = {}
+
+    log_attributes['dfg'] = dfg_g6_json
+
+    # Get all the column names and respective values
+    log_attributes['ColumnNamesValues'] = convert_eventlog_to_json(log)
+
+    # Get all the log statistics
+    no_cases, no_events, no_variants, total_case_duration, avg_case_duration, median_case_duration = get_Log_Statistics(log)
+    log_attributes['no_cases'] = no_cases
+    log_attributes['no_events'] = no_events
+    log_attributes['no_variants'] = no_variants
+    log_attributes['total_case_duration'] = total_case_duration
+    log_attributes['avg_case_duration'] = avg_case_duration
+    log_attributes['median_case_duration'] = median_case_duration
+
     return HttpResponse(json.dumps(g6), content_type="application/json")
 
 
