@@ -278,17 +278,22 @@ def convert_eventfile_to_log(file_path):
     return log
 
 def AjaxCall(request):
+    print(request)
     event_logs_path = os.path.join(settings.MEDIA_ROOT, "event_logs")
-    FilterData = json.load(request)['Graph']
+    FilterData = json.load(request)['GraphL']
+    FilterDataR = json.load(request)['GraphR']
+    
     print(FilterData)
-    ColName = FilterData['ColumnName']
+    print(FilterDataR)
+
+    ColName = ['ColumnName']
     if(ColName == "Choose Column"):
         ColName = ""
-    ColValue = FilterData['ColumnValue']
-    KeepAllExceptThese = FilterData['Checkbox']
-    Type = FilterData['Type']
-    FileName = FilterData['FileName']
-    Percentage_most_freq_edges = int(FilterData['FilterPercentage'])
+    ColValue = ['ColumnValue']
+    KeepAllExceptThese = ['Checkbox']
+    Type = ['Type']
+    FileName = ['FileName']
+    Percentage_most_freq_edges = int(['FilterPercentage'])
     if(ColValue == "Choose Column Value"):
         ColValue = ""
 
