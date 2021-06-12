@@ -116,7 +116,7 @@ def upload_page(request):
                 # log = filter_log(log, filters, True)
 
 
-                dfg = log_to_dfg(log, 1)
+                dfg = log_to_dfg(log, 1, 'Frequency')
 
                 g6, temp_file = dfg_to_g6(dfg)
                 dfg_g6_json = json.dumps(g6)
@@ -188,10 +188,16 @@ def upload_page(request):
         # return render(request, 'upload.html')
 
 
-def log_to_dfg(log, percentage_most_freq_edges):
+def log_to_dfg(log, percentage_most_freq_edges, type):
     # Discover DFG
     from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
-    dfg = dfg_discovery.apply(log, variant=dfg_discovery.Variants.PERFORMANCE)
+
+    if type == 'Frequency':
+        dfg = dfg_discovery.apply(log, variant=dfg_discovery.Variants.FREQUENCY)
+    else:
+        dfg = dfg_discovery.apply(log, variant=dfg_discovery.Variants.PERFORMANCE)
+    
+    
     dfg1, sa, ea = pm4py.discover_directly_follows_graph(log)
     activities_count = pm4py.get_attribute_values(log, "concept:name")
 
@@ -279,13 +285,13 @@ def convert_eventfile_to_log(file_path):
 
 def FilterDataToLogAttributes(FilterData):
     event_logs_path = os.path.join(settings.MEDIA_ROOT, "event_logs")
-
+    print(FilterData)
     ColName = FilterData['ColumnName']
     if (ColName == "Choose Column"):
         ColName = ""
     ColValue = FilterData['ColumnValue']
     KeepAllExceptThese = FilterData['Checkbox']
-    Type = FilterData['Type']
+    type = FilterData['Type']
     FileName = FilterData['FileName']
     Percentage_most_freq_edges = int(FilterData['FilterPercentage'])
     if (ColValue == "Choose Column Value"):
@@ -304,7 +310,7 @@ def FilterDataToLogAttributes(FilterData):
         }
         log = filter_log(log, filters, not KeepAllExceptThese)
 
-    dfg = log_to_dfg(log, Percentage_most_freq_edges)
+    dfg = log_to_dfg(log, Percentage_most_freq_edges, type)
 
     g6, temp_file = dfg_to_g6(dfg)
     dfg_g6_json = json.dumps(g6)
