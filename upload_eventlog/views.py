@@ -191,8 +191,8 @@ def upload_page(request):
 def log_to_dfg(log, percentage_most_freq_edges):
     # Discover DFG
     from pm4py.algo.discovery.dfg import algorithm as dfg_discovery
-    # dfg = dfg_discovery.apply(log)
-    dfg, sa, ea = pm4py.discover_directly_follows_graph(log)
+    dfg = dfg_discovery.apply(log, variant=dfg_discovery.Variants.PERFORMANCE)
+    dfg1, sa, ea = pm4py.discover_directly_follows_graph(log)
     activities_count = pm4py.get_attribute_values(log, "concept:name")
 
     # Filter Frequent Paths
@@ -202,7 +202,7 @@ def log_to_dfg(log, percentage_most_freq_edges):
 
 def dfg_to_g6(dfg):
     unique_nodes = []
-
+    print(dfg)
     for i in dfg:
         unique_nodes.extend(i)
     unique_nodes = list(set(unique_nodes))
@@ -222,7 +222,7 @@ def dfg_to_g6(dfg):
     maxVal = max(freqList) if len(freqList) != 0 else 0
     minVal = min(freqList) if len(freqList) != 0 else 0
 
-    edges = [{'source': unique_nodes_dict[i[0]], 'target': unique_nodes_dict[i[1]], 'label': dfg[i],
+    edges = [{'source': unique_nodes_dict[i[0]], 'target': unique_nodes_dict[i[1]], 'label': round(dfg[i], 2),
               "style": {"lineWidth": ((int(dfg[i]) - minVal) / (maxVal - minVal) * (20 - 2) + 2), "endArrow": True}} for
              i in
              dfg]
@@ -280,6 +280,7 @@ def convert_eventfile_to_log(file_path):
 def AjaxCall(request):
     event_logs_path = os.path.join(settings.MEDIA_ROOT, "event_logs")
     FilterData = json.load(request)['Graph']
+    print(FilterData)
     ColName = FilterData['ColumnName']
     if(ColName == "Choose Column"):
         ColName = ""
