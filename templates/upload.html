@@ -229,6 +229,8 @@
             //     var FilterDataGraph = RDict;
             // }
 
+            tempJson = { 'GraphL': FilterDataGraphL, 'GraphR': FilterDataGraphR };
+            stringifyOutput = JSON.stringify(tempJson);
 
             $.ajax({
                 type: 'POST',
@@ -319,7 +321,7 @@
             FilterEdges.setAttribute("class", "range");
             FilterEdges.setAttribute("min", 0);
             FilterEdges.setAttribute("max", 100);
-            FilterEdges.setAttribute("value", 0);
+            FilterEdges.setAttribute("value", 100);
             FilterEdges.setAttribute("step", 10);
             FilterEdges.setAttribute("style", "width: 45%;float:left;height:10%");
             FilterEdges.setAttribute("oninput", "this.nextElementSibling.value = this.value");
@@ -387,7 +389,7 @@
             RFilterEdges.setAttribute("class", "range");
             RFilterEdges.setAttribute("min", 0);
             RFilterEdges.setAttribute("max", 100);
-            RFilterEdges.setAttribute("value", 0);
+            RFilterEdges.setAttribute("value", 100);
             RFilterEdges.setAttribute("step", 10);
             RFilterEdges.setAttribute("style", "width: 45%;float:right;height:10%");
             RFilterEdges.setAttribute("oninput", "this.nextElementSibling.value = this.value");

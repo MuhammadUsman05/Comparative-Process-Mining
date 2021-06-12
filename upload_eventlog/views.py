@@ -277,24 +277,18 @@ def convert_eventfile_to_log(file_path):
     
     return log
 
-def AjaxCall(request):
-    print(request)
+def FilterDataToLogAttributes(FilterData):
     event_logs_path = os.path.join(settings.MEDIA_ROOT, "event_logs")
-    FilterData = json.load(request)['GraphL']
-    FilterDataR = json.load(request)['GraphR']
-    
-    print(FilterData)
-    print(FilterDataR)
 
-    ColName = ['ColumnName']
-    if(ColName == "Choose Column"):
+    ColName = FilterData['ColumnName']
+    if (ColName == "Choose Column"):
         ColName = ""
-    ColValue = ['ColumnValue']
-    KeepAllExceptThese = ['Checkbox']
-    Type = ['Type']
-    FileName = ['FileName']
-    Percentage_most_freq_edges = int(['FilterPercentage'])
-    if(ColValue == "Choose Column Value"):
+    ColValue = FilterData['ColumnValue']
+    KeepAllExceptThese = FilterData['Checkbox']
+    Type = FilterData['Type']
+    FileName = FilterData['FileName']
+    Percentage_most_freq_edges = int(FilterData['FilterPercentage'])
+    if (ColValue == "Choose Column Value"):
         ColValue = ""
 
     # dict = {'name':ColName,'colValue':ColValue,'Checkbox':Checkbox,'Type':Type,'FilterPercentage':FilterPercentage,'FileName':FileName}
@@ -304,12 +298,11 @@ def AjaxCall(request):
     log = convert_eventfile_to_log(file_dir)
 
     # Apply Filters on log
-    if(ColName != ""):
+    if (ColName != ""):
         filters = {
             ColName: [ColValue]
         }
         log = filter_log(log, filters, not KeepAllExceptThese)
-
 
     dfg = log_to_dfg(log, Percentage_most_freq_edges)
 
@@ -324,7 +317,8 @@ def AjaxCall(request):
     log_attributes['ColumnNamesValues'] = convert_eventlog_to_json(log)
 
     # Get all the log statistics
-    no_cases, no_events, no_variants, total_case_duration, avg_case_duration, median_case_duration = get_Log_Statistics(log)
+    no_cases, no_events, no_variants, total_case_duration, avg_case_duration, median_case_duration = get_Log_Statistics(
+        log)
     log_attributes['no_cases'] = no_cases
     log_attributes['no_events'] = no_events
     log_attributes['no_variants'] = no_variants
@@ -332,7 +326,21 @@ def AjaxCall(request):
     log_attributes['avg_case_duration'] = avg_case_duration
     log_attributes['median_case_duration'] = median_case_duration
 
-    return HttpResponse(json.dumps(g6), content_type="application/json")
+    return log_attributes
+
+
+def AjaxCall(request):
+    req = json.load(request)
+
+    FilterDataL = req['GraphL']
+    FilterDataR = req['GraphR']
+
+    log_attributes_L = FilterDataToLogAttributes(FilterDataL)
+    log_attributes_R = FilterDataToLogAttributes(FilterDataR)
+
+    log_attributes_two_sided = {'log_attributes_L': log_attributes_L, 'log_attributes_R': log_attributes_R}
+
+    return HttpResponse(json.dumps(log_attributes_two_sided), content_type="application/json")
 
 
 
