@@ -212,7 +212,7 @@ def dfg_to_g6(dfg):
     for index, node in enumerate(unique_nodes):
         unique_nodes_dict[node] = "node_" + str(index)
 
-    nodes = [{'id': unique_nodes_dict[i], 'name': i, 'conf': [
+    nodes = [{'id': unique_nodes_dict[i], 'name': i, 'isUnique':False, 'conf': [
         {
             'label': 'Name',
             'value': i
@@ -238,6 +238,32 @@ def dfg_to_g6(dfg):
     with open(temp_file, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
     return data, temp_file
+
+
+def highlight_uncommon_nodes(g61, g62):
+    g6dict_1 = json.loads(g61)
+    g6dict_2 = json.loads(g62)
+
+    for node in g6dict_1['nodes']:
+        if not find_node_in_g6(node['name'], g6dict_2):
+            node['isUnique'] = 'True'
+        else:
+            node['isUnique'] = 'False'
+
+    for node in g6dict_2['nodes']:
+        if not find_node_in_g6(node['name'], g6dict_1):
+            node['isUnique'] = 'True'
+        else:
+            node['isUnique'] = 'False'
+
+    return g6dict_1, g6dict_2
+
+
+def find_node_in_g6(node_name, g6_dict):
+    for node in g6_dict['nodes']:
+        if node['name'] == node_name:
+            return True
+    return False
 
 
 def filter_log(log, filterItemList, isKeepOnlyThese=True):
@@ -276,6 +302,7 @@ def convert_eventfile_to_log(file_path):
     #df = log_to_data_frame.apply(log)
     
     return log
+
 
 def FilterDataToLogAttributes(FilterData):
     event_logs_path = os.path.join(settings.MEDIA_ROOT, "event_logs")
@@ -338,10 +365,14 @@ def AjaxCall(request):
     log_attributes_L = FilterDataToLogAttributes(FilterDataL)
     log_attributes_R = FilterDataToLogAttributes(FilterDataR)
 
+    g6L, g6R = highlight_uncommon_nodes(log_attributes_L['dfg'], log_attributes_R['dfg'])
+
+    log_attributes_L['dfg'] = g6L
+    log_attributes_R['dfg'] = g6R
+
     log_attributes_two_sided = {'log_attributes_L': log_attributes_L, 'log_attributes_R': log_attributes_R}
 
     return HttpResponse(json.dumps(log_attributes_two_sided), content_type="application/json")
-
 
 
 def convert_eventlog_to_json(log):
