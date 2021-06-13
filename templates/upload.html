@@ -144,7 +144,7 @@
                 rightGraphId.setAttribute("style", "border : 1px solid #000000; height: 650px; width: 35%;float:left;");
                 GetFormValues(selectId, "L");
                 GetFormValues((RselectId), "R");
-                GetAjax(LDict, RDict);
+                GetAjax(LDict, RDict, selectId, RselectId);
             });
 
 
@@ -221,7 +221,7 @@
 
         });
 
-        function GetAjax(FilterDataGraphL, FilterDataGraphR)
+        function GetAjax(FilterDataGraphL, FilterDataGraphR,Ldiv,Rdiv)
         {
             // if (position == "L")
             // {
@@ -245,8 +245,8 @@
                 success: function (data) {
                     alert("Success");
                     //alert(data["log_attributes_L"]["dfg"]);
-                    CreateGraph(JSON.stringify(data["log_attributes_L"]["dfg"]), 1);
-                    CreateGraph(JSON.stringify(data["log_attributes_R"]["dfg"]), 2);
+                    CreateGraph(JSON.stringify(data["log_attributes_L"]["dfg"]), Ldiv);
+                    CreateGraph(JSON.stringify(data["log_attributes_R"]["dfg"]), Rdiv);
                 },
                 failure: function (data) {
                     alert('Got an error dude');
