@@ -102,6 +102,8 @@
             top: -1px;
             left: 50%;
         }
+
+
 </style>
 
 <head>
@@ -134,17 +136,28 @@
                 var buttonId = $(this).attr('id');
                 selectId = buttonId.slice(-1);    
                 var RselectId = parseInt(selectId) + 1;
-                //alert(RselectId);
                 leftGraphId = document.getElementById(selectId);
-                leftGraphId.innerHTML = "";
-                leftGraphId.setAttribute("style", "border : 1px solid #000000; height: 650px; width: 35%;float:left;");
-                //alert(leftGraphId);
                 rightGraphId = document.getElementById(RselectId);
-                rightGraphId.innerHTML = "";
-                rightGraphId.setAttribute("style", "border : 1px solid #000000; height: 650px; width: 35%;float:left;");
-                GetFormValues(selectId, "L");
-                GetFormValues((RselectId), "R");
-                GetAjax(LDict, RDict, selectId, RselectId);
+                if (buttonId == ("B" + selectId))
+                {
+                    //alert("Inside B");
+                    leftGraphId = document.getElementById(selectId);
+                    leftGraphId.innerHTML = "";
+                    leftGraphId.setAttribute("style", "border : 1px solid #000000; height: 650px; width: 35%;float:left;");
+                    //alert(leftGraphId);
+                    rightGraphId = document.getElementById(RselectId);
+                    rightGraphId.innerHTML = "";
+                    rightGraphId.setAttribute("style", "border : 1px solid #000000; height: 650px; width: 35%;float:left;");
+                    GetFormValues(selectId, "L");
+                    GetFormValues((RselectId), "R");
+                    GetAjax(LDict, RDict, selectId, RselectId);
+                }
+                if (buttonId == ("P" + selectId))
+                {
+                    //alert("Inside P");
+                    printDiv(selectId, RselectId);
+                }
+                
             });
 
 
@@ -243,7 +256,7 @@
                 headers: { 'X-CSRFToken': "{{ csrf_token }}" },
                 data: JSON.stringify({ 'GraphL': FilterDataGraphL, 'GraphR': FilterDataGraphR }),
                 success: function (data) {
-                    alert("Success");
+                    //alert("Success");
                     //alert(data["log_attributes_L"]["dfg"]);
                     CreateGraph(JSON.stringify(data["log_attributes_L"]["dfg"]), Ldiv);
                     CreateGraph(JSON.stringify(data["log_attributes_R"]["dfg"]), Rdiv);
@@ -415,7 +428,14 @@
             s.innerHTML = "Compare";
             s.setAttribute("id", ('B' + clicks));
             s.setAttribute("class", "btn btn-outline-secondary");
-            s.setAttribute("style", "display: block ; margin:auto;");
+            s.setAttribute("style", "display: block ; margin:0 20%;");
+
+            var p = document.createElement("button");
+            p.setAttribute("type", "submit");
+            p.innerHTML = "Print Graphs";
+            p.setAttribute("id", ('P' + clicks));
+            p.setAttribute("class", "btn btn-outline-secondary");
+            p.setAttribute("style", "float:left;margin:0 20%;");
 
             divElement.appendChild(ColNamePara);
             divElement.appendChild(RColNamePara);
@@ -453,8 +473,8 @@
             divElement.appendChild(RFilterEdgeValue);
             divElement.appendChild(br.cloneNode());
 
-
-            divElement.appendChild(s);
+            divElement.appendChild(p);
+            divElement.appendChild(s); 
            // divElement.appendChild(form);
 
             divElement.appendChild(br.cloneNode());
@@ -487,6 +507,41 @@
             divElement.appendChild(VS);
             divElement.appendChild(REvents);
             divElement.appendChild(br.cloneNode());
+        }
+
+        function printDiv(Lgraph,Rgraph)
+        {
+
+            var LgraphDiv = document.getElementById(Lgraph).firstElementChild.toDataURL();
+            var centerDiv = document.getElementById("Att" + Lgraph).innerHTML;
+            var RgraphDiv = document.getElementById(Rgraph).firstElementChild.toDataURL();
+            var htmlToPrint = '' +
+                '<style type="text/css">' +
+                'height:300px' +
+                'border:1px solid #000;' +
+                'padding;0.5em;' +
+                'width:20%' +
+                '</style>';
+
+
+            htmlToPrint += centerDiv.innerHTML;
+            const a = window.open('', '', 'width=600,height=650');
+            a.document.open();
+            a.document.write('<html>');
+            a.document.write('<body>');
+            a.document.write('<div>');
+            a.document.write('<img src="' + LgraphDiv + '" style="height:450px;width:35%;float:left;">');
+            a.document.write('<div style="height:50%;width:30%;float:left;"> "' + centerDiv+'"</div>');
+            a.document.write('<img src="' + RgraphDiv + '" style="height:450px;width:35%;float:right;">');
+            a.document.write('</div>');
+            a.document.write('</body></html>');
+            a.document.close();
+            a.document.addEventListener('load', function () {
+                a.focus();
+                a.print();
+                a.close();
+            }, true);
+
         }
 
         function GetFormValues(id,position)
