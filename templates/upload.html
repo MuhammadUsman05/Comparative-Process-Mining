@@ -247,6 +247,15 @@
                     //alert(data["log_attributes_L"]["dfg"]);
                     CreateGraph(JSON.stringify(data["log_attributes_L"]["dfg"]), Ldiv);
                     CreateGraph(JSON.stringify(data["log_attributes_R"]["dfg"]), Rdiv);
+                    DisplayAttributes = document.getElementById("Att"+Ldiv);
+                    DisplayAttributes.innerHTML = "";
+                    DisplayAttributes.setAttribute("style", "width: 100%;height:150px;overflow-y:scroll");
+                    CreateAttributeText(data["log_attributes_L"]["no_events"], data["log_attributes_R"]["no_events"], "Events", DisplayAttributes);
+                    CreateAttributeText(data["log_attributes_L"]["no_cases"], data["log_attributes_R"]["no_cases"], "Cases", DisplayAttributes);
+                    CreateAttributeText(data["log_attributes_L"]["no_variants"], data["log_attributes_R"]["no_variants"], "Number of Variants", DisplayAttributes);
+                    CreateAttributeText(data["log_attributes_L"]["total_case_duration"], data["log_attributes_R"]["total_case_duration"], "Total Case Duration", DisplayAttributes);
+                    CreateAttributeText(data["log_attributes_L"]["avg_case_duration"], data["log_attributes_R"]["avg_case_duration"], "Average Case Duration", DisplayAttributes);
+                    CreateAttributeText(data["log_attributes_L"]["median_case_duration"], data["log_attributes_R"]["median_case_duration"], "Median Case Duration", DisplayAttributes);
                 },
                 failure: function (data) {
                     alert('Got an error dude');
@@ -452,17 +461,17 @@
             ShowAttributes(divElement);
         }
 
-        function CreateAttributeText(Value, AttributeName,divElement)
+        function CreateAttributeText(LValue,RValue, AttributeName,divElement)
         {
             var br = document.createElement("br");
             var Event = document.createElement("h4");
             var EventText = document.createTextNode(AttributeName);
             Event.setAttribute("style", "width: 100%;color:grey;text-align:center;float:left");
             var LEvents = document.createElement("h4");
-            var LEventsText = document.createTextNode(Value);
+            var LEventsText = document.createTextNode(LValue);
             LEvents.setAttribute("style", "width: 45%;float:left;color:green;text-align:center");
             var REvents = document.createElement("h4");
-            var REventsText = document.createTextNode(Value);
+            var REventsText = document.createTextNode(RValue);
             REvents.setAttribute("style", "width: 45%;float:right;color:green;text-align:center");
             var VS = document.createElement("p");
             var VSText = document.createTextNode("VS");
@@ -516,15 +525,16 @@
 
             var DisplayAttributes = document.createElement("Div");
             DisplayAttributes.setAttribute("style", "width: 100%;height:150px;overflow-y:scroll");
+            DisplayAttributes.setAttribute("id", "Att" + clicks);
 
             divElement.appendChild(DisplayAttributes);
 
-            CreateAttributeText(Events, "Events", DisplayAttributes);
-            CreateAttributeText(Cases, "Cases", DisplayAttributes);
-            CreateAttributeText(no_variants, "Number of Variants", DisplayAttributes);
-            CreateAttributeText(total_case_duration, "Total Case Duration", DisplayAttributes);
-            CreateAttributeText(avg_case_duration, "Average Case Duration", DisplayAttributes);
-            CreateAttributeText(median_case_duration, "Median Case Duration", DisplayAttributes);
+            CreateAttributeText(Events, Events, "Events", DisplayAttributes);
+            CreateAttributeText(Cases, Cases, "Cases", DisplayAttributes);
+            CreateAttributeText(no_variants, no_variants, "Number of Variants", DisplayAttributes);
+            CreateAttributeText(total_case_duration, total_case_duration, "Total Case Duration", DisplayAttributes);
+            CreateAttributeText(avg_case_duration, avg_case_duration, "Average Case Duration", DisplayAttributes);
+            CreateAttributeText(median_case_duration, median_case_duration, "Median Case Duration", DisplayAttributes);
 
         }
 
