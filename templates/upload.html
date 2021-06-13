@@ -620,6 +620,12 @@
             rangeInput();
         }
 
+        function nodecolFunc(node) {
+            if (node.isUnique === 'True') 
+                return  '#FF0000';        
+            return  '#C6E5FF';   
+        }
+
         function CreateGraph(JObj, id)
         {
             const container = document.getElementById(id);
@@ -699,7 +705,7 @@
                                 height: 50,
                                 radius: 10,
                                 stroke: '#5B8FF9',
-                                fill: '#C6E5FF',
+                                fill: nodecolFunc(cfg),
                                 lineWidth: 3,
                             },
                             name: 'rect-shape',
