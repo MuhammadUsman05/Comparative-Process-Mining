@@ -137,8 +137,12 @@
                 var RselectId = parseInt(selectId) + 1;
                 //alert(RselectId);
                 leftGraphId = document.getElementById(selectId);
+                leftGraphId.innerHTML = "";
+                leftGraphId.setAttribute("style", "border : 1px solid #000000; height: 650px; width: 35%;float:left;");
                 //alert(leftGraphId);
-                rightGraphId = document.getElementById((selectId + 1));
+                rightGraphId = document.getElementById(RselectId);
+                rightGraphId.innerHTML = "";
+                rightGraphId.setAttribute("style", "border : 1px solid #000000; height: 650px; width: 35%;float:left;");
                 GetFormValues(selectId, "L");
                 GetFormValues((RselectId), "R");
                 GetAjax(LDict, RDict);
@@ -241,12 +245,9 @@
                 data: JSON.stringify({ 'GraphL': FilterDataGraphL, 'GraphR': FilterDataGraphR }),
                 success: function (data) {
                     alert("Success");
-                    //alert(data.name);
-                    alert(data);
-                    //alert(data.colValue);
-                    //alert(data.Checkbox);
-                    //alert(data.Type);
-                    //alert(data.FilterPercentage);
+                    //alert(data["log_attributes_L"]["dfg"]);
+                    CreateGraph(JSON.stringify(data["log_attributes_L"]["dfg"]), 1);
+                    CreateGraph(JSON.stringify(data["log_attributes_R"]["dfg"]), 2);
                 },
                 failure: function (data) {
                     alert('Got an error dude');
@@ -558,7 +559,7 @@
         function CreateGraph(JObj, id)
         {
             const container = document.getElementById(id);
-            const width = container.scrollWidth;
+            const width = container.scrollWidth || 500;
             const height = container.scrollHeight || 500;
             const graph = new G6.Graph({
                 container,
