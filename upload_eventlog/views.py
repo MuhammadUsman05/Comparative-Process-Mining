@@ -419,7 +419,10 @@ def get_Log_Statistics(log):
     total_case_duration = (sum(all_case_durations))/60
     total_case_duration = round(total_case_duration, 2)
 
-    avg_case_duration = total_case_duration/no_cases
+    if no_cases <= 0:
+        avg_case_duration = 0
+    else:
+        avg_case_duration = total_case_duration/no_cases
     avg_case_duration = round(avg_case_duration, 2)
 
     median_case_duration = (case_statistics.get_median_caseduration(log, parameters={
