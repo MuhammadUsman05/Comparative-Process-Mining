@@ -368,9 +368,15 @@ def FilterDataToLogAttributes(FilterData, div_id):
 def AjaxDownload(request):
     req = json.load(request)
 
-    DivIds = {'Lid':req['Ldiv'],'Rid':req['Rdiv']}
+    DivIds = {'Lid': req['Ldiv'], 'Rid': req['Rdiv']}
 
-    log = filtered_logs[1]
+    div_id = int(DivIds['Lid'])
+
+    log = filtered_logs[div_id]
+
+    from pm4py.objects.log.exporter.xes import exporter as xes_exporter
+    file_dir = 'temp_log.xes'
+    xes_exporter.apply(log, file_dir)
 
     try:
         wrapper = FileWrapper(open(file_dir, 'rb'))
