@@ -158,9 +158,26 @@
                     printDiv(selectId, RselectId);
                 }
                 if (buttonId == ("D" + selectId)) {
-                    alert("Inside D");
-                    //printDiv(selectId, RselectId);
+                    //alert("Inside D");
                     AjaxDownload(selectId, RselectId)
+                }
+                if (buttonId == ("PrintLGraph" + selectId)) {
+                    //alert("Inside Lgraph");
+                    //printDiv(selectId, RselectId);
+                    var link = document.createElement('a');
+                    link.setAttribute('href', leftGraphId.firstElementChild.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+                    link.setAttribute('download', 'LeftGraph.png');
+                    link.click();
+                    link.delete;
+                }
+                if (buttonId == ("PrintRGraph" + selectId)) {
+                    //alert("Inside Rgraph");
+                    //printDiv(selectId, RselectId);
+                    var link = document.createElement('a');
+                    link.setAttribute('href', rightGraphId.firstElementChild.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+                    link.setAttribute('download', 'RightGraph.png');
+                    link.click();
+                    link.delete;
                 }
 
                 
@@ -457,10 +474,24 @@
 
             var p = document.createElement("button");
             p.setAttribute("type", "submit");
-            p.innerHTML = "Print Graphs";
+            p.innerHTML = "PDF Download";
             p.setAttribute("id", ('P' + clicks));
             p.setAttribute("class", "btn btn-outline-secondary");
-            p.setAttribute("style", "float:left;margin:0 20%;");
+            p.setAttribute("style", "float:left;width:25%;");
+
+            var PrintLGraph = document.createElement("button");
+            PrintLGraph.setAttribute("type", "submit");
+            PrintLGraph.innerHTML = "Left Graph";
+            PrintLGraph.setAttribute("id", ('PrintLGraph' + clicks));
+            PrintLGraph.setAttribute("class", "btn btn-outline-secondary");
+            PrintLGraph.setAttribute("style", "float:left;width:25%;");
+
+            var PrintRGraph = document.createElement("button");
+            PrintRGraph.setAttribute("type", "submit");
+            PrintRGraph.innerHTML = "Right Graph";
+            PrintRGraph.setAttribute("id", ('PrintRGraph' + clicks));
+            PrintRGraph.setAttribute("class", "btn btn-outline-secondary");
+            PrintRGraph.setAttribute("style", "float:left;width:25%;");
 
 
             var d = document.createElement("button");
@@ -468,7 +499,7 @@
             d.innerHTML = "Export Logs";
             d.setAttribute("id", ('D' + clicks));
             d.setAttribute("class", "btn btn-outline-secondary");
-            d.setAttribute("style", "float:left;");
+            d.setAttribute("style", "float:left;width:25%;");
 
             divElement.appendChild(ColNamePara);
             divElement.appendChild(RColNamePara);
@@ -508,8 +539,10 @@
 
             divElement.appendChild(s);
             divElement.appendChild(br.cloneNode());
-            divElement.appendChild(p); 
-            divElement.appendChild(d); 
+            divElement.appendChild(PrintLGraph);
+            divElement.appendChild(p);
+            divElement.appendChild(d);
+            divElement.appendChild(PrintRGraph);
            // divElement.appendChild(form);
 
             divElement.appendChild(br.cloneNode());
