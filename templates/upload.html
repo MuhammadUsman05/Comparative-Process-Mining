@@ -143,11 +143,11 @@
                     //alert("Inside B");
                     leftGraphId = document.getElementById(selectId);
                     leftGraphId.innerHTML = "";
-                    leftGraphId.setAttribute("style", "border : 1px solid #000000; height: 650px; width: 35%;float:left;");
+                    leftGraphId.setAttribute("style", "border : 1px solid #000000; height: 750px; width: 35%;float:left;");
                     //alert(leftGraphId);
                     rightGraphId = document.getElementById(RselectId);
                     rightGraphId.innerHTML = "";
-                    rightGraphId.setAttribute("style", "border : 1px solid #000000; height: 650px; width: 35%;float:left;");
+                    rightGraphId.setAttribute("style", "border : 1px solid #000000; height: 750px; width: 35%;float:left;");
                     GetFormValues(selectId, "L");
                     GetFormValues((RselectId), "R");
                     GetAjax(LDict, RDict, selectId, RselectId);
@@ -160,7 +160,7 @@
                 if (buttonId == ("D" + selectId)) {
                     alert("Inside D");
                     //printDiv(selectId, RselectId);
-                    AjaxDownload(leftGraphId, rightGraphId)
+                    AjaxDownload(selectId, RselectId)
                 }
 
                 
@@ -287,7 +287,7 @@
                     CreateGraph(JSON.stringify(data["log_attributes_R"]["dfg"]), Rdiv);
                     DisplayAttributes = document.getElementById("Att"+Ldiv);
                     DisplayAttributes.innerHTML = "";
-                    DisplayAttributes.setAttribute("style", "width: 100%;height:150px;overflow-y:scroll");
+                    DisplayAttributes.setAttribute("style", "width: 100%;height:250px;overflow-y:scroll");
                     CreateAttributeText(data["log_attributes_L"]["no_events"], data["log_attributes_R"]["no_events"], "Events", DisplayAttributes);
                     CreateAttributeText(data["log_attributes_L"]["no_cases"], data["log_attributes_R"]["no_cases"], "Cases", DisplayAttributes);
                     CreateAttributeText(data["log_attributes_L"]["no_variants"], data["log_attributes_R"]["no_variants"], "Number of Variants", DisplayAttributes);
