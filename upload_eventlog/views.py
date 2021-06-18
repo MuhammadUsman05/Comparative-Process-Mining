@@ -23,6 +23,8 @@ from pm4py.statistics.traces.log import case_statistics
 
 # Create your views here.
 
+filtered_logs = {}
+
 def upload_page(request):
     log_attributes = {}
     event_logs_path = os.path.join(settings.MEDIA_ROOT, "event_logs")
@@ -310,7 +312,7 @@ def convert_eventfile_to_log(file_path):
     return log
 
 
-def FilterDataToLogAttributes(FilterData):
+def FilterDataToLogAttributes(FilterData, div_id):
     event_logs_path = os.path.join(settings.MEDIA_ROOT, "event_logs")
     print(FilterData)
     ColName = FilterData['ColumnName']
@@ -336,6 +338,8 @@ def FilterDataToLogAttributes(FilterData):
             ColName: [ColValue]
         }
         log = filter_log(log, filters, not KeepAllExceptThese)
+
+    filtered_logs[div_id] = log
 
     dfg = log_to_dfg(log, Percentage_most_freq_edges, type)
 
@@ -366,8 +370,15 @@ def AjaxDownload(request):
 
     DivIds = {'Lid':req['Ldiv'],'Rid':req['Rdiv']}
 
-    return HttpResponse(json.dumps(DivIds), content_type="application/json")
+    log = filtered_logs[1]
 
+    try:
+        wrapper = FileWrapper(open(file_dir, 'rb'))
+        response = HttpResponse(wrapper, content_type='application/force-download')
+        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_dir)
+        return response
+    except Exception as e:
+        return None
 
 def AjaxCall(request):
     req = json.load(request)
@@ -375,8 +386,11 @@ def AjaxCall(request):
     FilterDataL = req['GraphL']
     FilterDataR = req['GraphR']
 
-    log_attributes_L = FilterDataToLogAttributes(FilterDataL)
-    log_attributes_R = FilterDataToLogAttributes(FilterDataR)
+    ldiv_id = int(req['Ldiv'])
+    rdiv_id = int(req['Rdiv'])
+
+    log_attributes_L = FilterDataToLogAttributes(FilterDataL, ldiv_id)
+    log_attributes_R = FilterDataToLogAttributes(FilterDataR, rdiv_id)
 
     g6L, g6R = highlight_uncommon_nodes(log_attributes_L['dfg'], log_attributes_R['dfg'])
 
