@@ -157,6 +157,12 @@
                     //alert("Inside P");
                     printDiv(selectId, RselectId);
                 }
+                if (buttonId == ("D" + selectId)) {
+                    alert("Inside D");
+                    //printDiv(selectId, RselectId);
+                    AjaxDownload(leftGraphId, rightGraphId)
+                }
+
                 
             });
 
@@ -234,6 +240,25 @@
 
         });
 
+        function AjaxDownload(Ldiv,Rdiv)
+        {
+            $.ajax({
+                type: 'POST',
+                url: 'AjaxDownload',
+                processData: false,
+                contentType: "application/json",
+                headers: { 'X-CSRFToken': "{{ csrf_token }}" },
+                data: JSON.stringify({ 'Ldiv': Ldiv, 'Rdiv': Rdiv }),
+                success: function (data) {
+                    alert("Success");
+                },
+                failure: function (data) {
+                    alert('Got an error dude');
+                }
+            });
+
+        }
+
         function GetAjax(FilterDataGraphL, FilterDataGraphR,Ldiv,Rdiv)
         {
             // if (position == "L")
@@ -254,7 +279,7 @@
                 processData: false,
                 contentType: "application/json",
                 headers: { 'X-CSRFToken': "{{ csrf_token }}" },
-                data: JSON.stringify({ 'GraphL': FilterDataGraphL, 'GraphR': FilterDataGraphR }),
+                data: JSON.stringify({ 'GraphL': FilterDataGraphL, 'GraphR': FilterDataGraphR, 'Ldiv': Ldiv, 'Rdiv': Rdiv }),
                 success: function (data) {
                     //alert("Success");
                     //alert(data["log_attributes_L"]["dfg"]);
@@ -286,7 +311,7 @@
            // form.setAttribute("method", "get");
            // form.setAttribute("id", id);
             // Create an input element for ColName
-            var ColNamePara = document.createElement("p");
+            var ColNamePara = document.createElement("span");
             var ColNameText = document.createTextNode("Column Name: ");
             ColNamePara.appendChild(ColNameText);
             ColNamePara.setAttribute("style", "width: 50%;float:left;");
@@ -298,46 +323,46 @@
 
 
             // Create an input element for ColValue
-            var ColValPara = document.createElement("p");
+            var ColValPara = document.createElement("span");
             var ColValueText = document.createTextNode("Column Value: ");
             ColValPara.appendChild(ColValueText);
-            ColValPara.setAttribute("style", "width: 50%;float:left;");
+            ColValPara.setAttribute("style", "width: 50%;float:left;margin-top: 5px;");
 
             var ColVal = document.createElement("select");
             ColVal.setAttribute("value", "Column Value");
             ColVal.setAttribute("id", ('LCV' + leftId));
             ColVal.setAttribute("style", "width: 50%;float:left;");
             //
-            var TypeValuePara = document.createElement("p");
+            var TypeValuePara = document.createElement("span");
             var TypeValueText = document.createTextNode("Type Value: ");
             TypeValuePara.appendChild(TypeValueText);
-            TypeValuePara.setAttribute("style", "width: 50%;float:left;");
+            TypeValuePara.setAttribute("style", "width: 50%;float:left;margin-top: 5px;");
 
             var TypeValue = document.createElement("select");
             TypeValue.setAttribute("id", ('LTV' + leftId));
             for (index in Type_array) {
                 TypeValue.options[TypeValue.options.length] = new Option(Type_array[index], index);
             }
-            TypeValue.setAttribute("style", "width: 50%;float:left;");
+            TypeValue.setAttribute("style", "width: 50%;float:left;margin-top: 5px;");
 
             // Create an input element for CheckBox
-            var FilterValPara = document.createElement("p");
+            var FilterValPara = document.createElement("span");
             var FilterValText = document.createTextNode("All except this value");
             FilterValPara.appendChild(FilterValText);
-            FilterValPara.setAttribute("style", "width: 45%;float:left;");
+            FilterValPara.setAttribute("style", "width: 45%;float:left;margin-top: 5px;");
 
             var FilterVal = document.createElement("input");
             FilterVal.setAttribute("type", "checkbox");
             FilterVal.setAttribute("value", "All except this Value");
-            FilterVal.setAttribute("style", "width: 5%;float:left;");
+            FilterVal.setAttribute("style", "width: 5%;float:left;margin-top: 5px;");
             FilterVal.setAttribute("id", ('LCB' + leftId));
 
 
 
-            var FilterEdgesPara = document.createElement("p");
+            var FilterEdgesPara = document.createElement("span");
             var FilterEdgesText = document.createTextNode("Filters Edge Percentage: ");
             FilterEdgesPara.appendChild(FilterEdgesText);
-            FilterEdgesPara.setAttribute("style", "width: 50%;float:left;");
+            FilterEdgesPara.setAttribute("style", "width: 50%;float:left;margin-top: 5px;");
             var FilterEdges = document.createElement("input");
             FilterEdges.setAttribute("type", "range");
             FilterEdges.setAttribute("class", "range");
@@ -345,16 +370,16 @@
             FilterEdges.setAttribute("max", 100);
             FilterEdges.setAttribute("value", 100);
             FilterEdges.setAttribute("step", 10);
-            FilterEdges.setAttribute("style", "width: 45%;float:left;height:10%");
+            FilterEdges.setAttribute("style", "width: 45%;float:left;height:5%;");
             FilterEdges.setAttribute("oninput", "this.nextElementSibling.value = this.value");
             FilterEdges.setAttribute("id", ('LFE' + leftId));
 
 
             var FilterEdgeValue = document.createElement("output");
-            FilterEdgeValue.setAttribute("style", "width: 5%;float:left;height:10%");
+            FilterEdgeValue.setAttribute("style", "width: 5%;float:left;margin-top: 5px;");
 
             // Right Graph Filters
-            var RColNamePara = document.createElement("p");
+            var RColNamePara = document.createElement("span");
             var RColNameText = document.createTextNode("Column Name: ");
             RColNamePara.appendChild(RColNameText);
             RColNamePara.setAttribute("style", "width: 50%;float:right;");
@@ -365,10 +390,10 @@
 
 
             // Create an input element for ColValue
-            var RColValPara = document.createElement("p");
+            var RColValPara = document.createElement("span");
             var RColValueText = document.createTextNode("Column Value: ");
             RColValPara.appendChild(RColValueText);
-            RColValPara.setAttribute("style", "width: 50%;float:right;");
+            RColValPara.setAttribute("style", "width: 50%;float:right;margin-top: 5px;");
 
             var RColVal = document.createElement("select");
             RColVal.setAttribute("value", "Column Value");
@@ -377,35 +402,35 @@
 
 
             // Create an input element for CheckBox
-            var RFilterValPara = document.createElement("p");
+            var RFilterValPara = document.createElement("span");
             var RFilterValText = document.createTextNode("All except this value");
             RFilterValPara.appendChild(RFilterValText);
-            RFilterValPara.setAttribute("style", "width: 45%;float:right;");
+            RFilterValPara.setAttribute("style", "width: 45%;float:right;margin-top: 5px;");
 
             var RFilterVal = document.createElement("input");
             RFilterVal.setAttribute("type", "checkbox");
             RFilterVal.setAttribute("value", "All except this Value");
-            RFilterVal.setAttribute("style", "width: 5%;float:left;");
+            RFilterVal.setAttribute("style", "width: 5%;float:left;margin-top: 5px;");
             RFilterVal.setAttribute("id", ('RCB' + rightId));
             //
-            var RTypeValuePara = document.createElement("p");
+            var RTypeValuePara = document.createElement("span");
             var RTypeValueText = document.createTextNode("Type Value: ");
             RTypeValuePara.appendChild(RTypeValueText);
-            RTypeValuePara.setAttribute("style", "width: 50%;float:left;");
+            RTypeValuePara.setAttribute("style", "width: 50%;float:left;margin-top: 5px;");
 
             var RTypeValue = document.createElement("select");
             RTypeValue.setAttribute("id", ('RTV' + rightId));
             for (i in Type_array) {
                 RTypeValue.options[RTypeValue.options.length] = new Option(Type_array[i], i);
             }
-            RTypeValue.setAttribute("style", "width: 50%;float:left;");
+            RTypeValue.setAttribute("style", "width: 50%;float:left;margin-top: 5px;");
 
             //
 
-            var RFilterEdgesPara = document.createElement("p");
+            var RFilterEdgesPara = document.createElement("span");
             var RFilterEdgesText = document.createTextNode("Filters Edge Percentage: ");
             RFilterEdgesPara.appendChild(RFilterEdgesText);
-            RFilterEdgesPara.setAttribute("style", "width: 50%;float:right");
+            RFilterEdgesPara.setAttribute("style", "width: 50%;float:right;margin-top: 5px;");
             var RFilterEdges = document.createElement("input");
             RFilterEdges.setAttribute("type", "range");
             RFilterEdges.setAttribute("class", "range");
@@ -413,13 +438,13 @@
             RFilterEdges.setAttribute("max", 100);
             RFilterEdges.setAttribute("value", 100);
             RFilterEdges.setAttribute("step", 10);
-            RFilterEdges.setAttribute("style", "width: 45%;float:right;height:10%");
+            RFilterEdges.setAttribute("style", "width: 45%;float:right;height:5%;");
             RFilterEdges.setAttribute("oninput", "this.nextElementSibling.value = this.value");
             RFilterEdges.setAttribute("id", ('RFE' + rightId));
 
 
             var RFilterEdgeValue = document.createElement("output");
-            RFilterEdgeValue.setAttribute("style", "width: 5%;float:right;height:10%");
+            RFilterEdgeValue.setAttribute("style", "width: 5%;float:right;margin-top: 5px;");
 
 
 
@@ -428,7 +453,7 @@
             s.innerHTML = "Compare";
             s.setAttribute("id", ('B' + clicks));
             s.setAttribute("class", "btn btn-outline-secondary");
-            s.setAttribute("style", "display: block ; margin:0 20%;");
+            s.setAttribute("style", "display: block ; margin:auto;");
 
             var p = document.createElement("button");
             p.setAttribute("type", "submit");
@@ -437,16 +462,24 @@
             p.setAttribute("class", "btn btn-outline-secondary");
             p.setAttribute("style", "float:left;margin:0 20%;");
 
+
+            var d = document.createElement("button");
+            d.setAttribute("type", "submit");
+            d.innerHTML = "Export Logs";
+            d.setAttribute("id", ('D' + clicks));
+            d.setAttribute("class", "btn btn-outline-secondary");
+            d.setAttribute("style", "float:left;");
+
             divElement.appendChild(ColNamePara);
             divElement.appendChild(RColNamePara);
-            divElement.appendChild(br.cloneNode());
+            //divElement.appendChild(br.cloneNode());
             divElement.appendChild(ColName);
             divElement.appendChild(RColName);
             divElement.appendChild(br.cloneNode());
 
             divElement.appendChild(ColValPara);
             divElement.appendChild(RColValPara);
-            divElement.appendChild(br.cloneNode());
+            //divElement.appendChild(br.cloneNode());
             divElement.appendChild(ColVal);
             divElement.appendChild(RColVal);
             divElement.appendChild(br.cloneNode());
@@ -473,8 +506,10 @@
             divElement.appendChild(RFilterEdgeValue);
             divElement.appendChild(br.cloneNode());
 
-            divElement.appendChild(p);
-            divElement.appendChild(s); 
+            divElement.appendChild(s);
+            divElement.appendChild(br.cloneNode());
+            divElement.appendChild(p); 
+            divElement.appendChild(d); 
            // divElement.appendChild(form);
 
             divElement.appendChild(br.cloneNode());
@@ -579,7 +614,7 @@
 
 
             var DisplayAttributes = document.createElement("Div");
-            DisplayAttributes.setAttribute("style", "width: 100%;height:150px;overflow-y:scroll");
+            DisplayAttributes.setAttribute("style", "width: 100%;height:250px;overflow-y:scroll");
             DisplayAttributes.setAttribute("id", "Att" + clicks);
 
             divElement.appendChild(DisplayAttributes);
@@ -600,18 +635,18 @@
             // create a new div element
             const leftDiv = document.createElement("div");
             leftDiv.setAttribute("id", leftDivId);
-            leftDiv.setAttribute("style", "border : 1px solid #000000; height: 650px; width: 35%;float:left;");
+            leftDiv.setAttribute("style", "border : 1px solid #000000; height: 750px; width: 35%;float:left;");
             const currentDiv = document.getElementById("DisplayGraph");
             const Duplicatediv = document.getElementById("GetFiltersDiv");
             const centerDiv = Duplicatediv.cloneNode(true);
             centerDiv.setAttribute("id", ('Div' + clicks));
-            centerDiv.setAttribute("style", "border : 1px solid #000000; height: 650px; width: 30%;float:left;");
+            centerDiv.setAttribute("style", "border : 1px solid #000000; height: 750px; width: 30%;float:left;");
             CreateForm(clicks, centerDiv);
             const rightDiv = document.createElement("div");
             clicks += 1;
             var rightDivId = clicks;
             rightDiv.setAttribute("id", rightDivId);
-            rightDiv.setAttribute("style", "border : 1px solid #000000; height: 650px; width: 35%;float:left;");
+            rightDiv.setAttribute("style", "border : 1px solid #000000; height: 750px; width: 35%;float:left;");
             document.body.appendChild(leftDiv, currentDiv);
             document.body.appendChild(centerDiv, currentDiv);
             document.body.appendChild(rightDiv, currentDiv);

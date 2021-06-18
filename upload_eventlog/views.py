@@ -361,6 +361,13 @@ def FilterDataToLogAttributes(FilterData):
 
     return log_attributes
 
+def AjaxDownload(request):
+    req = json.load(request)
+
+    DivIds = {'Lid':req['Ldiv'],'Rid':req['Rdiv']}
+
+    return HttpResponse(json.dumps(DivIds), content_type="application/json")
+
 
 def AjaxCall(request):
     req = json.load(request)
