@@ -267,7 +267,21 @@
                 headers: { 'X-CSRFToken': "{{ csrf_token }}" },
                 data: JSON.stringify({ 'Ldiv': Ldiv, 'Rdiv': Rdiv }),
                 success: function (data) {
-                    alert("Success");
+                      var contentType = 'application/force-download';
+                      try {
+                        var blob = new Blob([data], { type: contentType });
+
+                        var downloadUrl = URL.createObjectURL(blob);
+                        var a = document.createElement("a");
+                        a.href = downloadUrl;
+                        a.download = filename;
+                        document.body.appendChild(a);
+                        a.click();
+
+                    } catch (exc) {
+                        console.log("Save Blob method failed with the following exception.");
+                        console.log(exc);
+                    }
                 },
                 failure: function (data) {
                     alert('Got an error dude');

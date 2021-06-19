@@ -372,11 +372,14 @@ def AjaxDownload(request):
 
     div_id = int(DivIds['Lid'])
 
-    log = filtered_logs[div_id]
-
-    from pm4py.objects.log.exporter.xes import exporter as xes_exporter
-    file_dir = 'temp_log.xes'
-    xes_exporter.apply(log, file_dir)
+    if div_id in filtered_logs:
+        log = filtered_logs[div_id]
+        from pm4py.objects.log.exporter.xes import exporter as xes_exporter
+        file_dir = 'temp_log.xes'
+        xes_exporter.apply(log, file_dir)
+    else:
+        event_logs_path = os.path.join(settings.MEDIA_ROOT, "event_logs")
+        file_dir = os.path.join(event_logs_path, settings.EVENT_LOG_NAME)
 
     try:
         wrapper = FileWrapper(open(file_dir, 'rb'))
