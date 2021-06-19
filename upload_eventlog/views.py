@@ -368,7 +368,7 @@ def FilterDataToLogAttributes(FilterData, div_id):
 def AjaxDownload(request):
     req = json.load(request)
 
-    DivIds = {'Lid': req['Ldiv'], 'Rid': req['Rdiv']}
+    DivIds = {'Lid': req['Ldiv']}
 
     div_id = int(DivIds['Lid'])
 
