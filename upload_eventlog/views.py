@@ -20,6 +20,7 @@ import heapq
 import pm4py
 from pm4py.algo.filtering.dfg import dfg_filtering
 from pm4py.statistics.traces.log import case_statistics
+import datetime
 
 # Create your views here.
 
@@ -446,29 +447,35 @@ def get_Log_Statistics(log):
     all_case_durations = case_statistics.get_all_casedurations(log, parameters={
     case_statistics.Parameters.TIMESTAMP_KEY: "time:timestamp"})
 
-    total_case_duration = (sum(all_case_durations))/60
-    total_case_duration = round(total_case_duration, 2)
+    total_case_duration = (sum(all_case_durations))
 
     if no_cases <= 0:
         avg_case_duration = 0
     else:
         avg_case_duration = total_case_duration/no_cases
-    avg_case_duration = round(avg_case_duration, 2)
 
     median_case_duration = (case_statistics.get_median_caseduration(log, parameters={
         case_statistics.Parameters.TIMESTAMP_KEY: "time:timestamp"
-    }))/60
-    median_case_duration = round(median_case_duration, 2)
+    }))
 
-    total_case_duration = str(total_case_duration)
-    total_case_duration += 'm'
+    total_case_duration = days_hours_minutes(total_case_duration)
 
-    avg_case_duration = str(avg_case_duration)
-    avg_case_duration += 'm'
+    avg_case_duration = days_hours_minutes(avg_case_duration)
     
-    median_case_duration = str(median_case_duration)
-    median_case_duration += 'm'
+    median_case_duration = days_hours_minutes(median_case_duration)
 
     print(no_cases, no_events, no_variants, total_case_duration, avg_case_duration, median_case_duration)
 
     return no_cases, no_events, no_variants, total_case_duration, avg_case_duration, median_case_duration
+
+
+def days_hours_minutes(totalSeconds):
+    
+    td = datetime.timedelta(seconds = totalSeconds)
+
+    days = td.days
+    hours = td.seconds//3600
+    minutes = (td.seconds//60)%60
+    seconds = td.seconds - hours*3600 - minutes*60
+
+    return str(days) + "d " + str(hours) + "h " + str(minutes) + "m " + str(seconds) + "s"
