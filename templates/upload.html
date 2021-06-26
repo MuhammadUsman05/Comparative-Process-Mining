@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 <style>
     .link {
@@ -102,8 +102,6 @@
             top: -1px;
             left: 50%;
         }
-
-
 </style>
 
 <head>
@@ -134,7 +132,7 @@
 
             $(document).on("click", "button", function () {
                 var buttonId = $(this).attr('id');
-                selectId = buttonId.slice(-1);    
+                selectId = buttonId.slice(-1);
                 var RselectId = parseInt(selectId) + 1;
                 leftGraphId = document.getElementById(selectId);
                 rightGraphId = document.getElementById(RselectId);
@@ -184,7 +182,7 @@
                     link.delete;
                 }
 
-                
+
             });
 
 
@@ -220,7 +218,7 @@
                         var colValues = col_data_parsed[parsedColName];
                         updateSelectColValBox1(colValues);
                     }
-                        
+
                 });
 
                 var updateSelectColValBox = function (colValues) {
@@ -566,7 +564,7 @@
             divElement.appendChild(br.cloneNode());
             divElement.appendChild(Leftlog);
             divElement.appendChild(PrintLGraph);
-            divElement.appendChild(p);          
+            divElement.appendChild(p);
             divElement.appendChild(PrintRGraph);
             divElement.appendChild(rightlog);
            // divElement.appendChild(form);
@@ -715,9 +713,9 @@
         }
 
         function nodecolFunc(node) {
-            if (node.isUnique === 'True') 
-                return  '#FF0000';        
-            return  '#C6E5FF';   
+            if (node.isUnique === 'True')
+                return  '#FF0000';
+            return  '#C6E5FF';
         }
 
         function CreateGraph(JObj, id)
@@ -874,6 +872,10 @@
         <a class="nav-link active" id="eventlogs-tab" data-toggle="tab" href="#eventlogs" role="tab"
            aria-controls="eventlogs" aria-selected="true">Event Logs</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" id="Help-tab" data-toggle="tab" href="#Help" role="tab"
+           aria-controls="Help" aria-selected="true">Help Page</a>
+    </li>
 </ul>
 <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="eventlogs" role="tabpanel" aria-labelledby="eventlogs-tab">
@@ -933,7 +935,71 @@
         </div>
 
     </div>
-
+    <div class="tab-pane fade show" id="Help" role="tabpanel" aria-labelledby="Help-tab">
+        <div class="container-fluid">
+            <h3 style="margin:2%;text-align:center;">Uploading Event log</h3>
+            <ol>
+                <li>
+                    <p>Press the Choose File button</p><img src="{% static 'images/UploadEventLog.png' %}" />
+                </li>
+                <li>
+                    <p>Select the event log file you want to upload and press Open</p><img src="{% static 'images/OpenUploadEventLog.png' %}" />
+                </li>
+                <li>
+                    <p>After the event log file has been selected, press the Upload Eventlog button to upload it to the server</p><img src="{% static 'images/UploadLog.png' %}" />
+                </li>
+                <li>
+                    <p>You will be able to see the uploaded event log in the event log selection menu</p><img src="{% static 'images/UploadedEventLog.png' %}" />
+                </li>
+            </ol>
+            <h3 style="margin:2%;text-align:center;">Comparing different Models</h3>
+            <ol>
+                <li>
+                    <p>Select the event log that you want to analyze and press the Set button to set it as your chosen event log</p><img src="{% static 'images/SetEventLog.png' %}" />
+                </li>
+                <li>
+                    <p>After you have selected the event log, an Add Model button will appear. Press this button to add a pair of process models</p><img src="{% static 'images/AddModelFirstClick.png' %}" />
+                </li>
+                <li>
+                    <p>You will able to see two unfiltered Directly Folowed Graphs (DFGs) on the left and right hand side of the window</p><img src="{% static 'images/UnfilteredDFG.png' %}" />
+                    <ol>
+                        <li>Select the column from the event log you want to filter on</li>
+                        <li>Select the value of the column on which you want to filter the DFG</li>
+                        <li>Check this checkbox if you want to filter out all the other values except the selected column value, otherwise leave it unchecked</li>
+                        <li>Select the type of the value you want to be shown on the edges. It can be either Frequency or Performance</li>
+                        <li>Move the slider to select the percentage of edges you want to filter</li>
+                        <li>This window shows all the stats of the respective DFGs on the left and right hand side</li>
+                        <li>After you have selected all the filter values for both left and right DFGs, you can press the Compare button to get the filtered DFGs</li>
+                    </ol>
+                </li>
+                <li>
+                    <p>These are the DFGs you get after you have selected the required filter values and press the Compare button</p><img src="{% static 'images/CompareButtonClick.png' %}" />
+                </li>
+                <li>
+                    <p>You can press the Add Model button to add as many pairs of comparison models as you want</p><img src="{% static 'images/AddMoreModels.png' %}" />
+                </li>
+            </ol>
+            <h3 style="margin:2%;text-align:center;">Exporting filtered event logs, DFGs and stats</h3>
+            <ol>
+                <li>
+                    <p>After you have performed your comparisons, you can also export the filtered event logs, the filtered DFGs or a PDF with both DFGs and their statistics</p><img src="{% static 'images/ButtonsClick.png' %}" />
+                    <ol>
+                        <li>Press this button to export the left filtered event log</li>
+                        <li>Press this button to download the left DFG</li>
+                        <li>Press this button to download a PDF containing both DFGs and their respective statistics</li>
+                        <li>Press this button to export the right filtered event log</li>
+                        <li>Press this button to download the right DFG</li>
+                    </ol>
+                </li>
+            </ol>
+            <h3 style="margin:2%;text-align:center;">Deleting the uploaded event log</h3>
+            <ol>
+                <li>
+                    <p>After you have performed your comparisons, you can also delete the event log from the server by selecting the event log and pressing the Delete button</p><img src="{% static 'images/DeleteLogs.png' %}"/>
+                </li>
+            </ol>
+        </div>
+    </div>
 
     {% if message %}
     <script>
