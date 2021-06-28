@@ -630,7 +630,7 @@
             a.document.write('</div>');
             a.document.write('</body></html>');
             a.document.close();
-            a.document.addEventListener('load', function () {
+            a.document.addEventListener('DOMContentLoaded', function () {
                 a.focus();
                 a.print();
                 a.close();
