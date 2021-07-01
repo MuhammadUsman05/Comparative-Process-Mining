@@ -921,7 +921,7 @@
                                value="Download" name="downloadButton" id='downloadButton' />
 
                         {% if log_name != null %}
-                        <input style="margin-top: 10px;" type="button" class="btn btn-primary" value="Add Model"
+                        <input style="margin-top: 10px;" type="button" class="btn btn-primary" value="Add Comparison Model"
                                onclick="AddModel1('{{log_attributes.dfg}}')" id='AddModel' />
                         {% endif %}
                     </form>
@@ -977,6 +977,9 @@
                 </li>
                 <li>
                     <p>These are the DFGs you get after you have selected the required filter values and press the Compare button</p><img src="{% static 'images/CompareButtonClick.png' %}" /><br />
+                </li>
+                <li>
+                    <p>The Red colored activities in the DFG represent the activities which are not common among the process models, meaning they are present in one DFG but not in the other:</p><img src="{% static 'images/redColor.png' %}" /><br />
                 </li>
                 <li>
                     <p>You can press the Add Model button to add as many pairs of comparison models as you want</p><img src="{% static 'images/AddMoreModels.png' %}" /><br />
