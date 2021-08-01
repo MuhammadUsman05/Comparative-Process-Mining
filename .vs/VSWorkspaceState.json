@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\bootstrapdjango",
+    "\\media",
+    "\\static",
+    "\\static\\images",
+    "\\templates",
+    "\\upload_eventlog",
+    "\\UserManual"
+  ],
+  "SelectedNode": "\\upload_eventlog\\views.py",
+  "PreviewInSolutionExplorer": false
+}

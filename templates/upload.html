@@ -131,10 +131,13 @@
         var filename = new Object();
         $(document).ready(function () {
 
+            $('#SwitchToCompare').click(function () {
+                $('#CompareModel-tab').trigger('click');
+            });
 
             $(document).on("click", "button", function () {
                 var buttonId = $(this).attr('id');
-                selectId = buttonId.slice(-1);    
+                selectId = buttonId.slice(-1);
                 var RselectId = parseInt(selectId) + 1;
                 leftGraphId = document.getElementById(selectId);
                 rightGraphId = document.getElementById(RselectId);
@@ -184,7 +187,7 @@
                     link.delete;
                 }
 
-                
+
             });
 
 
@@ -220,7 +223,7 @@
                         var colValues = col_data_parsed[parsedColName];
                         updateSelectColValBox1(colValues);
                     }
-                        
+
                 });
 
                 var updateSelectColValBox = function (colValues) {
@@ -566,7 +569,7 @@
             divElement.appendChild(br.cloneNode());
             divElement.appendChild(Leftlog);
             divElement.appendChild(PrintLGraph);
-            divElement.appendChild(p);          
+            divElement.appendChild(p);
             divElement.appendChild(PrintRGraph);
             divElement.appendChild(rightlog);
            // divElement.appendChild(form);
@@ -706,18 +709,20 @@
             var rightDivId = clicks;
             rightDiv.setAttribute("id", rightDivId);
             rightDiv.setAttribute("style", "border : 1px solid #000000; height: 750px; width: 35%;float:left;");
-            document.body.appendChild(leftDiv, currentDiv);
-            document.body.appendChild(centerDiv, currentDiv);
-            document.body.appendChild(rightDiv, currentDiv);
+
+            currentDiv.appendChild(leftDiv);
+            currentDiv.appendChild(centerDiv);
+            currentDiv.appendChild(rightDiv);
+
             CreateGraph(data, leftDivId);
             CreateGraph(data, rightDivId);
             rangeInput();
         }
 
         function nodecolFunc(node) {
-            if (node.isUnique === 'True') 
-                return  '#FF0000';        
-            return  '#C6E5FF';   
+            if (node.isUnique === 'True')
+                return  '#FF0000';
+            return  '#C6E5FF';
         }
 
         function CreateGraph(JObj, id)
@@ -869,149 +874,181 @@
     </script>
 
 </head>
+<div class="TabDiv">
+    <ul class="nav nav-tabs" id="myTab" role="tablist" data-tabs="tabs">
+        <li class="nav-item">
+            <a class="nav-link active" id="eventlogs-tab" data-toggle="tab" href="#eventlogs" role="tab"
+               aria-controls="eventlogs" aria-selected="true">Event Logs</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="CompareModel-tab" data-toggle="tab" href="#CompareModel" role="tab"
+               aria-controls="CompareModel" aria-selected="true">Compare Model</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="Help-tab" data-toggle="tab" href="#Help" role="tab"
+               aria-controls="Help" aria-selected="true">Help Page</a>
+        </li>
+    </ul>
 
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item">
-        <a class="nav-link active" id="eventlogs-tab" data-toggle="tab" href="#eventlogs" role="tab"
-           aria-controls="eventlogs" aria-selected="true">Event Logs</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="Help-tab" data-toggle="tab" href="#Help" role="tab"
-           aria-controls="Help" aria-selected="true">Help Page</a>
-    </li>
-</ul>
-<div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="eventlogs" role="tabpanel" aria-labelledby="eventlogs-tab">
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="eventlogs" role="tabpanel" aria-labelledby="eventlogs-tab">
 
-        <div class="container-fluid">
-            <h3 class="mt-4" style="color:#00529F;">Event Logs</h3>
-            <br>
-            <div class="row">
-                <div class=" col-sm-6 col-md-7 col-lg-8">
-                    <form name="load" action="" method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
+            <div class="container-fluid">
+                <h3 class="mt-4" style="color:#00529F;">Event Logs</h3>
+                <br>
+                <div class="row">
+                    <div class=" col-sm-6 col-md-7 col-lg-8">
+                        <form name="load" action="" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
 
-                        <p>Event log: <input type="file" value="fileupload" name="event_log" /></p>
-                        <p>
-                            <input type="submit" class="btn btn-primary mb-2" value="Upload EventLog" name="uploadButton"
-                                   id='submitresEL' />
-                        </p>
+                            <p>Event log: <input type="file" value="fileupload" name="event_log" /></p>
+                            <p>
+                                <input type="submit" class="btn btn-primary mb-2" value="Upload EventLog" name="uploadButton"
+                                       id='submitresEL' />
+                            </p>
 
-                    </form>
-                </div>
-            </div>
-
-            <br>
-            <div class="row">
-                <div class=" col-sm-6 col-md-7 col-lg-8">
-                    <form name="choice" action="" method="POST">
-                        {% csrf_token %}
-                        <select name="log_list" class="custom-select" size="10">
-                            {% for eventlog in eventlog_list %}
-                            <option value="{{eventlog}}">{{eventlog}}</option>
-                            {% endfor %}
-                        </select>
-
-                        <input style="margin-top: 10px;" data-toggle="tooltip" data-placement="top"
-                               title="Set as the input" type="submit" class="btn btn-success" value="Set" name="setButton"
-                               id='setButton' />
-                        <input style="margin-top: 10px;" type="submit" class="btn btn-danger" value="Delete"
-                               name="deleteButton" id='deleteButton' />
-                        <input style="float: right; margin-top: 10px;" type="submit" class="btn btn-info"
-                               value="Download" name="downloadButton" id='downloadButton' />
-
-                        {% if log_name != null %}
-                        <input style="margin-top: 10px;" type="button" class="btn btn-primary" value="Add comparison Model"
-                               onclick="AddModel1('{{log_attributes.dfg}}')" id='AddModel' />
-                        {% endif %}
-                    </form>
+                        </form>
+                    </div>
                 </div>
 
+                <br>
+                <div class="row">
+                    <div class=" col-sm-6 col-md-7 col-lg-8">
+                        <form name="choice" action="" method="POST">
+                            {% csrf_token %}
+                            <select name="log_list" class="custom-select" size="10">
+                                {% for eventlog in eventlog_list %}
+                                <option value="{{eventlog}}">{{eventlog}}</option>
+                                {% endfor %}
+                            </select>
+
+                            <input style="margin-top: 10px;" data-toggle="tooltip" data-placement="top"
+                                   title="Set as the input" type="submit" class="btn btn-success" value="Set" name="setButton"
+                                   id='setButton' />
+                            <input style="margin-top: 10px;" type="submit" class="btn btn-danger" value="Delete"
+                                   name="deleteButton" id='deleteButton' />
+                            <input style="float: right; margin-top: 10px;" type="submit" class="btn btn-info"
+                                   value="Download" name="downloadButton" id='downloadButton' />
+
+                            {% if log_name != null %}
+                            <input style="margin-top: 10px;" type="button" class="btn btn-primary" value="Compare Model Tab"
+                                   id="SwitchToCompare" />
+                            {% endif %}
+                        </form>
+                    </div>
+
+                </div>
+
             </div>
-            <br>
-            <div id="GetFiltersDiv" style="display:none">
-                <h4>Benchmarking</h4>
-                <p>Select columns and its values to compare</p>
-            </div>
-            <br>
 
         </div>
+        <div class="tab-pane fade show" id="CompareModel" role="tabpanel" aria-labelledby="CompareModel-tab">
+            <div class="container-fluid">
+                <h3 class="mt-4" style="color:#00529F;">Comparison Window</h3>
+                {% if log_name != null %}
+                <br />
+                <h6 style="margin:2%;text-align:center;">Please navigate to Event Logs tab for changing the selected log</h6><br />
+                <input style="margin-top: 10px;" type="button" class="btn btn-primary" value="Add comparison Model"
+                       onclick="AddModel1('{{log_attributes.dfg}}')" id='AddModel' />
+                <br />
+                <br />
+                {% else %}
+                <br />
+                <h3 style="margin:2%;text-align:center;">Please navigate to Event Logs tab and select an event log to make models for comparison</h3><br />
 
-    </div>
-    <div class="tab-pane fade show" id="Help" role="tabpanel" aria-labelledby="Help-tab">
-        <div class="container-fluid"><br />
-            <h3 style="margin:2%;text-align:center;">Uploading Event log</h3><br />
-            <ol>
-                <li>
-                    <p>Press the Choose File button</p><img src="{% static 'images/UploadEventLog.png' %}" /><br />
-                </li>
-                <li>
-                    <p>Select the event log file you want to upload and press Open</p><img src="{% static 'images/OpenUploadEventLog.png' %}" /><br />
-                </li>
-                <li>
-                    <p>After the event log file has been selected, press the Upload Eventlog button to upload it to the server</p><img src="{% static 'images/UploadLog.png' %}" /><br />
-                </li>
-                <li>
-                    <p>You will be able to see the uploaded event log in the event log selection menu</p><img src="{% static 'images/UploadedEventLog.png' %}" /><br />
-                </li>
-            </ol>
-            <h3 style="margin:2%;text-align:center;">Comparing different Models</h3><br />
-            <ol>
-                <li>
-                    <p>Select the event log that you want to analyze and press the Set button to set it as your chosen event log</p><img src="{% static 'images/SetEventLog.png' %}" /><br />
-                </li>
-                <li>
-                    <p>After you have selected the event log, an Add Model button will appear. Press this button to add a pair of process models</p><img src="{% static 'images/AddModelFirstClick.png' %}" /><br />
-                </li>
-                <li>
-                    <p>You will able to see two unfiltered Directly Folowed Graphs (DFGs) on the left and right hand side of the window</p><img src="{% static 'images/UnfilteredDFG.png' %}" /><br />
-                    <ol>
-                        <li>Select the column from the event log you want to filter on</li>
-                        <li>Select the value of the column on which you want to filter the DFG</li>
-                        <li>Check this checkbox if you want to filter out all the other values except the selected column value, otherwise leave it unchecked</li>
-                        <li>Select the type of the value you want to be shown on the edges. It can be either Frequency or Performance</li>
-                        <li>Move the slider to select the percentage of edges you want to filter</li>
-                        <li>This window shows all the stats of the respective DFGs on the left and right hand side</li>
-                        <li>After you have selected all the filter values for both left and right DFGs, you can press the Compare button to get the filtered DFGs</li>
-                    </ol>
-                </li>
-                <li>
-                    <p>These are the DFGs you get after you have selected the required filter values and press the Compare button</p><img src="{% static 'images/CompareButtonClick.png' %}" /><br />
-                </li>
-                <li>
-                    <p>The Red colored activities in the DFG represent the activities which are not common among the process models, meaning they are present in one DFG but not in the other:</p><img src="{% static 'images/redColor.png' %}" /><br />
-                </li>
-                <li>
-                    <p>You can press the Add Model button to add as many pairs of comparison models as you want</p><img src="{% static 'images/AddMoreModels.png' %}" /><br />
-                </li>
-            </ol>
-            <h3 style="margin:2%;text-align:center;">Exporting filtered event logs, DFGs and stats</h3><br />
-            <ol>
-                <li>
-                    <p>After you have performed your comparisons, you can also export the filtered event logs, the filtered DFGs or a PDF with both DFGs and their statistics</p><img src="{% static 'images/ButtonsClick.png' %}" /><br />
-                    <ol>
-                        <li>Press this button to export the left filtered event log</li>
-                        <li>Press this button to download the left DFG</li>
-                        <li>Press this button to download a PDF containing both DFGs and their respective statistics</li>
-                        <li>Press this button to export the right filtered event log</li>
-                        <li>Press this button to download the right DFG</li>
-                    </ol>
-                </li>
-            </ol>
-            <h3 style="margin:2%;text-align:center;">Deleting the uploaded event log</h3><br />
-            <ol>
-                <li>
-                    <p>After you have performed your comparisons, you can also delete the event log from the server by selecting the event log and pressing the Delete button</p><img src="{% static 'images/DeleteLogs.png' %}"/><br />
-                </li>
-            </ol>
+                {% endif %}
+                <br>
+                <div id="DisplayGraph">
+                    <div id="leftGraph"></div>
+                    <div id="GetFiltersDiv" style="display:none">
+                        <h4>Comparison Parameters</h4>
+                        <p>Select columns and its values to compare</p>
+                    </div>
+                    <div id="RightGraph"></div>
+                </div>
+                <br>
+
+            </div>
         </div>
-    </div>
+        <div class="tab-pane fade show" id="Help" role="tabpanel" aria-labelledby="Help-tab">
+            <div class="container-fluid">
+                <br />
+                <h3 style="margin:2%;text-align:center;">Uploading Event log</h3><br />
+                <ol>
+                    <li>
+                        <p>Press the Choose File button</p><img src="{% static 'images/UploadEventLog.png' %}" /><br />
+                    </li>
+                    <li>
+                        <p>Select the event log file you want to upload and press Open</p><img src="{% static 'images/OpenUploadEventLog.png' %}" /><br />
+                    </li>
+                    <li>
+                        <p>After the event log file has been selected, press the Upload Eventlog button to upload it to the server</p><img src="{% static 'images/UploadLog.png' %}" /><br />
+                    </li>
+                    <li>
+                        <p>You will be able to see the uploaded event log in the event log selection menu</p><img src="{% static 'images/UploadedEventLog.png' %}" /><br />
+                    </li>
+                </ol>
+                <h3 style="margin:2%;text-align:center;">Comparing different Models</h3><br />
+                <ol>
+                    <li>
+                        <p>Select the event log that you want to analyze and press the Set button to set it as your chosen event log</p><img src="{% static 'images/SetEventLog.png' %}" /><br />
+                    </li>
+                    <li>
+                        <p>After you have selected the event log, an Comparison Model Tab button will appear. Press this button to navigate to the Compare Model Tab</p><img src="{% static 'images/Compare Model Tab.png' %}" /><br />
+                    </li>
+                    <li>
+                        <p>After navigating to Compare Model Tab, click the button Add Comparison Model button to add models for comparison </p><img src="{% static 'images/Add Comparison Model.png' %}" /><br />
+                    </li>
+                    <li>
+                        <p>You will able to see two unfiltered Directly Folowed Graphs (DFGs) on the left and right hand side of the window</p><img src="{% static 'images/UnfilteredDFG.png' %}" /><br />
+                        <ol>
+                            <li>Select the column from the event log you want to filter on</li>
+                            <li>Select the value of the column on which you want to filter the DFG</li>
+                            <li>Check this checkbox if you want to filter out all the other values except the selected column value, otherwise leave it unchecked</li>
+                            <li>Select the type of the value you want to be shown on the edges. It can be either Frequency or Performance</li>
+                            <li>Move the slider to select the percentage of edges you want to filter</li>
+                            <li>This window shows all the stats of the respective DFGs on the left and right hand side</li>
+                            <li>After you have selected all the filter values for both left and right DFGs, you can press the Compare button to get the filtered DFGs</li>
+                        </ol>
+                    </li>
+                    <li>
+                        <p>These are the DFGs you get after you have selected the required filter values and press the Compare button</p><img src="{% static 'images/CompareButtonClick.png' %}" /><br />
+                    </li>
+                    <li>
+                        <p>The Red colored activities in the DFG represent the activities which are not common among the process models, meaning they are present in one DFG but not in the other:</p><img src="{% static 'images/redColor.png' %}" /><br />
+                    </li>
+                    <li>
+                        <p>You can press the Add Model button to add as many pairs of comparison models as you want</p><img src="{% static 'images/AddMoreModels.png' %}" /><br />
+                    </li>
+                </ol>
+                <h3 style="margin:2%;text-align:center;">Exporting filtered event logs, DFGs and stats</h3><br />
+                <ol>
+                    <li>
+                        <p>After you have performed your comparisons, you can also export the filtered event logs, the filtered DFGs or a PDF with both DFGs and their statistics</p><img src="{% static 'images/ButtonsClick.png' %}" /><br />
+                        <ol>
+                            <li>Press this button to export the left filtered event log</li>
+                            <li>Press this button to download the left DFG</li>
+                            <li>Press this button to download a PDF containing both DFGs and their respective statistics</li>
+                            <li>Press this button to export the right filtered event log</li>
+                            <li>Press this button to download the right DFG</li>
+                        </ol>
+                    </li>
+                </ol>
+                <h3 style="margin:2%;text-align:center;">Deleting the uploaded event log</h3><br />
+                <ol>
+                    <li>
+                        <p>After you have performed your comparisons, you can also delete the event log from the server by selecting the event log and pressing the Delete button</p><img src="{% static 'images/DeleteLogs.png' %}" /><br />
+                    </li>
+                </ol>
+            </div>
+        </div>
 
-    {% if message %}
-    <script>
+        {% if message %}
+        <script>
         alert({{ message }})
-    </script>
-    {% endif %}
+        </script>
+        {% endif %}
 
-    {% endblock %}
+        {% endblock %}
+    </div>
 </div>

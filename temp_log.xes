@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<log>
+	<extension name="Concept" prefix="concept" uri="http://code.deckfour.org/xes/concept.xesext" />
+	<extension name="Time" prefix="time" uri="http://code.deckfour.org/xes/time.xesext" />
+	<extension name="Organizational" prefix="org" uri="http://code.deckfour.org/xes/org.xesext" />
+	<classifier name="Activity" keys="Activity" />
+	<classifier name="activity classifier" keys="Activity" />
+	<string key="creator" value="Fluxicon Nitro" />
+	<global scope="trace">
+		<string key="concept:name" value="name" />
+	</global>
+	<global scope="event">
+		<string key="concept:name" value="name" />
+		<string key="org:resource" value="resource" />
+		<date key="time:timestamp" value="2011-04-13T14:02:31.199000+02:00" />
+		<string key="Activity" value="string" />
+		<string key="Resource" value="string" />
+		<string key="Costs" value="string" />
+	</global>
+	<trace>
+		<string key="concept:name" value="1" />
+		<string key="creator" value="Fluxicon Nitro" />
+		<event>
+			<string key="concept:name" value="register request" />
+			<string key="org:resource" value="Pete" />
+			<date key="time:timestamp" value="2010-12-30T11:02:00+01:00" />
+			<string key="Activity" value="register request" />
+			<string key="Resource" value="Pete" />
+			<string key="Costs" value="50" />
+		</event>
+		<event>
+			<string key="concept:name" value="examine thoroughly" />
+			<string key="org:resource" value="Sue" />
+			<date key="time:timestamp" value="2010-12-31T10:06:00+01:00" />
+			<string key="Activity" value="examine thoroughly" />
+			<string key="Resource" value="Sue" />
+			<string key="Costs" value="400" />
+		</event>
+		<event>
+			<string key="concept:name" value="check ticket" />
+			<string key="org:resource" value="Mike" />
+			<date key="time:timestamp" value="2011-01-05T15:12:00+01:00" />
+			<string key="Activity" value="check ticket" />
+			<string key="Resource" value="Mike" />
+			<string key="Costs" value="100" />
+		</event>
+		<event>
+			<string key="concept:name" value="decide" />
+			<string key="org:resource" value="Sara" />
+			<date key="time:timestamp" value="2011-01-06T11:18:00+01:00" />
+			<string key="Activity" value="decide" />
+			<string key="Resource" value="Sara" />
+			<string key="Costs" value="200" />
+		</event>
+		<event>
+			<string key="concept:name" value="reject request" />
+			<string key="org:resource" value="Pete" />
+			<date key="time:timestamp" value="2011-01-07T14:24:00+01:00" />
+			<string key="Activity" value="reject request" />
+			<string key="Resource" value="Pete" />
+			<string key="Costs" value="200" />
+		</event>
+	</trace>
+</log>
